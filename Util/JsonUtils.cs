@@ -15,5 +15,10 @@ namespace Util
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(jsonStr);
         }
+
+        public static object DeserializeObject(string jsonStr, Type type)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject(jsonStr, type);
+        }
     }
 }
