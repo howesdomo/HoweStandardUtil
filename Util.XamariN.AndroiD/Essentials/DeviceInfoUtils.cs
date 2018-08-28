@@ -7,7 +7,7 @@ namespace Util.XamariN.Essentials
     {
         public DeviceInfoUtils()
         {
-
+            
         }
 
         public Util.XamariN.Essentials.DeviceInfo GetDeviceInfo()
