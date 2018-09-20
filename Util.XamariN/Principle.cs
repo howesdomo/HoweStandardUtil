@@ -18,6 +18,6 @@ namespace Util
         /// 外部存储目录
         /// Enpot/xxApp/
         /// </summary>
-        public const string ABC = "{0}/{1}";
+        public const string ExternalStorageDirectoryTemplate = "{0}/{1}";
     }
 }
