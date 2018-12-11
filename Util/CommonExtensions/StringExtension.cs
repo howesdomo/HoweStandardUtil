@@ -272,5 +272,74 @@ namespace System
         //}
 
         #endregion
+
+
+        #region GZip
+
+        public static string GZip_Compress2String(this string toZipString)
+        {
+            string r = Util.GZipUtils.Compress2String(toZipString);
+            return r;
+        }
+
+        public static string GZip_Decompress2String(this string zippedString)
+        {
+            string r = Util.GZipUtils.Decompress2String(zippedString);
+            return r;
+        }
+
+        #endregion
+
+        #region DES 加密 & 解密
+
+        /// <summary>
+        /// DES 加密
+        /// </summary>
+        /// <param name="toEncryptString"></param>
+        /// <returns></returns>
+        public static string DES_Encrypt(this string toEncryptString)
+        {
+            return Util.Cryptography.DESUtils.Encrypt(toEncryptString);
+        }
+
+        /// <summary>
+        /// DES 解密
+        /// </summary>
+        /// <param name="textToEncrypt"></param>
+        /// <returns></returns>
+        public static string DES_Decrypt(this string toDecryptString)
+        {
+            return Util.Cryptography.DESUtils.Decrypt(toDecryptString);
+        }
+
+        #endregion
+
+        #region RSA 加密 & 解密
+
+        /// <summary>
+        /// RSA 加密
+        /// </summary>
+        /// <param name="toEncryptString">加密的信息</param>
+        /// <param name="publickey">公钥(可空)</param>
+        /// <returns>Base64Str</returns>
+        public static string RSA_Encrypt(this string toEncryptString, string publickey = "")
+        {
+            return Util.Cryptography.RSAUtils.Encrypt2Base64Str(toEncryptString, publickey);
+        }
+
+
+        /// <summary>
+        /// RSA 解密
+        /// </summary>
+        /// <param name="toDecryptString">Base64Str</param>
+        /// <param name="privateKey">私钥(可空)</param>
+        /// <returns>解密信息</returns>
+        public static string RSA_Decrypt(this string toDecryptString, string privateKey = "")
+        {
+            return Util.Cryptography.RSAUtils.Decrypt2String(toDecryptString, privateKey);
+        }
+
+
+        #endregion
     }
 }

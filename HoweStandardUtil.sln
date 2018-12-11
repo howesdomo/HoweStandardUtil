@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.XamariN", "Util.Xamari
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.XamariN.AndroiD", "Util.XamariN.AndroiD\Util.XamariN.AndroiD.csproj", "{E28C66E8-9C79-48D0-AC5C-9708F92B695F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Web", "Util.Web\Util.Web.csproj", "{897C330F-B4D4-4E6B-9F6F-DFD3D24C5B15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Web", "Util.Web\Util.Web.csproj", "{897C330F-B4D4-4E6B-9F6F-DFD3D24C5B15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.Excel.Aspose", "Util.Excel.Aspose\Util.Excel.Aspose.csproj", "{1E3F0F79-049A-4255-ADE8-E86DE5C50825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject", "UnitTestProject\UnitTestProject.csproj", "{A5153C0B-848A-40C6-92B8-F4613B68882F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{897C330F-B4D4-4E6B-9F6F-DFD3D24C5B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{897C330F-B4D4-4E6B-9F6F-DFD3D24C5B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{897C330F-B4D4-4E6B-9F6F-DFD3D24C5B15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E3F0F79-049A-4255-ADE8-E86DE5C50825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E3F0F79-049A-4255-ADE8-E86DE5C50825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E3F0F79-049A-4255-ADE8-E86DE5C50825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E3F0F79-049A-4255-ADE8-E86DE5C50825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5153C0B-848A-40C6-92B8-F4613B68882F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5153C0B-848A-40C6-92B8-F4613B68882F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5153C0B-848A-40C6-92B8-F4613B68882F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5153C0B-848A-40C6-92B8-F4613B68882F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

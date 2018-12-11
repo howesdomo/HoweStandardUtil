@@ -13,7 +13,31 @@ namespace Util.WebService
         }
 
         public string MethodName { get; set; }
+
         public List<string> JsonArgs { get; set; }
+
+        /// <summary>
+        /// 压缩过的参数
+        /// </summary>
+        public bool IsCompress { get; set; }
+
+        /// <summary>
+        /// 压缩的方式
+        /// GZip
+        /// </summary>
+        public string CompressType { get; set; }
+        
+        /// <summary>
+        /// 加密过的参数
+        /// </summary>
+        public bool IsEncrypt { get; set; }
+
+        /// <summary>
+        /// 加密的方式
+        /// DES
+        /// RSA
+        /// </summary>
+        public string EncryptType { get; set; }
     }
 
     [Serializable]
@@ -52,6 +76,30 @@ namespace Util.WebService
         public string ReturnObjectJson { get; set; }
 
         #endregion
+
+
+        /// <summary>
+        /// 压缩过的ReturnObjectJson
+        /// </summary>
+        public bool IsCompress { get; set; }
+
+        /// <summary>
+        /// 压缩的方式
+        /// GZip
+        /// </summary>
+        public string CompressType { get; set; }
+
+        /// <summary>
+        /// 加密过的ReturnObjectJson
+        /// </summary>
+        public bool IsEncrypt { get; set; }
+
+        /// <summary>
+        /// 加密的方式
+        /// DES
+        /// RSA
+        /// </summary>
+        public string EncryptType { get; set; }
     }
 
     [Serializable]
