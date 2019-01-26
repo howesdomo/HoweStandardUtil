@@ -23,7 +23,8 @@ namespace Util.XamariN.Essentials
         public DisplayInfo GetDisplayInfo()
         {
             // Get Metrics
-            var metrics = Xamarin.Essentials.DeviceDisplay.ScreenMetrics;
+            // var metrics = Xamarin.Essentials.DeviceDisplay.ScreenMetrics; // 0.1.0 preview
+            var metrics = Xamarin.Essentials.DeviceDisplay.MainDisplayInfo; // 1.0.2
 
             //// Orientation (Landscape, Portrait, Square, Unknown)
             //var orientation = metrics.Orientation;

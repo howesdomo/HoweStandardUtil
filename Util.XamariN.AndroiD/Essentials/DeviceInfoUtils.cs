@@ -24,8 +24,8 @@ namespace Util.XamariN.Essentials
                 VersionRevision = Xamarin.Essentials.DeviceInfo.Version.Revision,
                 VersionInfo = Xamarin.Essentials.DeviceInfo.VersionString,
 
-                Platform = Xamarin.Essentials.DeviceInfo.Platform,
-                Idiom = Xamarin.Essentials.DeviceInfo.Idiom,
+                Platform = Xamarin.Essentials.DeviceInfo.Platform.ToString(),
+                Idiom = Xamarin.Essentials.DeviceInfo.Idiom.ToString(),
                 DeviceType = Xamarin.Essentials.DeviceInfo.DeviceType.ToString(),
             };
         }
