@@ -7,6 +7,19 @@ namespace UnitTestProject
     [TestClass]
     public class ExcelUtils_Aspose_Tests
     {
+        [TestInitialize]
+        public void init()
+        {
+            Util.Excel.ExcelUtils_Aspose.InitializeAsposeCells();
+        }
+
+        [TestMethod]
+        public void TestHotPatch()
+        {
+            Util.Excel.ExcelUtils_Aspose.TestAsposeCellsHotPatch();
+        }
+
+
         [TestMethod]
         public void Excel2DataTable()
         {

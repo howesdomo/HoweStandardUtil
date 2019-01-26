@@ -16,12 +16,20 @@ namespace Util.Excel
         #region **** Hot Patch 破解方式 **** 
 
         /// <summary>
+        /// 最新版本的破解方法
+        /// </summary>
+        public static void InitializeAsposeCells()
+        {
+            InitializeAsposeCells_v18_12_0();
+        }
+
+        /// <summary>
         /// Aspose 8.6.3 Hot Patch 破解方式
         /// 
         /// Winform, WPF 请在 OnStartup 中调用此方法
         /// Web程序, 请在全局应用类(Global.asax)中 Application_Start 方法中调用此方法
         /// </summary>
-        public static void InitializeAsposeCells()
+        public static void InitializeAsposeCells_v8_6_3()
         {
             const BindingFlags BINDING_FLAGS_ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
 
@@ -89,6 +97,51 @@ namespace Util.Excel
                 setValue(field, typeof(int), FIELD_LICENSERHELPER_INT128, null, CONST_LICENSERHELPER_INT128);
                 setValue(field, typeof(bool), FIELD_LICENSERHELPER_BOOLFALSE, null, CONST_LICENSERHELPER_BOOLFALSE);
             }
+        }
+
+        /// <summary>
+        /// Aspose 18.12.0 Hot Patch 破解方式
+        /// 
+        /// Winform, WPF 请在 OnStartup 中调用此方法
+        /// Web程序, 请在全局应用类(Global.asax)中 Application_Start 方法中调用此方法
+        /// </summary>
+        public static bool InitializeAsposeCells_v18_12_0()
+        {
+
+            var name = Assembly.CreateQualifiedName(typeof(Aspose.Cells.License).Assembly.FullName,
+                "\u0002\u200B\u2001\u2000");
+            var licType = Type.GetType(name, false, false);
+            var helperName = Assembly.CreateQualifiedName(typeof(Aspose.Cells.License).Assembly.FullName,
+                "\u000E\u2001\u2002\u2000");
+            var helperType = Type.GetType(helperName, false, false);
+
+            if (licType == null || helperType == null)
+                return false;
+            try
+            {
+                object helper = Activator.CreateInstance(helperType);
+                helperType.GetField("\u0008", BindingFlags.NonPublic | BindingFlags.Instance)
+                    .SetValue(helper, (256));
+
+                helperType.GetField("\u0002", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                   .SetValue(null, helper);
+
+
+                object lic = Activator.CreateInstance(licType);
+
+                licType.GetField("\u000E", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                    .SetValue(lic, (int)1);
+                licType.GetField("\u0008", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                    .SetValue(lic, DateTime.Today.AddDays(1000).ToString());
+                licType.GetField("\u000F", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
+                    .SetValue(null, lic);
+
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -193,7 +246,7 @@ namespace Util.Excel
             return errorMsg;
         }
 
-        #endregion 
+        #endregion
 
         /// <summary>
         /// 读取Excel文件
