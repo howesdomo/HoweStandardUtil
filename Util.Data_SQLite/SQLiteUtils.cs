@@ -1,9 +1,7 @@
 ﻿using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CoreUtil
+namespace Util.Data
 {
     public class SQLiteUtils
     {
