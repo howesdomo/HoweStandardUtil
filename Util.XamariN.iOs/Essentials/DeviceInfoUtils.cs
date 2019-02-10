@@ -1,65 +1,66 @@
-﻿using Xamarin.Forms;
+﻿//// 暂时无法在 iOS 项目中正确地找到这里的 DependencyService 具体实现代码
+//using Xamarin.Forms;
 
-[assembly: Dependency(typeof(Util.XamariN.Essentials.DeviceInfoUtils))]
-namespace Util.XamariN.Essentials
-{
-    public class DeviceInfoUtils : IDeviceInfoUtils
-    {
-        public DeviceInfoUtils()
-        {
-            
-        }
+//[assembly: Dependency(typeof(Util.XamariN.Essentials.DeviceInfoUtils))]
+//namespace Util.XamariN.Essentials
+//{
+//    public class DeviceInfoUtils : IDeviceInfoUtils
+//    {
+//        public DeviceInfoUtils()
+//        {
 
-        public Util.XamariN.Essentials.DeviceInfo GetDeviceInfo()
-        {
-            return new Util.XamariN.Essentials.DeviceInfo()
-            {
-                Model = Xamarin.Essentials.DeviceInfo.Model,
-                Manufacturer = Xamarin.Essentials.DeviceInfo.Manufacturer,
-                DeviceName = Xamarin.Essentials.DeviceInfo.Name,
+//        }
 
-                VersionMajor = Xamarin.Essentials.DeviceInfo.Version.Major,
-                VersionMinor = Xamarin.Essentials.DeviceInfo.Version.Minor,
-                VersionBuild = Xamarin.Essentials.DeviceInfo.Version.Build,
-                VersionRevision = Xamarin.Essentials.DeviceInfo.Version.Revision,
-                VersionInfo = Xamarin.Essentials.DeviceInfo.VersionString,
+//        public Util.XamariN.Essentials.DeviceInfo GetDeviceInfo()
+//        {
+//            return new Util.XamariN.Essentials.DeviceInfo()
+//            {
+//                Model = Xamarin.Essentials.DeviceInfo.Model,
+//                Manufacturer = Xamarin.Essentials.DeviceInfo.Manufacturer,
+//                DeviceName = Xamarin.Essentials.DeviceInfo.Name,
 
-                Platform = Xamarin.Essentials.DeviceInfo.Platform.ToString(),
-                Idiom = Xamarin.Essentials.DeviceInfo.Idiom.ToString(),
-                DeviceType = Xamarin.Essentials.DeviceInfo.DeviceType.ToString(),
-            };
-        }
+//                VersionMajor = Xamarin.Essentials.DeviceInfo.Version.Major,
+//                VersionMinor = Xamarin.Essentials.DeviceInfo.Version.Minor,
+//                VersionBuild = Xamarin.Essentials.DeviceInfo.Version.Build,
+//                VersionRevision = Xamarin.Essentials.DeviceInfo.Version.Revision,
+//                VersionInfo = Xamarin.Essentials.DeviceInfo.VersionString,
 
-        public string GetDeviceInfoMessage()
-        {
-            //// Device Model (SMG-950U)
-            //var device = Xamarin.Essentials.DeviceInfo.Model;
+//                Platform = Xamarin.Essentials.DeviceInfo.Platform.ToString(),
+//                Idiom = Xamarin.Essentials.DeviceInfo.Idiom.ToString(),
+//                DeviceType = Xamarin.Essentials.DeviceInfo.DeviceType.ToString(),
+//            };
+//        }
 
-            //// Manufacturer (Samsung)
-            //var manufacturer = Xamarin.Essentials.DeviceInfo.Manufacturer;
+//        public string GetDeviceInfoMessage()
+//        {
+//            //// Device Model (SMG-950U)
+//            //var device = Xamarin.Essentials.DeviceInfo.Model;
 
-            //// Device Name (Motz's iPhone)
-            //var deviceName = Xamarin.Essentials.DeviceInfo.Name;
+//            //// Manufacturer (Samsung)
+//            //var manufacturer = Xamarin.Essentials.DeviceInfo.Manufacturer;
 
-            //// Operating System Version Number (7.0)
-            //var version = Xamarin.Essentials.DeviceInfo.VersionString;
+//            //// Device Name (Motz's iPhone)
+//            //var deviceName = Xamarin.Essentials.DeviceInfo.Name;
 
-            //// Platform (Android)
-            //var platform = Xamarin.Essentials.DeviceInfo.Platform;
+//            //// Operating System Version Number (7.0)
+//            //var version = Xamarin.Essentials.DeviceInfo.VersionString;
 
-            //// Idiom (Phone)
-            //var idiom = Xamarin.Essentials.DeviceInfo.Idiom;
+//            //// Platform (Android)
+//            //var platform = Xamarin.Essentials.DeviceInfo.Platform;
 
-            //// Device Type (Physical)
-            //var deviceType = Xamarin.Essentials.DeviceInfo.DeviceType.ToString();
+//            //// Idiom (Phone)
+//            //var idiom = Xamarin.Essentials.DeviceInfo.Idiom;
 
-            var m = GetDeviceInfo();
-            return m.ToString();
-        }
+//            //// Device Type (Physical)
+//            //var deviceType = Xamarin.Essentials.DeviceInfo.DeviceType.ToString();
 
-        public string GetDeviceInfoJsonStr()
-        {
-            return Util.JsonUtils.SerializeObject(GetDeviceInfo());
-        }
-    }
-}
+//            var m = GetDeviceInfo();
+//            return m.ToString();
+//        }
+
+//        public string GetDeviceInfoJsonStr()
+//        {
+//            return Util.JsonUtils.SerializeObject(GetDeviceInfo());
+//        }
+//    }
+//}
