@@ -16,9 +16,29 @@ namespace Util
             return result;
         }
 
+        public static decimal? ReadDecimalNullable(object value)
+        {
+            decimal? result = null;
+            if (value != DBNull.Value)
+            {
+                result = Convert.ToDecimal(value);
+            }
+            return result;
+        }
+
         public static double ReadDouble(object value)
         {
             double result = 0;
+            if (value != DBNull.Value)
+            {
+                result = Convert.ToDouble(value);
+            }
+            return result;
+        }
+
+        public static double? ReadDoubleNullable(object value)
+        {
+            double? result = null;
             if (value != DBNull.Value)
             {
                 result = Convert.ToDouble(value);
@@ -36,6 +56,16 @@ namespace Util
             return result;
         }
 
+        public static int? ReadIntNullable(object value)
+        {
+            int? result = null;
+            if (value != DBNull.Value)
+            {
+                result = Convert.ToInt32(value);
+            }
+            return result;
+        }
+
         public static long ReadLong(object value)
         {
             long result = 0;
@@ -46,17 +76,17 @@ namespace Util
             return result;
         }
 
-        public static DateTime? ReadDateTime(object value)
+        public static long? ReadLongNullable(object value)
         {
-            DateTime? result = null;
+            long? result = null;
             if (value != DBNull.Value)
             {
-                result = Convert.ToDateTime(value);
+                result = Convert.ToInt64(value);
             }
             return result;
         }
 
-        public static DateTime ReadDateTimeWithNoNullable(object value)
+        public static DateTime ReadDateTime(object value)
         {
             DateTime result = DateTime.MinValue;
             if (value != DBNull.Value)
@@ -66,12 +96,12 @@ namespace Util
             return result;
         }
 
-        public static string ReadString(object value)
+        public static DateTime? ReadDateTimeNullable(object value)
         {
-            string result = string.Empty;
-            if (value != null && value != DBNull.Value)
+            DateTime? result = null;
+            if (value != DBNull.Value)
             {
-                result = value.ToString();
+                result = Convert.ToDateTime(value);
             }
             return result;
         }
@@ -82,6 +112,46 @@ namespace Util
             if (value != DBNull.Value)
             {
                 result = Convert.ToBoolean(value);
+            }
+            return result;
+        }
+
+        public static bool? ReadBooleanNullable(object value)
+        {
+            bool? result = null;
+            if (value != DBNull.Value)
+            {
+                result = Convert.ToBoolean(value);
+            }
+            return result;
+        }
+
+        public static Guid ReadGuid(object value)
+        {
+            Guid result = Guid.Empty;
+            if (value != DBNull.Value)
+            {
+                result = Guid.Parse(value.ToString());
+            }
+            return result;
+        }
+
+        public static Guid? ReadGuidNullable(object value)
+        {
+            Guid? result = null;
+            if (value != DBNull.Value)
+            {
+                result = Guid.Parse(value.ToString());
+            }
+            return result;
+        }
+
+        public static string ReadString(object value)
+        {
+            string result = string.Empty;
+            if (value != null && value != DBNull.Value)
+            {
+                result = value.ToString();
             }
             return result;
         }
@@ -194,32 +264,5 @@ namespace Util
             }
             return r;
         }
-    }
-
-    public class NullableDateTimeArgs
-    {
-        public DateTime StartDateTime { get; set; }
-
-        public DateTime EndDateTime { get; set; }
-
-        public NullableDateTimeArgs()
-        {
-            StartDateTime = Convert.ToDateTime(System.Data.SqlTypes.SqlDateTime.MinValue.ToString());
-            EndDateTime = Convert.ToDateTime(System.Data.SqlTypes.SqlDateTime.MaxValue.ToString());
-        }
-
-        public NullableDateTimeArgs(DateTime? d)
-        {
-            StartDateTime = Convert.ToDateTime(System.Data.SqlTypes.SqlDateTime.MinValue.ToString());
-            EndDateTime = Convert.ToDateTime(System.Data.SqlTypes.SqlDateTime.MaxValue.ToString());
-
-            if (d.HasValue)
-            {
-                StartDateTime = d.Value.Date;
-                EndDateTime = d.Value.Date.AddDays(1);
-            }
-        }
-
-
     }
 }

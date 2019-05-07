@@ -341,5 +341,24 @@ namespace System
 
 
         #endregion
+
+        #region SHA1 加密
+
+        /// <summary>
+        /// SHA1 加密，返回大写字符串
+        /// </summary>
+        /// <param name="content">需要加密字符串</param>
+        /// <param name="encode">指定加密编码</param>
+        /// <returns>返回40位大写字符串</returns>
+        public static string SHA1_Encrypt(this string toEncryptString, Text.Encoding encoding = null)
+        {
+            if (encoding == null)
+            {
+                encoding = Text.Encoding.UTF8;
+            }
+            return Util.Cryptography.SHA1Utils.Encrypt(toEncryptString, encoding);
+        }
+
+        #endregion
     }
 }
