@@ -88,20 +88,61 @@ namespace Util.IO
             {
                 filestream.Write(byteArray, 0, byteArray.Length);
             }
+
+            //亦可采用 byteArray.Save(filePath); // ByteExtension 的 Save 方法
         }
 
-        public static string GetString(string filePath)
+        /// <summary>
+        /// 获取文件大小信息
+        /// </summary>
+        /// <param name="fileLen">文件大小长度</param>
+        /// <param name="level">当前等级</param>
+        /// <returns>返回文件大小信息</returns>
+        public static string GetFileLengthInfo(long fileLen, int level = 1, long? lastModResult = null)
         {
-            string r = string.Empty;
-
-            using (FileStream filestream = new FileStream(filePath, FileMode.Open))
+            if (fileLen < 1024L)
             {
-                byte[] byteArry = new byte[filestream.Length];
-                filestream.Read(byteArry, 0, byteArry.Length);
-                r = Convert.ToString(byteArry);
-            }
+                string template = string.Empty;
+                string numberStr = string.Empty; // 数值
 
-            return r;
+                switch (level)
+                {
+                    case 1: template = "{0} B"; break;
+                    case 2: template = "{0} KB"; break;
+                    case 3: template = "{0} MB"; break;
+                    case 4: template = "{0} GB"; break;
+                    case 5: template = "{0} TB"; break;
+                    default: break;
+                }
+
+                if (lastModResult.HasValue == true) // 存在余数, 计算小数点后的值
+                {
+                    decimal right = decimal.Parse(lastModResult.Value.ToString()) / 1024M;
+                    string rightStr = right.ToString();
+                    string rightInfo = string.Empty;
+                    if (rightStr.Length >= 4)
+                    {
+                        rightInfo = rightStr.Substring(2, 2);
+                    }
+                    else
+                    {
+                        rightInfo = rightStr.Substring(2);
+                    }
+
+                    numberStr = "{0}.{1}".FormatWith(fileLen, rightInfo);
+                }
+                else
+                {
+                    numberStr = fileLen.ToString();
+                }
+
+                return template.FormatWith(numberStr);
+            }
+            else
+            {
+                long modResult = fileLen % 1024L;
+                return GetFileLengthInfo(fileLen / 1024L, level + 1, modResult);
+            }
         }
     }
 }
