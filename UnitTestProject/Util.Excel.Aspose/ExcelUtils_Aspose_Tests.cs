@@ -187,13 +187,13 @@ namespace UnitTestProject
             DataRow dr = dt_Sheet2.Rows[0];
             Assert.AreEqual<string>(string.Empty, dr["读取空"].ToString());
             Assert.AreEqual<string>("=A2+2", dr["读取公式"].ToString());
-            Assert.AreEqual<string>("2018-12-06 17:30:26", Util.CommonDal.ReadDateTimeWithNoNullable(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
+            Assert.AreEqual<string>("2018-12-06 17:30:26", Util.CommonDal.ReadDateTime(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
             Assert.AreEqual<decimal>(32.123M, Util.CommonDal.ReadDecimal(dr["读取数值"].ToString()));
 
             dr = dt_Sheet2.Rows[1];
             Assert.AreEqual<string>(string.Empty, dr["读取空"].ToString());
             Assert.AreEqual<string>("=A3+2", dr["读取公式"].ToString());
-            Assert.AreEqual<string>("2018-12-06 17:30:28", Util.CommonDal.ReadDateTimeWithNoNullable(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
+            Assert.AreEqual<string>("2018-12-06 17:30:28", Util.CommonDal.ReadDateTime(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
             Assert.AreEqual<decimal>(123.456M, Util.CommonDal.ReadDecimal(dr["读取数值"].ToString()));
 
 
@@ -207,13 +207,13 @@ namespace UnitTestProject
             dr = dt_Sheet3.Rows[0];
             Assert.AreEqual<string>(string.Empty, dr["读取空"].ToString());
             Assert.AreEqual<string>("=C4+2", dr["读取公式"].ToString());
-            Assert.AreEqual<string>("2018-12-06 17:30:26", Util.CommonDal.ReadDateTimeWithNoNullable(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
+            Assert.AreEqual<string>("2018-12-06 17:30:26", Util.CommonDal.ReadDateTime(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
             Assert.AreEqual<decimal>(32.123M, Util.CommonDal.ReadDecimal(dr["读取数值"].ToString()));
 
             dr = dt_Sheet3.Rows[1];
             Assert.AreEqual<string>(string.Empty, dr["读取空"].ToString());
             Assert.AreEqual<string>("=C5+2", dr["读取公式"].ToString());
-            Assert.AreEqual<string>("2018-12-06 17:30:28", Util.CommonDal.ReadDateTimeWithNoNullable(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
+            Assert.AreEqual<string>("2018-12-06 17:30:28", Util.CommonDal.ReadDateTime(dr["读取时间"]).ToString("yyyy-MM-dd HH:mm:ss"));
             Assert.AreEqual<decimal>(123.456M, Util.CommonDal.ReadDecimal(dr["读取数值"].ToString()));
 
             // 测试 Sheet4 - 测试200格空行仍然能读取信息
