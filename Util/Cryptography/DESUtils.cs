@@ -45,7 +45,7 @@ namespace Util.Cryptography
         //对于.NET和JAVA在使用DES对称加密时，需要大家指定一样的算法和填充模式，并且JAVA在写DES加解密算法时，还需要根据创建Cipher对象的不同，正确使用IV向量。在不同系统需要互相数据时，必须要明确的是加密算法，Key和算法模式，再根据不同模式是否需要IV向量，最后是填充模式。
 
 
-        // TODO 编写单元测试
+        // TODO 编写DESUtils单元测试
 
 
 

@@ -7,7 +7,7 @@ namespace Util.XamariN
     /// <summary>
     /// 屏幕方向接口
     /// </summary>
-    public interface IScreenDirection
+    public interface IScreen
     {
         /// <summary>
         /// 屏幕方向根据陀螺仪监控结果改变
@@ -38,5 +38,13 @@ namespace Util.XamariN
         /// 屏幕方向固定 ( 不根据陀螺仪监控结果改变 )
         /// </summary>
         void ForceNosensor();
+
+        /// <summary>
+        /// 屏幕常亮
+        /// Get 获取是否屏幕常亮状态
+        /// Set 设置/取消 屏幕常亮
+        /// </summary>
+        bool ScreenKeepOn { get; set; }
+
     }
 }
