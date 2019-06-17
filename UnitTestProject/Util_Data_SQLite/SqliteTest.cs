@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Client.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using SQLite;
+using Util.Data_SQLite;
 
 namespace UnitTestProject
 {

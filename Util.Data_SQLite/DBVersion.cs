@@ -1,9 +1,6 @@
 ﻿using SQLite;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Client.Data
+namespace Util.Data_SQLite
 {
     public class DBVersion
     {
@@ -16,21 +13,12 @@ namespace Client.Data
             }
             set
             {
-
+                // Private Set
             }
         }
 
         public LocationEnum Loaction { get; set; }
 
         public int Version { get; set; }
-
     }
-
-    public enum LocationEnum
-    {
-        Inner = 0,
-        External = 1
-    }
-
-
 }

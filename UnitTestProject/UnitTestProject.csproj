@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Util.Data_SQLite\Util.Data_SQLite.csproj" />
     <ProjectReference Include="..\Util.Excel.Aspose\Util.Excel.Aspose.csproj" />
     <ProjectReference Include="..\Util\Util.csproj" />
   </ItemGroup>
