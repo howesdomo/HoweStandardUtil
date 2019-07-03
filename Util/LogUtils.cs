@@ -37,7 +37,7 @@ namespace Util
             {
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
-                    sw.WriteLine("******** {0} ********".FormatWith(datetime.Value.ToString("yyyy-MM-dd HH:mm:ss.fff")));
+                    sw.WriteLine("******** {0} ********".FormatWith(datetime.Value.ToString("yyyy-MM-dd HH:mm:ss.fffffff")));
                     sw.WriteLine(content);
                 }
             }

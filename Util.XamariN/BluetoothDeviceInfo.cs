@@ -22,8 +22,44 @@ namespace Util.XamariN
 
         public BluetoothBondState BluetoothBondState { get; private set; }
 
+        //private bool _IsBonded;
+
+        ///// <summary>
+        ///// 已配对
+        ///// </summary>
+        //public bool IsBonded
+        //{
+        //    get { return _IsBonded; }
+        //    set
+        //    {
+        //        _IsBonded = value;
+        //        this.OnPropertyChanged("IsBonded");
+        //        this.OnPropertyChanged("IsBondedInfo");
+        //    }
+        //}
+
+        //public string IsBondedInfo
+        //{
+        //    get
+        //    {
+        //        string r = string.Empty;
+        //        if (this.IsConnected == true)
+        //        {
+        //            r = "已配对";
+        //        }
+        //        else
+        //        {
+        //            r = string.Empty;
+        //        }
+        //        return r;
+        //    }
+        //}
+
         private bool _IsConnected;
 
+        /// <summary>
+        /// 已连接
+        /// </summary>
         public bool IsConnected
         {
             get { return _IsConnected; }
