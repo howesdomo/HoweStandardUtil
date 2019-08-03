@@ -48,7 +48,7 @@ namespace Util.XamariN.Essentials
             // List of builds installed (1, 2)
             var buildHistory = VersionTracking.BuildHistory;
 
-            return "{0}".FormatWith(currentVersion);
+            return $"{currentVersion}";
         }
     }
 }
