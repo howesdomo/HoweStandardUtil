@@ -151,5 +151,39 @@ namespace Util.IO
                 }
             }
         }
+        
+        /// <summary>
+        /// 获取文件名(去掉扩展名)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetFileNameWithoutExtension(string filePath)
+        {
+            return GetFileNameWithoutExtension(new FileInfo(filePath));
+        }
+
+        /// <summary>
+        /// 获取文件名(去掉扩展名)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string GetFileNameWithoutExtension(FileInfo fileInfo)
+        {
+            if (fileInfo.Exists == false)
+            {
+                return string.Empty;
+            }
+
+            string pattern = fileInfo.Extension + "$";
+            System.Text.RegularExpressions.MatchCollection match = System.Text.RegularExpressions.Regex.Matches(fileInfo.Name, pattern);
+            if (match == null || match.Count == 0)
+            {
+                return fileInfo.Name;
+            }
+            else
+            {
+                return fileInfo.Name.Substring(0, match[match.Count - 1].Index);
+            }
+        }
     }
 }

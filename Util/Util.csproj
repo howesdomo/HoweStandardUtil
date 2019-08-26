@@ -1,7 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Util.HowesDOMO</PackageId>
+    <Authors>HowesDOMO</Authors>
+    <Company>HowesDOMOHowesDOMO</Company>
+    <Product>Util.HowesDOMO</Product>
+    <PackageTags>dotNet_Standard</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/howesdomo/HoweStandardUtil.git</RepositoryUrl>
+    <PackageIconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/howesdomo/HoweStandardUtil</PackageProjectUrl>
+    <Copyright>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE.md</Copyright>
+    <Description>Util.HowesDOMO is common library for dotNet Standard</Description>
+    <AssemblyName>Util.HowesDOMO</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

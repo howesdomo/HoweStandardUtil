@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Util.XamariN.AndroiD</title>
+    <authors>HowesDOMO</authors>
+    <owners>HowesDOMO</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/howesdomo/HoweStandardUtil</projectUrl>
+    <iconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</iconUrl>
+    <description>Util.XamariN.AndroiD is common library for Xamarin.Forms</description>
+    <copyright>Copyright 2019 HowesDOMO</copyright>
+    <tags>Xamarin.Android Xamarin.Forms</tags>
+    <repository type="git" url="https://github.com/howesdomo/HoweStandardUtil.git" />
+    <!--<releaseNotes>Lastest Release.</releaseNotes>-->
+    <!-- <dependencies> -->
+      <!-- <dependency id="SampleDependency" version="1.0" /> -->
+    <!-- </dependencies> -->
+ </metadata>
+</package>

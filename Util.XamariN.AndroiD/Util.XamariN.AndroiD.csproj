@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Util.Xamarin.AndroiD.nuspec" />
     <None Include="Resources\AboutResources.txt" />
   </ItemGroup>
   <ItemGroup>
