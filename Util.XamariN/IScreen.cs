@@ -46,5 +46,14 @@ namespace Util.XamariN
         /// </summary>
         bool ScreenKeepOn { get; set; }
 
+        /// <summary>
+        /// 设置全屏
+        /// </summary>
+        void FullScreen();
+
+        /// <summary>
+        /// 取消设置全屏
+        /// </summary>
+        void CancelFullScreen();
     }
 }

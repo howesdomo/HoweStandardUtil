@@ -163,5 +163,81 @@ namespace Util.Web
 
             buffer = null;
         }
+
+        #region 标准接收&发送
+
+        /// <summary>
+        /// 标准接收
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="encoding">默认UTF8</param>
+        /// <returns></returns>
+        public static string StandardReceive(System.Net.Sockets.TcpClient tcpClient, System.Text.Encoding encoding = null)
+        {
+            using (System.IO.MemoryStream msContent = new System.IO.MemoryStream())
+            {
+                int totalBytesRead = 0; // 读取总长度 由于发送的内容没有任何定位规则, 只能读取到 Buff 缓存的长度
+
+                byte[] buffOfNetworkStream = new byte[s_BufferSize];
+                int lastestBytesRead = 0; // 当前读取总长度
+
+                System.Net.Sockets.NetworkStream networkStream = tcpClient.GetStream();
+
+                lastestBytesRead = networkStream.Read(buffOfNetworkStream, 0, s_BufferSize);
+                totalBytesRead = totalBytesRead + lastestBytesRead;
+
+                string r = string.Empty;
+                if (encoding != null)
+                {
+                    r = encoding.GetString(buffOfNetworkStream, 0, buffOfNetworkStream.Length);
+                }
+                else
+                {
+                    r = Encoding.UTF8.GetString(buffOfNetworkStream, 0, buffOfNetworkStream.Length);
+                }
+
+                // 释放
+                networkStream = null;
+                return r;
+            }
+        }
+
+        /// <summary>
+        /// 标准发送
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="toSend">发送内容</param>
+        /// <param name="encoding">默认UTF-8</param>
+        public static void StandardSend(System.Net.Sockets.TcpClient tcpClient, string toSend, System.Text.Encoding encoding = null)
+        {
+            if (tcpClient == null)
+            {
+                return;
+            }
+
+            if (tcpClient.Connected == false)
+            {
+                return;
+            }
+
+            System.Net.Sockets.NetworkStream ns = tcpClient.GetStream();
+
+            // 内容转换
+            byte[] strBuffer = null;
+            if (encoding != null)
+            {
+                strBuffer = encoding.GetBytes(toSend);
+            }
+            else
+            {
+                strBuffer = Encoding.UTF8.GetBytes(toSend);
+            }
+
+            ns.Write(strBuffer, 0, strBuffer.Length);
+
+            strBuffer = null;
+        }
+
+        #endregion
     }
 }

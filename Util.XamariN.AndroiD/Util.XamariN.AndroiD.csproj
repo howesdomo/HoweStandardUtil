@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DLLVersion.cs" />
     <Compile Include="Essentials\DeviceInfoUtils.cs" />
     <Compile Include="Essentials\DisplayInfoUtils.cs" />
     <Compile Include="Essentials\VersionTrackUtils.cs" />

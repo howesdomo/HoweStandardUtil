@@ -156,5 +156,45 @@ namespace Util.XamariN.AndroiD
 
         #endregion
 
+        #region FullScreen
+
+        private StatusBarVisibility? uiOptions_FullScreen { get; set; }
+
+        public void FullScreen()
+        {
+            StatusBarHidden();
+        }
+
+        public void StatusBarHidden()
+        {
+            if (uiOptions_FullScreen.HasValue == false)
+            {
+                var temp = SystemUiFlags.HideNavigation |
+                SystemUiFlags.ImmersiveSticky |
+                SystemUiFlags.Fullscreen |
+                SystemUiFlags.LayoutFullscreen |
+                SystemUiFlags.LayoutHideNavigation;
+
+                uiOptions_FullScreen = (StatusBarVisibility)temp;
+            }
+
+            mAppActivity.Window.DecorView.SystemUiVisibility = uiOptions_FullScreen.Value;
+
+            // *** 注意 *** 不能直接用 Window.DecorView.SystemUiVisibility = StatusBarVisibility.Visible; 设置成为全屏
+            // 测试结果 小米4C, 小米3 没有设置为全屏
+            // mAppActivity.Window.DecorView.SystemUiVisibility = StatusBarVisibility.Hidden;
+        }
+
+        public void CancelFullScreen()
+        {
+            StatusBarVisible();
+        }
+
+        public void StatusBarVisible()
+        {
+            mAppActivity.Window.DecorView.SystemUiVisibility = StatusBarVisibility.Visible;
+        }
+
+        #endregion
     }
 }
