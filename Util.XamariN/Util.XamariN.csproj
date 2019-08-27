@@ -2,14 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>HowesDOMO</Authors>
+    <Company>HowesDOMO</Company>
+    <Description>Util.XamariN is common library for Xamarin.Forms</Description>
+    <Copyright>Copyright 2019 HowesDOMO</Copyright>
+    <PackageProjectUrl>https://github.com/howesdomo/HoweStandardUtil</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/howesdomo/HoweStandardUtil.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Xamarin.Forms dotnetStandard</PackageTags>
+    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE</licenseUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Util.HowesDOMO" Version="1.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.425677" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Util\Util.csproj" />
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

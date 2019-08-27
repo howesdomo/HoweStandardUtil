@@ -7,7 +7,7 @@
     <authors>HowesDOMO</authors>
     <owners>HowesDOMO</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE.md</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/howesdomo/HoweStandardUtil</projectUrl>
     <iconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</iconUrl>
     <description>Util.HowesDOMO is common library for dotNet Standard</description>

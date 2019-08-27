@@ -15,6 +15,9 @@
     <Copyright>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE.md</Copyright>
     <Description>Util.HowesDOMO is common library for dotNet Standard</Description>
     <AssemblyName>Util.HowesDOMO</AssemblyName>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +31,13 @@
   <ItemGroup>
     <Folder Include="Excel\" />
     <Folder Include="Web\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
