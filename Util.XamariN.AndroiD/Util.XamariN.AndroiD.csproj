@@ -53,8 +53,10 @@
     <Compile Include="Essentials\DeviceInfoUtils.cs" />
     <Compile Include="Essentials\DisplayInfoUtils.cs" />
     <Compile Include="Essentials\VersionTrackUtils.cs" />
+    <Compile Include="MyAndroidIntentUtils.cs" />
     <Compile Include="MyAudioPlayer.cs" />
     <Compile Include="MyBluetooth.cs" />
+    <Compile Include="MyPermission.cs" />
     <Compile Include="MyScreen.cs" />
     <Compile Include="MyTTS.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -30,7 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Util.Data_SQLite\Util.Data_SQLite.csproj" />
     <ProjectReference Include="..\Util.Excel.Aspose\Util.Excel.Aspose.csproj" />
-    <ProjectReference Include="..\Util\Util.csproj" />
   </ItemGroup>
 
   <ItemGroup>

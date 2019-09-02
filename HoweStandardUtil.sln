@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util", "Util\Util.csproj", "{0F61F6BE-93D1-47FC-BCEE-F75E8A2A3F87}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.XamariN", "Util.XamariN\Util.XamariN.csproj", "{3691A925-9D91-4C2F-84B3-A30164240B7A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Web", "Util.Web\Util.Web.csproj", "{897C330F-B4D4-4E6B-9F6F-DFD3D24C5B15}"
@@ -19,16 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.Data_SQLite", "Util.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.XamariN.AndroiD", "Util.XamariN.AndroiD\Util.XamariN.AndroiD.csproj", "{9C78948F-DBAF-446F-9F28-3192912B170F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util.HowesDOMO", "Util.HowesDOMO\Util.HowesDOMO.csproj", "{27B7D869-3576-408A-A55F-40F8280C8CC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0F61F6BE-93D1-47FC-BCEE-F75E8A2A3F87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F61F6BE-93D1-47FC-BCEE-F75E8A2A3F87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F61F6BE-93D1-47FC-BCEE-F75E8A2A3F87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F61F6BE-93D1-47FC-BCEE-F75E8A2A3F87}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3691A925-9D91-4C2F-84B3-A30164240B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3691A925-9D91-4C2F-84B3-A30164240B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3691A925-9D91-4C2F-84B3-A30164240B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{9C78948F-DBAF-446F-9F28-3192912B170F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C78948F-DBAF-446F-9F28-3192912B170F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C78948F-DBAF-446F-9F28-3192912B170F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27B7D869-3576-408A-A55F-40F8280C8CC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27B7D869-3576-408A-A55F-40F8280C8CC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27B7D869-3576-408A-A55F-40F8280C8CC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27B7D869-3576-408A-A55F-40F8280C8CC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
