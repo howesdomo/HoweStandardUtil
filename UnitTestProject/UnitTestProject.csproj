@@ -32,8 +32,4 @@
     <ProjectReference Include="..\Util.Excel.Aspose\Util.Excel.Aspose.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Util\" />
-  </ItemGroup>
-
 </Project>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CodedUITest_Util
+namespace UnitTestProject
 {
     [TestClass]
     public class DateTimeUtils_UnitTest

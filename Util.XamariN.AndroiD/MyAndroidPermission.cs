@@ -12,13 +12,13 @@ using Android.Widget;
 
 namespace Util.XamariN.AndroiD
 {
-    public class MyPermission : Util.XamariN.IAndroidPermission
+    public class MyAndroidPermission : Util.XamariN.IAndroidPermission
     {
         private Android.App.Activity mAppActivity { get; set; }
 
         #region 构造函数 + 单例模式
 
-        private MyPermission()
+        private MyAndroidPermission()
         {
             mDict.Add
             (
@@ -54,17 +54,17 @@ namespace Util.XamariN.AndroiD
             );
         }
 
-        private static MyPermission s_Instance;
+        private static MyAndroidPermission s_Instance;
 
         private static object objLock = new object();
 
-        public static MyPermission GetInstance(Android.App.Activity activity = null)
+        public static MyAndroidPermission GetInstance(Android.App.Activity activity = null)
         {
             lock (objLock)
             {
                 if (s_Instance == null)
                 {
-                    s_Instance = new MyPermission();
+                    s_Instance = new MyAndroidPermission();
                     if (s_Instance.mAppActivity == null && activity == null)
                     {
                         throw new Exception("MyPermission.GetInstance 单例首次创建, 请传入 activity 参数");

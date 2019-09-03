@@ -9,10 +9,28 @@ using System.Threading.Tasks;
 namespace Util
 {
     /// <summary>
+    /// V 1.0.3 - 2019-09-03 优化 UI 下载进度提示频率 (约每下载 512KB 提示一次), 优化下载缓存(约每下载 8MB 将内容写入存储设备)
+    /// V 1.0.2 - 2019-09-02 DownloadFileByHttpRequest 修改处理异常方式, 有错直接抛错, 执行成功将下载文件路径传到 eventArgs.Result
     /// V 1.0.1 - 2019-09-02 DownloadFileByHttpRequest 增加参数 saveFileFolder, 设置下载文件的存放位置
     /// </summary>
     public class DownloadUtils
     {
+        /// <summary>
+        /// 大多数文件系统都配置为使用4096或8192的块大小。
+        /// 理论上，如果配置缓冲区大小使得读取比磁盘块多几个字节，
+        /// 则使用文件系统的操作可能效率极低（即，如果您将缓冲区配置为一次读取4100个字节，
+        /// 每次读取将需要文件系统进行2次块读取。如果块已经在缓存中，
+        /// 那么你最终会支付RAM的价格 - > L3 / L2缓存延迟。
+        /// 如果你运气不好并且块还没有缓存，那么你也需要支付磁盘 - > RAM延迟的价格。
+        /// </summary>
+        public static int s_BufferSize
+        {
+            get
+            {
+                return 8192;
+            }
+        }
+
         Task httpRequestTask = null;
 
         /// <summary>
@@ -161,12 +179,9 @@ namespace Util
             }
             catch (Exception ex)
             {
-                if (eventArgs != null)
-                {
-                    eventArgs.Result = ex.Message;
-                }
-                return;
+                throw new Exception("出现异常。（判断 新建下载任务 OR 断点续传）", ex);
             }
+
             #endregion
 
             #region 下载文件
@@ -183,9 +198,10 @@ namespace Util
 
                 responseStream = request.GetResponse().GetResponseStream();
 
-                byte[] arr = new byte[512];
+                byte[] arr = new byte[s_BufferSize];
                 int len = 0;
                 len = responseStream.Read(arr, 0, arr.Length);
+                int toflushCount = 0;
                 while (len > 0)
                 {
                     fileStream.Write(arr, 0, len);
@@ -193,11 +209,21 @@ namespace Util
                     if (backgroundWorker != null)
                     {
                         currentPosition += len;
-                        int percent = Convert.ToInt32(((currentPosition * 100L) / (fileLength) * 100L) / 100L);
-                        backgroundWorker.ReportProgress(percent);
+                        if (toflushCount > 0 && toflushCount % 64 == 0) // 约每下载 512KB 提示一次
+                        {
+                            int percent = Convert.ToInt32(((currentPosition * 100L) / (fileLength) * 100L) / 100L);
+                            backgroundWorker.ReportProgress(percent);
+                        }
                     }
+
+                    // 减少磁盘访问次数，需要好好控制 Flush() 的时机
+                    if (toflushCount != 0 && toflushCount % 1024 == 0) // 约每下载 8MB 将内容写入存储设备
+                    {
+                        fileStream.Flush(flushToDisk: true);
+                        System.Diagnostics.Debug.WriteLine("Flush");
+                    }
+                    toflushCount = toflushCount + 1;
                 }
-                // 减少磁盘访问次数，需要好好控制 fileStream.Flush() 的时机
 
                 fileStream.Close();
                 responseStream.Close();
@@ -218,11 +244,7 @@ namespace Util
                     responseStream.Close();
                 }
 
-                if (eventArgs != null)
-                {
-                    eventArgs.Result = ex.Message;
-                }
-                return;
+                throw new Exception("出现异常。（下载文件）", ex);
             }
 
             #endregion
@@ -231,7 +253,13 @@ namespace Util
 
             try
             {
-                File.Move(tmpFilePath, finalFilePath); // 重命名
+                if (File.Exists(finalFilePath) == true)  // 删除已存在的文件
+                {
+                    File.Delete(finalFilePath);
+                }
+
+                File.Move(tmpFilePath, finalFilePath); // 重命名 - 将.hdl下载文件移动到最终路径
+
                 if (backgroundWorker != null)
                 {
                     backgroundWorker.ReportProgress(200);
@@ -239,18 +267,14 @@ namespace Util
             }
             catch (Exception ex)
             {
-                if (eventArgs != null)
-                {
-                    eventArgs.Result = ex.Message;
-                }
-                return;
+                throw new Exception("出现异常。（下载完毕 重命名下载文件）", ex);
             }
 
             #endregion
 
             if (eventArgs != null)
             {
-                eventArgs.Result = string.Empty; // 执行成功    
+                eventArgs.Result = finalFilePath; // 执行成功, 传出下载文件路径
             }
         }
     }
