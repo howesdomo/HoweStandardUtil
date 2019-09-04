@@ -9,15 +9,23 @@ namespace Util.XamariN.AndroiD.Components
         }
 
         //// 安卓源码 Marquee 启动条件                
-        //if (selected != wasSelected && mEllipsize == TextUtils.TruncateAt.MARQUEE)
+        //@Override
+        //public void setSelected(boolean selected)
         //{
-        //    if (selected)
+        //    boolean wasSelected = isSelected();
+        //
+        //    super.setSelected(selected);
+        //
+        //    if (selected != wasSelected && mEllipsize == TextUtils.TruncateAt.MARQUEE)
         //    {
-        //        startMarquee();
-        //    }
-        //    else
-        //    {
-        //        stopMarquee();
+        //        if (selected)
+        //        {
+        //            startMarquee();
+        //        }
+        //        else
+        //        {
+        //            stopMarquee();
+        //        }
         //    }
         //}
 
