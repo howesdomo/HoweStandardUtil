@@ -10,14 +10,8 @@ namespace Util
     public class Principle
     {
         /// <summary>
-        /// 程序数据库名称
+        /// 数据库文件名
         /// </summary>
-        public const string DatabaseName_SQLite = "sqlite3.db";
-
-        /// <summary>
-        /// 外部存储目录
-        /// Enpot/xxApp/
-        /// </summary>
-        public const string ExternalStorageDirectoryTemplate = "{0}/{1}";
+        public const string DatabaseName_SQLite = "database.sqlite";
     }
 }

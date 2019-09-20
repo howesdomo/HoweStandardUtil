@@ -80,15 +80,27 @@ namespace Util.XamariN.AndroiD
             mAppActivity.Application.StartActivity(intent);
         }
 
+        private string mFileProvider_Authority;
+
+        public void SetFileProvider_Authority(string value)
+        {
+            mFileProvider_Authority = value;
+        }
+
         public void InstallAPK_MoreThanAndroid7(Java.IO.File apkFileToInstall)
         {
             Android.Content.Intent intent = new Android.Content.Intent();
             intent.SetAction(Android.Content.Intent.ActionView);
 
+            if (string.IsNullOrWhiteSpace(mFileProvider_Authority))
+            {
+                throw new Exception("mFileProvider_Authority为空值。请使用 SetFileProvider_Authority(string) 方法设置 mFileProvider_Authority 的值。");
+            }
+
             Android.Net.Uri uri = Android.Support.V4.Content.FileProvider.GetUriForFile
             (
                 context: mAppActivity.ApplicationContext,
-                authority: "cn.com.enpot.allforone.fileprovider",
+                authority: mFileProvider_Authority,
                 file: apkFileToInstall
             );
 

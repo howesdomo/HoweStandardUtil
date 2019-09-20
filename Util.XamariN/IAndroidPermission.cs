@@ -14,6 +14,6 @@ namespace Util.XamariN
 
         void RequestPermissions(string[] permissions);
 
-        void OnRequestPermissionsResult(int requestCode, bool grantResult);
+        void OnRequestPermissionsResult(int requestCode, bool[] grantResults);
     }
 }

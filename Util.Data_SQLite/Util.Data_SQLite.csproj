@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>HowesDOMO</Authors>
+    <Company>HowesDOMO</Company>
+    <Description>Util.Data_SQLite is SQLite common library for Xamarin.Forms</Description>
+    <Copyright>Copyright 2019 HowesDOMO</Copyright>
+    <PackageTags>Xamarin.Forms SQLite</PackageTags>
+    <PackageProjectUrl>https://github.com/howesdomo/HoweStandardUtil</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</PackageIconUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/howesdomo/HoweStandardUtil.git</RepositoryUrl>
+    <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

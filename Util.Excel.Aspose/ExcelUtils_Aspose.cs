@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,18 +14,21 @@ namespace Util.Excel
 {
     public class ExcelUtils_Aspose : IExcelUtils
     {
-        #region **** Hot Patch 破解方式 **** 
+        #region **** Hot Patch 恢复到未加密状态 **** 
 
         /// <summary>
-        /// 最新版本的破解方法
+        /// 最新版本的恢复到未加密状态方法
         /// </summary>
         public static void InitializeAsposeCells()
         {
-            InitializeAsposeCells_v18_12_0();
+            // TODO 读取版本号, 根据版本号执行对应的初始化方法
+            // InitializeAsposeCells_v8_6_3();
+            // InitializeAsposeCells_v18_12_0();
+            InitializeAsposeCells_v19_5_0();
         }
 
         /// <summary>
-        /// Aspose 8.6.3 Hot Patch 破解方式
+        /// Aspose 8.6.3 Hot Patch 恢复到未加密状态方式
         /// 
         /// Winform, WPF 请在 OnStartup 中调用此方法
         /// Web程序, 请在全局应用类(Global.asax)中 Application_Start 方法中调用此方法
@@ -100,14 +104,13 @@ namespace Util.Excel
         }
 
         /// <summary>
-        /// Aspose 18.12.0 Hot Patch 破解方式
+        /// Aspose 18.12.0 Hot Patch 恢复到未加密状态方式
         /// 
         /// Winform, WPF 请在 OnStartup 中调用此方法
         /// Web程序, 请在全局应用类(Global.asax)中 Application_Start 方法中调用此方法
         /// </summary>
         public static bool InitializeAsposeCells_v18_12_0()
         {
-
             var name = Assembly.CreateQualifiedName(typeof(Aspose.Cells.License).Assembly.FullName,
                 "\u0002\u200B\u2001\u2000");
             var licType = Type.GetType(name, false, false);
@@ -137,15 +140,31 @@ namespace Util.Excel
                     .SetValue(null, lic);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                string msg = $"{ex.GetFullInfo()}";
+                System.Diagnostics.Debug.WriteLine(msg);
+
+#if DEBUG
+                System.Diagnostics.Debugger.Break();
+#endif
+
                 return false;
             }
             return true;
         }
 
+        public static void InitializeAsposeCells_v19_5_0()
+        {
+            // 热心网友提供的 Key , 未清楚可以使用到什么时间, 但确实能够正常使用
+            string LData = "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiID8+DQo8TGljZW5zZT4NCiAgPERhdGE+DQogICAgPExpY2Vuc2VkVG8+U2hhbmdoYWkgSHVkdW4gSW5mb3JtYXRpb24gVGVjaG5vbG9neSBDby4sIEx0ZDwvTGljZW5zZWRUbz4NCiAgICA8RW1haWxUbz4zMTc3MDE4MDlAcXEuY29tPC9FbWFpbFRvPg0KICAgIDxMaWNlbnNlVHlwZT5EZXZlbG9wZXIgT0VNPC9MaWNlbnNlVHlwZT4NCiAgICA8TGljZW5zZU5vdGU+TGltaXRlZCB0byAxIGRldmVsb3BlciwgdW5saW1pdGVkIHBoeXNpY2FsIGxvY2F0aW9uczwvTGljZW5zZU5vdGU+DQogICAgPE9yZGVySUQ+MTgwNTE0MjAxMTE2PC9PcmRlcklEPg0KICAgIDxVc2VySUQ+MjY2MTY2PC9Vc2VySUQ+DQogICAgPE9FTT5UaGlzIGlzIGEgcmVkaXN0cmlidXRhYmxlIGxpY2Vuc2U8L09FTT4NCiAgICA8UHJvZHVjdHM+DQogICAgICA8UHJvZHVjdD5Bc3Bvc2UuVG90YWwgZm9yIC5ORVQ8L1Byb2R1Y3Q+DQogICAgPC9Qcm9kdWN0cz4NCiAgICA8RWRpdGlvblR5cGU+RW50ZXJwcmlzZTwvRWRpdGlvblR5cGU+DQogICAgPFNlcmlhbE51bWJlcj4yMTBlYzhlNy04MWUxLTQ1MzctYjQ0Ni02OTJkZTQ5ODEyMTc8L1NlcmlhbE51bWJlcj4NCiAgICA8U3Vic2NyaXB0aW9uRXhwaXJ5PjIwMTkwNTE3PC9TdWJzY3JpcHRpb25FeHBpcnk+DQogICAgPExpY2Vuc2VWZXJzaW9uPjMuMDwvTGljZW5zZVZlcnNpb24+DQogICAgPExpY2Vuc2VJbnN0cnVjdGlvbnM+aHR0cDovL3d3dy5hc3Bvc2UuY29tL2NvcnBvcmF0ZS9wdXJjaGFzZS9saWNlbnNlLWluc3RydWN0aW9ucy5hc3B4PC9MaWNlbnNlSW5zdHJ1Y3Rpb25zPg0KICA8L0RhdGE+DQogIDxTaWduYXR1cmU+Y3RKM3lMeFNBUHNCUWQwSmNxZjdDQTUzRnpOMVlydmFBNWRTclRwZEZXL0FmaDBoeUtLd3J5K0MxdGpXSU9FRnl6S1lXSCtOZ24vSGVYVXpNUUpBMFJvb3djcTExMm5WL1FuclNTcURtNkZKVk5zc0g0cC9ZbVhSamw3TEJpeHdWOEFieVdYOGxoVm95b2s3bEk1azVLOGJiYUsrVDhVcitqSXdTWkFjbVZBPTwvU2lnbmF0dXJlPg0KPC9MaWNlbnNlPg==";
+            Stream stream = new MemoryStream(Convert.FromBase64String(LData));
+            stream.Seek(0, SeekOrigin.Begin);
+            new Aspose.Cells.License().SetLicense(stream);
+        }
+
         /// <summary>
-        /// 测试Hot Patch破解方式是否成功
+        /// 测试 Hot Patch 恢复到未加密状态方式是否成功
         /// 检验 X 次, 查看是否含有未注册的Worksheet出现
         /// </summary>
         /// <returns></returns>
@@ -153,7 +172,10 @@ namespace Util.Excel
         {
             if (pathTemplate.IsNullOrEmpty())
             {
-                pathTemplate = @"C:\Test\TestAspose{0}.xlsx";
+                string folderPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Test");
+                if (System.IO.Directory.Exists(folderPath) == false) { System.IO.Directory.CreateDirectory(folderPath); }
+                string zero = "{0}";
+                pathTemplate = $"{folderPath}\\TestAspose{zero}.xlsx";
             }
             string path = pathTemplate.FormatWith(0);
             string exportPath = string.Empty;
@@ -249,193 +271,202 @@ namespace Util.Excel
         #endregion
 
         /// <summary>
-        /// 读取Excel文件
+        /// 读取Excel文件(读取步骤自己控制)
         /// </summary>
-        /// <param name="filePath">文件路径</param>
-        /// <param name="fileName">文件名称</param>
+        /// <param name="path">文件路径</param>
+        /// <param name="config">读取Excel配置</param>
         /// <returns>DataSet 结果集</returns>
-        public static DataSet Excel2DataSet(string filePath, ExcelReaderConfig config = null)
+        public static DataSet Excel2DataSetStepByStep(string path, ExcelReaderConfig config = null)
         {
-            string copyToTempPath = CopyExcelFileToTempPath(filePath);
-
-            DataSet result = new DataSet();
-            Aspose.Cells.Workbook workBook = null;
+            string copyToTempPath = CopyExcelFileToTempPath(path);
 
             try
             {
-                workBook = new Aspose.Cells.Workbook(copyToTempPath);
-
-                int sheetCount = workBook.Worksheets.Count; // 工作表总数
-
-                for (int sheetIndex = 0; sheetIndex < sheetCount; sheetIndex++)
+                using (Aspose.Cells.Workbook workBook = new Aspose.Cells.Workbook(copyToTempPath))
                 {
-                    Worksheet worksheet = workBook.Worksheets[sheetIndex];
+                    DataSet result = new DataSet();
 
-                    SheetReadConfig matchReadConfig = null;
+                    int sheetCount = workBook.Worksheets.Count; // 工作表总数
 
-                    if (config != null && config.Config != null) // 跳过不读取的Sheet (名称 或 顺序)
+                    for (int sheetIndex = 0; sheetIndex < sheetCount; sheetIndex++)
                     {
-                        matchReadConfig = config.Config.FirstOrDefault(j => j.SheetName == worksheet.Name || (j.SheetIndex.HasValue == true && j.SheetIndex.Value == sheetIndex));
-                        if (matchReadConfig == null)
+                        Worksheet worksheet = workBook.Worksheets[sheetIndex];
+
+                        SheetReadConfig matchReadConfig = null;
+
+                        if (config != null && config.Config != null) // 跳过不读取的Sheet (名称 或 顺序)
                         {
+                            matchReadConfig = config.Config.FirstOrDefault(j => j.SheetName == worksheet.Name || (j.SheetIndex.HasValue == true && j.SheetIndex.Value == sheetIndex));
+                            if (matchReadConfig == null)
+                            {
+                                continue;
+                            }
+                        }
+
+                        DataTable dt = new DataTable();
+                        if (worksheet.Cells.Rows.Count <= 0)
+                        {
+                            result.Tables.Add(dt);
                             continue;
                         }
-                    }
 
-                    DataTable dt = new DataTable();
-                    if (worksheet.Cells.Rows.Count <= 0)
-                    {
-                        result.Tables.Add(dt);
-                        continue;
-                    }
+                        bool isContainColumnHeader = matchReadConfig == null ? true : matchReadConfig.IsContainColumnHeader;
 
-                    bool isContainColumnHeader = matchReadConfig == null ? true : matchReadConfig.IsContainColumnHeader;
+                        #region 表头
 
-                    #region 表头
+                        string columnTemplate = "Column{0}";
 
-                    string columnTemplate = "Column{0}";
+                        List<int> columns = new List<int>();
 
-                    List<int> columns = new List<int>();
+                        int startCellRowIndex = 0;
+                        int startCellColumnIndex = 0;
+                        int cellColumnCount = worksheet.Cells.MaxDataColumn + 1;
 
-                    int startCellRowIndex = 0;
-                    int startCellColumnIndex = 0;
-                    int cellColumnCount = worksheet.Cells.MaxDataColumn + 1;
-
-                    if (matchReadConfig != null)
-                    {
-                        startCellRowIndex = matchReadConfig.StartCellRowIndex;
-                        startCellColumnIndex = matchReadConfig.StartCellColumnIndex;
-
-                        cellColumnCount = cellColumnCount - matchReadConfig.StartCellColumnIndex;
-                    }
-
-                    if (isContainColumnHeader == false)
-                    {
-                        for (int i = 0; i < cellColumnCount; i++)
+                        if (matchReadConfig != null)
                         {
-                            int cellColumnIndex = startCellColumnIndex + i;
-                            columns.Add(cellColumnIndex);
+                            startCellRowIndex = matchReadConfig.StartCellRowIndex;
+                            startCellColumnIndex = matchReadConfig.StartCellColumnIndex;
 
-                            string columnName = columnTemplate.FormatWith(i + 1);
-                            dt.Columns.Add(new DataColumn(columnName));
+                            cellColumnCount = cellColumnCount - matchReadConfig.StartCellColumnIndex;
                         }
-                    }
-                    else // if (isContainColumnHeader == true)
-                    {
-                        Row columnHeader = worksheet.Cells.Rows[startCellRowIndex];
 
-                        if (columnHeader == null) { continue; }
-
-                        for (int i = 0; i < cellColumnCount; i++)
+                        if (isContainColumnHeader == false)
                         {
-                            int cellColumnIndex = startCellColumnIndex + i;
-
-                            Cell cell = worksheet.Cells[startCellRowIndex, cellColumnIndex];
-                            object obj = GetValueType(cell);
-                            if (obj == null || obj.ToString() == string.Empty)
+                            for (int i = 0; i < cellColumnCount; i++)
                             {
+                                int cellColumnIndex = startCellColumnIndex + i;
+                                columns.Add(cellColumnIndex);
+
                                 string columnName = columnTemplate.FormatWith(i + 1);
                                 dt.Columns.Add(new DataColumn(columnName));
                             }
-                            else
-                            {
-                                dt.Columns.Add(new DataColumn(obj.ToString()));
-                            }
-                            columns.Add(cellColumnIndex);
                         }
-                    }
-
-                    #endregion
-
-                    #region 增加Excel行号
-
-                    dt.Columns.Add("ExcelRowNumber", typeof(int));
-
-                    #endregion
-
-                    var maxRowIndex = worksheet.Cells.MaxDataRow; // 读取工作表中最大的行指针 ( 由0开始 )
-                    var maxColumnIndex = worksheet.Cells.MaxDataColumn; // 读取工作表中最大的列指针 ( 由0开始 )
-
-                    var rowsCount = maxRowIndex + 1; // 总行数
-
-                    int startRowIndex = 0;
-
-                    if (matchReadConfig != null)
-                    {
-                        startRowIndex = matchReadConfig.StartCellRowIndex;
-                    }
-
-                    if (isContainColumnHeader == true)
-                    {
-                        startRowIndex = startRowIndex + 1;
-                    }
-
-                    #region 数据
-                    for (int rowIndex = startRowIndex; rowIndex < rowsCount; rowIndex++)
-                    {
-                        DataRow dr = dt.NewRow();
-                        bool rowHasValue = false;
-
-                        dr["ExcelRowNumber"] = rowIndex + 1; // 计算行号
-
-                        for (int dataColumnIndex = 0; dataColumnIndex < columns.Count; dataColumnIndex++)
+                        else // if (isContainColumnHeader == true)
                         {
-                            int columnIndex = columns[dataColumnIndex];
-                            Cell cell = worksheet.Cells[rowIndex, columnIndex];
+                            Row columnHeader = worksheet.Cells.Rows[startCellRowIndex];
 
-                            if (cell != null)
+                            if (columnHeader == null) { continue; }
+
+                            for (int i = 0; i < cellColumnCount; i++)
                             {
-                                #region 命中Excel读取配置中的条件, 按照读取的配置进行读取
-                                if (matchReadConfig != null && matchReadConfig.CellReadRule != null && matchReadConfig.CellReadRule.ContainsKey(columnIndex))
+                                int cellColumnIndex = startCellColumnIndex + i;
+
+                                Cell cell = worksheet.Cells[startCellRowIndex, cellColumnIndex];
+                                object obj = GetValueType(cell);
+                                if (obj == null || obj.ToString() == string.Empty)
                                 {
-                                    CellType t = CellType.Blank;
-                                    if (matchReadConfig.CellReadRule.TryGetValue(columnIndex, out t))
+                                    string columnName = columnTemplate.FormatWith(i + 1);
+                                    dt.Columns.Add(new DataColumn(columnName));
+                                }
+                                else
+                                {
+                                    dt.Columns.Add(new DataColumn(obj.ToString()));
+                                }
+                                columns.Add(cellColumnIndex);
+                            }
+                        }
+
+                        #endregion
+
+                        #region 增加Excel行号
+
+                        dt.Columns.Add("ExcelRowNumber", typeof(int));
+
+                        #endregion
+
+                        var maxRowIndex = worksheet.Cells.MaxDataRow; // 读取工作表中最大的行指针 ( 由0开始 )
+                        var maxColumnIndex = worksheet.Cells.MaxDataColumn; // 读取工作表中最大的列指针 ( 由0开始 )
+
+                        var rowsCount = maxRowIndex + 1; // 总行数
+
+                        int startRowIndex = 0;
+
+                        if (matchReadConfig != null)
+                        {
+                            startRowIndex = matchReadConfig.StartCellRowIndex;
+                        }
+
+                        if (isContainColumnHeader == true)
+                        {
+                            startRowIndex = startRowIndex + 1;
+                        }
+
+                        #region 数据
+                        for (int rowIndex = startRowIndex; rowIndex < rowsCount; rowIndex++)
+                        {
+                            DataRow dr = dt.NewRow();
+                            bool rowHasValue = false;
+
+                            dr["ExcelRowNumber"] = rowIndex + 1; // 计算行号
+
+                            for (int dataColumnIndex = 0; dataColumnIndex < columns.Count; dataColumnIndex++)
+                            {
+                                int columnIndex = columns[dataColumnIndex];
+                                Cell cell = worksheet.Cells[rowIndex, columnIndex];
+
+                                if (cell != null)
+                                {
+                                    #region 命中Excel读取配置中的条件, 按照读取的配置进行读取
+                                    if (matchReadConfig != null && matchReadConfig.CellReadRule != null && matchReadConfig.CellReadRule.ContainsKey(columnIndex))
                                     {
-                                        try
+                                        CellType t = CellType.Blank;
+                                        if (matchReadConfig.CellReadRule.TryGetValue(columnIndex, out t))
                                         {
-                                            switch (t)
+                                            try
                                             {
-                                                case CellType.String:
-                                                    {
-                                                        dr[dataColumnIndex] = cell.StringValue;
-                                                        if (rowHasValue != true && dr[dataColumnIndex] != null && string.IsNullOrEmpty(dr[dataColumnIndex].ToString()) == false)
+                                                switch (t)
+                                                {
+                                                    case CellType.String:
                                                         {
-                                                            rowHasValue = true;
+                                                            dr[dataColumnIndex] = cell.StringValue;
+                                                            if (rowHasValue != true && dr[dataColumnIndex] != null && string.IsNullOrEmpty(dr[dataColumnIndex].ToString()) == false)
+                                                            {
+                                                                rowHasValue = true;
+                                                            }
                                                         }
-                                                    }
-                                                    break;
-                                                case CellType.Formula:
-                                                    {
-                                                        dr[dataColumnIndex] = cell.Formula;
-                                                        if (rowHasValue != true && dr[dataColumnIndex] != null && string.IsNullOrEmpty(dr[dataColumnIndex].ToString()) == false)
+                                                        break;
+                                                    case CellType.Formula:
                                                         {
-                                                            rowHasValue = true;
+                                                            dr[dataColumnIndex] = cell.Formula;
+                                                            if (rowHasValue != true && dr[dataColumnIndex] != null && string.IsNullOrEmpty(dr[dataColumnIndex].ToString()) == false)
+                                                            {
+                                                                rowHasValue = true;
+                                                            }
                                                         }
-                                                    }
-                                                    break;
-                                                case CellType.DateTime:
-                                                    {
-                                                        dr[dataColumnIndex] = cell.DateTimeValue.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                                                        if (rowHasValue != true && dr[dataColumnIndex].Equals(DateTime.MinValue.ToString("yyyy-MM-dd HH:mm:ss.fff")) == false)
+                                                        break;
+                                                    case CellType.DateTime:
                                                         {
-                                                            rowHasValue = true;
+                                                            dr[dataColumnIndex] = cell.DateTimeValue.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                                            if (rowHasValue != true && dr[dataColumnIndex].Equals(DateTime.MinValue.ToString("yyyy-MM-dd HH:mm:ss.fff")) == false)
+                                                            {
+                                                                rowHasValue = true;
+                                                            }
                                                         }
-                                                    }
-                                                    break;
-                                                case CellType.Blank:
-                                                    dr[dataColumnIndex] = string.Empty;
-                                                    break;
-                                                default:
-                                                    dr[dataColumnIndex] = string.Empty;
-                                                    break;
+                                                        break;
+                                                    case CellType.Blank:
+                                                        dr[dataColumnIndex] = string.Empty;
+                                                        break;
+                                                    default:
+                                                        dr[dataColumnIndex] = string.Empty;
+                                                        break;
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                throw new Exception("Aspose - Match ReadConfig.CellReadRule Swicth Throw Exception", ex);
                                             }
                                         }
-                                        catch (Exception ex)
+                                        else // matchReadConfig.CellReadRule.TryGetValue == false
                                         {
-                                            throw new Exception("Aspose - Match ReadConfig.CellReadRule Swicth Throw Exception", ex);
+                                            dr[dataColumnIndex] = GetValueType(cell);
+                                            if (rowHasValue != true && dr[dataColumnIndex] != null && dr[dataColumnIndex].ToString() != string.Empty)
+                                            {
+                                                rowHasValue = true;
+                                            }
                                         }
                                     }
-                                    else // matchReadConfig.CellReadRule.TryGetValue == false
+                                    #endregion
+                                    else // 没有指定
                                     {
                                         dr[dataColumnIndex] = GetValueType(cell);
                                         if (rowHasValue != true && dr[dataColumnIndex] != null && dr[dataColumnIndex].ToString() != string.Empty)
@@ -444,34 +475,59 @@ namespace Util.Excel
                                         }
                                     }
                                 }
-                                #endregion 
-                                else // 没有指定
-                                {
-                                    dr[dataColumnIndex] = GetValueType(cell);
-                                    if (rowHasValue != true && dr[dataColumnIndex] != null && dr[dataColumnIndex].ToString() != string.Empty)
-                                    {
-                                        rowHasValue = true;
-                                    }
-                                }
+                            }
+
+                            if (rowHasValue) // 遇到空行, 不读取该行数据
+                            {
+                                dt.Rows.Add(dr);
                             }
                         }
 
-                        if (rowHasValue) // 遇到空行, 不读取该行数据
-                        {
-                            dt.Rows.Add(dr);
-                        }
+                        #endregion
+
+                        result.Tables.Add(dt);
                     }
 
-                    #endregion
-
-                    result.Tables.Add(dt);
+                    return result;
                 }
-                return result;
             }
             finally
             {
                 DeleteCopyExcelFileForFinally(copyToTempPath);
             }
+        }
+
+        #region 采用 Aspose 内置 ExportDataTable 方法导出 DataTable
+
+        private static DataTable worksheet2DataTable(Aspose.Cells.Worksheet worksheet, bool exportColumnName = true, bool skipErrorValue = false)
+        {
+            if (worksheet == null)
+            {
+                throw new Exception("worksheet2DataTable 发生异常：worksheet 为 null。");
+            }
+
+            var maxRowIndex = worksheet.Cells.MaxDataRow; // 读取工作表中最大的行指针 ( 由0开始 )
+            var maxColumnIndex = worksheet.Cells.MaxDataColumn; // 读取工作表中最大的列指针 ( 由0开始 )
+
+            var rowsCount = maxRowIndex + 1; // 总行数
+            var columnsCount = maxColumnIndex + 1; // 总列数
+
+            DataTable dt = worksheet.Cells.ExportDataTable
+            (
+                firstRow: 0,
+                firstColumn: 0,
+                totalRows: rowsCount,
+                totalColumns: columnsCount,
+                options: new ExportTableOptions()
+                {
+                    SkipErrorValue = skipErrorValue,
+                    ExportColumnName = exportColumnName
+                }
+            );
+
+            dt.TableName = worksheet.Name;
+
+            return dt;
         }
 
         /// <summary>
@@ -480,36 +536,20 @@ namespace Util.Excel
         /// <param name="path">Excel文件路径</param>
         /// <param name="sheetIndex">默认读取第 1 个工作表</param>
         /// <param name="exportColumnName">将首行的值设置为DataColumn, 默认设置</param>
-        /// <returns>DataTable</returns>
-        public static DataTable Excel2DataTable(string path, int sheetIndex = 0, bool exportColumnName = true)
+        /// <param name="skipErrorValue">忽略转换出现异常的值</param>
+        /// <returns></returns>
+        public static DataTable Excel2DataTable(string path, int sheetIndex = 0, bool exportColumnName = true, bool skipErrorValue = false)
         {
             // 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
             string copyToTempPath = CopyExcelFileToTempPath(path);
 
-            DataTable dt = null;
-            Aspose.Cells.Workbook workbook = null;
             try
             {
-                workbook = new Aspose.Cells.Workbook(copyToTempPath);
-                Aspose.Cells.Worksheet worksheet = workbook.Worksheets[sheetIndex];
-
-                var maxRowIndex = worksheet.Cells.MaxDataRow; // 读取工作表中最大的行指针 ( 由0开始 )
-                var maxColumnIndex = worksheet.Cells.MaxDataColumn; // 读取工作表中最大的列指针 ( 由0开始 )
-
-                var rowsCount = maxRowIndex + 1; // 总行数
-                var columnsCount = maxColumnIndex + 1; // 总列数
-
-                Cells cells = worksheet.Cells;
-                dt = cells.ExportDataTable
-                    (
-                        firstRow: 0,
-                        firstColumn: 0,
-                        totalRows: rowsCount,
-                        totalColumns: columnsCount,
-                        exportColumnName: exportColumnName
-                    );
-
-                return dt;
+                using (Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(copyToTempPath))
+                {
+                    Aspose.Cells.Worksheet worksheet = workbook.Worksheets[sheetIndex];
+                    return worksheet2DataTable(worksheet: worksheet, exportColumnName: exportColumnName, skipErrorValue: skipErrorValue);
+                }
             }
             finally
             {
@@ -521,46 +561,126 @@ namespace Util.Excel
         /// 读取Excel文件到DataSet
         /// </summary>
         /// <param name="path">Excel文件路径</param>
-        /// <returns>DataSet</returns>
-        public static DataSet Excel2DataSet(string path)
+        /// <param name="exportColumnName">将首行的值设置为DataColumn, 默认设置</param>
+        /// <param name="skipErrorValue">忽略转换出现异常的值</param>
+        /// <returns></returns>
+        public static DataSet Excel2DataSet(string path, bool exportColumnName = true, bool skipErrorValue = false)
         {
             // 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
             string copyToTempPath = CopyExcelFileToTempPath(path);
 
-            DataSet ds = new DataSet();
-            Aspose.Cells.Workbook workbook = null;
             try
             {
-                workbook = new Workbook(copyToTempPath);
-                for (int sheetIndex = 0; sheetIndex < workbook.Worksheets.Count; sheetIndex++)
+                using (Aspose.Cells.Workbook workbook = new Workbook(copyToTempPath))
                 {
-                    Aspose.Cells.Worksheet worksheet = workbook.Worksheets[sheetIndex];
-                    var maxRowIndex = worksheet.Cells.MaxDataRow; // 读取工作表中最大的行指针 ( 由0开始 )
-                    var maxColumnIndex = worksheet.Cells.MaxDataColumn; // 读取工作表中最大的列指针 ( 由0开始 )
+                    DataSet ds = new DataSet();
+                    for (int sheetCount = 0; sheetCount < workbook.Worksheets.Count; sheetCount++)
+                    {
+                        Aspose.Cells.Worksheet worksheet = workbook.Worksheets[sheetCount];
+                        var dt = worksheet2DataTable(worksheet: worksheet, exportColumnName: exportColumnName, skipErrorValue: skipErrorValue);
+                        ds.Tables.Add(dt);
+                    }
 
-                    var rowsCount = maxRowIndex + 1; // 总行数
-                    var columnsCount = maxColumnIndex + 1; // 总列数
-
-                    Cells cells = worksheet.Cells;
-                    DataTable dt = cells.ExportDataTable
-                    (
-                        firstRow: 0,
-                        firstColumn: 0,
-                        totalRows: rowsCount,
-                        totalColumns: columnsCount,
-                        exportColumnName: true
-                    );
-
-                    ds.Tables.Add(dt);
+                    return ds;
                 }
-
-                return ds;
             }
             finally
             {
                 DeleteCopyExcelFileForFinally(copyToTempPath);
             }
         }
+
+        #endregion
+
+        #region 采用 Aspose 内置 ExportDataTableAsString 方法导出 DataTable
+
+        private static DataTable worksheet2DataTableAsString(Aspose.Cells.Worksheet worksheet, bool exportColumnName = true)
+        {
+            if (worksheet == null)
+            {
+                throw new Exception("worksheet2DataTableAsString 发生异常：worksheet 为 null。");
+            }
+
+            var maxRowIndex = worksheet.Cells.MaxDataRow; // 读取工作表中最大的行指针 ( 由0开始 )
+            var maxColumnIndex = worksheet.Cells.MaxDataColumn; // 读取工作表中最大的列指针 ( 由0开始 )
+
+            var rowsCount = maxRowIndex + 1; // 总行数
+            var columnsCount = maxColumnIndex + 1; // 总列数
+
+            DataTable dt = worksheet.Cells.ExportDataTableAsString
+            (
+                firstRow: 0,
+                firstColumn: 0,
+                totalRows: rowsCount,
+                totalColumns: columnsCount,
+                exportColumnName: exportColumnName
+            );
+
+            dt.TableName = worksheet.Name;
+
+            return dt;
+        }
+
+        /// <summary>
+        /// 读取Excel文件到DataTable;全部单元格的值读取采用 StringValue
+        /// </summary>
+        /// <param name="path">Excel文件路径</param>
+        /// <param name="sheetIndex">默认读取第 1 个工作表</param>
+        /// <param name="exportColumnName">将首行的值设置为DataColumn, 默认设置</param>
+        /// <param name="skipErrorValue">忽略转换出现异常的值</param>
+        /// <returns></returns>
+        public static DataTable Excel2DataTableAsString(string path, int sheetIndex = 0, bool exportColumnName = true)
+        {
+            // 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
+            string copyToTempPath = CopyExcelFileToTempPath(path);
+
+            try
+            {
+                using (Aspose.Cells.Workbook workbook = new Aspose.Cells.Workbook(copyToTempPath))
+                {
+                    Aspose.Cells.Worksheet worksheet = workbook.Worksheets[sheetIndex];
+                    return worksheet2DataTableAsString(worksheet: worksheet, exportColumnName: exportColumnName);
+                }
+            }
+            finally
+            {
+                DeleteCopyExcelFileForFinally(copyToTempPath);
+            }
+        }
+
+        /// <summary>
+        /// 读取Excel文件到DataSet;全部单元格的值读取采用 StringValue
+        /// </summary>
+        /// <param name="path">Excel文件路径</param>
+        /// <param name="exportColumnName">将首行的值设置为DataColumn, 默认设置</param>
+        /// <returns></returns>
+        public static DataSet Excel2DataSetAsString(string path, bool exportColumnName = true)
+        {
+            // 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
+            string copyToTempPath = CopyExcelFileToTempPath(path);
+
+            try
+            {
+                using (Aspose.Cells.Workbook workbook = new Workbook(copyToTempPath))
+                {
+                    DataSet ds = new DataSet();
+                    for (int sheetCount = 0; sheetCount < workbook.Worksheets.Count; sheetCount++)
+                    {
+                        Aspose.Cells.Worksheet worksheet = workbook.Worksheets[sheetCount];
+                        var dt = worksheet2DataTableAsString(worksheet: worksheet, exportColumnName: exportColumnName);
+                        ds.Tables.Add(dt);
+                    }
+
+                    return ds;
+                }
+            }
+            finally
+            {
+                DeleteCopyExcelFileForFinally(copyToTempPath);
+            }
+        }
+
+        #endregion
 
         #region GetValueType
 
@@ -686,6 +806,7 @@ namespace Util.Excel
                 string errorMsg = columnNotExist.ToString();
                 if (errorMsg.IsNullOrEmpty() == false)
                 {
+                    workbook.Dispose();
                     workbook = null;
                     GC.Collect();
                     throw new Exception(errorMsg);
@@ -758,7 +879,10 @@ namespace Util.Excel
 
                 #endregion
 
+                workbook.Dispose();
                 workbook = null;
+                GC.Collect();
+
                 return result;
             }
             finally
@@ -854,7 +978,8 @@ namespace Util.Excel
                 else
                 {
                     string v = Convert.ToString(value);
-                    v = v.Trim();
+                    // 经过思考, 作为一个通用的DLL, 这里不应该随意更改读取出来的信息, 含有空格若需要处理, 请在各自具体的项目进行去掉, 故注释以下代码
+                    // v = v.Trim(); 
                     propInfo.SetValue(item, v, index);
                 }
             }
@@ -871,31 +996,54 @@ namespace Util.Excel
                 }
                 catch (System.ArgumentException argEx)
                 {
+                    #region (弃用) 配对类型 改用正则表达式配对的方式
+
+                    //int convertToXIndex = argEx.Message.LastIndexOf("System.");
+
+                    //string convertToX = argEx.Message.Substring(convertToXIndex);
+                    //convertToX = convertToX
+                    //    .Replace(',', ' ')
+                    //    .Replace('"', ' ')
+                    //    .Replace('”', ' ')
+                    //    .Replace('。', ' ')
+                    //    ;
+
+                    //convertToX = convertToX.TrimAdv();
+
+                    #endregion
+
                     // 需要慢慢完善
                     // 处理Excel文本格式无法 setValue的问题
                     // 报错信息 "类型“System.String”的对象无法转换为类型“System.Decimal”。"
-                    int convertToXIndex = argEx.Message.LastIndexOf("System.");
+                    var matchCollection = System.Text.RegularExpressions.Regex.Matches(input: argEx.Message, pattern: "System.[A-Za-z0-9.]{1,}");
+                    if (matchCollection.Count <= 0) { throw argEx; } // 匹配信息失败, 抛出捕获的异常
 
-                    string convertToX = argEx.Message.Substring(convertToXIndex);
-                    convertToX = convertToX
-                        .Replace(',', ' ')
-                        .Replace('"', ' ')
-                        .Replace('”', ' ')
-                        .Replace('。', ' ')
-                        ;
+                    int matchLastIndex = matchCollection.Count - 1;
+                    string convertToX = argEx.Message.Substring(matchCollection[matchLastIndex].Index, matchCollection[matchLastIndex].Length);
 
-                    convertToX = convertToX.TrimAdv();
                     switch (convertToX.ToUpper())
                     {
-                        case "SYSTEM.DECIMAL":
-                            {
-                                decimal valueAfterConvert = Convert.ToDecimal(value);
-                                propInfo.SetValue(item, valueAfterConvert, index);
-                            }
-                            break;
                         case "SYSTEM.INT32":
                             {
                                 int valueAfterConvert = Convert.ToInt32(value);
+                                propInfo.SetValue(item, valueAfterConvert, index);
+                            }
+                            break;
+                        case "SYSTEM.FLOAT":
+                            {
+                                float valueAfterConvert = Convert.ToSingle(value);
+                                propInfo.SetValue(item, valueAfterConvert, index);
+                            }
+                            break;
+                        case "SYSTEM.DOUBLE":
+                            {
+                                double valueAfterConvert = Convert.ToDouble(value);
+                                propInfo.SetValue(item, valueAfterConvert, index);
+                            }
+                            break;
+                        case "SYSTEM.DECIMAL":
+                            {
+                                decimal valueAfterConvert = Convert.ToDecimal(value);
                                 propInfo.SetValue(item, valueAfterConvert, index);
                             }
                             break;
@@ -986,94 +1134,76 @@ namespace Util.Excel
 
         #endregion
 
-        public static void DataSet2Excel(string filePath, DataSet ds, bool[] showColumnNameArray = null, int[,] positionArray = null)
+        /// <summary>
+        /// 将 DataSet 转换为 Excel文档
+        /// </summary>
+        /// <param name="path">生成Excel文档存放路径</param>
+        /// <param name="dataSet">DataSet</param>
+        /// <param name="showColumnNameArray">Sheet首行内容采用DataTable的ColumnName</param>
+        /// <param name="positionArray">输出到工作簿的位置(rowIndex, columnIndex)</param>
+        public static void DataSet2Excel(string path, DataSet dataSet, bool[] showColumnNameArray = null, int[,] positionArray = null)
         {
             FileFormatType fileFormatType = FileFormatType.Xlsx;
-            if (filePath.EndsWith("xlsx", StringComparison.InvariantCultureIgnoreCase))
+
+            if (path.EndsWith("xlsx", StringComparison.InvariantCultureIgnoreCase))
             {
                 fileFormatType = FileFormatType.Xlsx;
             }
-            else if (filePath.EndsWith("xls", StringComparison.InvariantCultureIgnoreCase))
+            else if (path.EndsWith("xls", StringComparison.InvariantCultureIgnoreCase))
             {
                 fileFormatType = FileFormatType.Xlsx;
             }
 
-            Workbook workbook = new Workbook(fileFormatType: fileFormatType);
-            for (int index = 0; index < ds.Tables.Count; index++)
+            using (Workbook workbook = new Workbook(fileFormatType: fileFormatType))
             {
-                Worksheet workSheet = workbook.Worksheets[index];
-
-                DataTable dt = ds.Tables[index];
-                if (dt.TableName.IsNullOrEmpty() == true)
+                for (int index = 0; index < dataSet.Tables.Count; index++)
                 {
-                    workSheet.Name = "Sheet{0}".FormatWith(index + 1);
-                }
-                else
-                {
-                    workSheet.Name = dt.TableName;
+                    if (workbook.Worksheets.Count - 1 < index)
+                    {
+                        workbook.Worksheets.Add();
+                    }
+
+                    Worksheet workSheet = workbook.Worksheets[index];
+
+                    DataTable dt = dataSet.Tables[index];
+                    if (dt.TableName.IsNullOrEmpty() == true)
+                    {
+                        workSheet.Name = "Sheet{0}".FormatWith(index + 1);
+                    }
+                    else
+                    {
+                        workSheet.Name = dt.TableName;
+                    }
+
+                    bool isFieldNameShown = true;
+                    if (showColumnNameArray != null)
+                    {
+                        isFieldNameShown = showColumnNameArray[index];
+                    }
+
+                    int tmpFirstRowIndex = 0;
+                    int tmpFirstColumnIndex = 0;
+                    if (positionArray != null)
+                    {
+                        tmpFirstRowIndex = positionArray[index, 0];
+                        tmpFirstColumnIndex = positionArray[index, 1];
+                    }
+
+                    workSheet.Cells.ImportData
+                    (
+                        table: dt,
+                        firstRow: tmpFirstRowIndex,
+                        firstColumn: tmpFirstColumnIndex,
+                        options: new ImportTableOptions()
+                        {
+                            IsFieldNameShown = isFieldNameShown
+                        }
+                    );
                 }
 
-                bool isFieldNameShown = true;
-                if (showColumnNameArray != null)
-                {
-                    isFieldNameShown = showColumnNameArray[index];
-                }
-
-                int tmpFirstRow = 0;
-                int tmpFirstColumn = 0;
-                if (positionArray != null)
-                {
-                    tmpFirstRow = positionArray[index, 0];
-                    tmpFirstColumn = positionArray[index, 1];
-                }
-
-                workSheet.Cells.ImportDataTable
-                (
-                    dataTable: dt,
-                    isFieldNameShown: isFieldNameShown,
-                    firstRow: tmpFirstRow,
-                    firstColumn: tmpFirstColumn
-                );
+                workbook.Save(path);
             }
-
-            workbook.Save(filePath);
         }
-
-        /// <summary>
-        /// 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private static string CopyExcelFileToTempPath(string path)
-        {
-            string copyToTempDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, "Temp", "ExcelFiles");
-            if (System.IO.Directory.Exists(copyToTempDirectory) == false)
-            {
-                System.IO.Directory.CreateDirectory(copyToTempDirectory);
-            }
-
-            string copyToTempPath = System.IO.Path.Combine(copyToTempDirectory, "{0}.{1}".FormatWith(Guid.NewGuid().ToString(), path.Substring(path.LastIndexOf(".") + 1)));
-            System.IO.File.Copy(path, copyToTempPath, true);
-
-            return copyToTempPath;
-        }
-
-        /// <summary>
-        /// <para>删除 为解决占用问题而复制的 Excel文件，并进行一次GC.Collect()</para>
-        /// <para>请在 finally 代码块中调用</para>
-        /// </summary>
-        /// <param name="copyToTempPath">待删除的Excel文件</param>
-        private static void DeleteCopyExcelFileForFinally(string copyToTempPath)
-        {
-            // 删除 copyToTempPath 文件
-            if (System.IO.File.Exists(copyToTempPath))
-            {
-                System.IO.File.Delete(copyToTempPath);
-            }
-
-            GC.Collect();
-        }
-
 
         ///// <summary>
         ///// 打印DEMO
@@ -1110,6 +1240,45 @@ namespace Util.Excel
         //    string strPrinterName = printSettings.PrinterName;
         //    sr.ToPrinter(strPrinterName);
         //}
+
+
+
+
+
+        /// <summary>
+        /// 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private static string CopyExcelFileToTempPath(string path)
+        {
+            string copyToTempDirectory = System.IO.Path.Combine(Environment.CurrentDirectory, "Temp", "ExcelFiles");
+            if (System.IO.Directory.Exists(copyToTempDirectory) == false)
+            {
+                System.IO.Directory.CreateDirectory(copyToTempDirectory);
+            }
+
+            string copyToTempPath = System.IO.Path.Combine(copyToTempDirectory, "{0}.{1}".FormatWith(Guid.NewGuid().ToString(), path.Substring(path.LastIndexOf(".") + 1)));
+            System.IO.File.Copy(path, copyToTempPath, true);
+
+            return copyToTempPath;
+        }
+
+        /// <summary>
+        /// <para>删除 为解决占用问题而复制的 Excel文件，并进行一次GC.Collect()</para>
+        /// <para>请在 finally 代码块中调用</para>
+        /// </summary>
+        /// <param name="copyToTempPath">待删除的Excel文件</param>
+        private static void DeleteCopyExcelFileForFinally(string copyToTempPath)
+        {
+            // 删除 copyToTempPath 文件
+            if (System.IO.File.Exists(copyToTempPath))
+            {
+                System.IO.File.Delete(copyToTempPath);
+            }
+
+            GC.Collect();
+        }
     }
 
 }

@@ -12,6 +12,18 @@ using Android.Widget;
 
 namespace Util.XamariN.AndroiD
 {
+    /// <summary>
+    /// V 1.0.2 - 2019-9-20 11:06:50
+    /// 对于 [对于多个授权操作, 采用分别逐个权限申请] 做法测试效果不理想
+    /// 
+    /// V 1.0.1 - 2019-8
+    /// 优化授权提示
+    /// mDict 定义授权提示信息
+    /// 计划对于多个授权操作, 采用分别逐个权限申请, 并提示用户选择信息
+    ///  
+    /// V 1.0.0 
+    /// 首次创建安卓授权接口的实现
+    /// </summary>
     public class MyAndroidPermission : Util.XamariN.IAndroidPermission
     {
         private Android.App.Activity mAppActivity { get; set; }
@@ -144,19 +156,22 @@ namespace Util.XamariN.AndroiD
         /// <param name="args"></param>
         public void RequestPermissions(string[] args)
         {
-            foreach (string key in args)
-            {
-                RequestPermission(key);
-            }
+            mAppActivity.RequestPermissions(args, 0);
         }
 
-        public void OnRequestPermissionsResult(int requestCode, bool grantResult)
+        public void OnRequestPermissionsResult(int requestCode, bool[] grantResults)
         {
             string funcDescription = string.Empty;
 
-            if (requestCode > 0)
+            if (requestCode > 0) // 若申请只有一项权限, requestCode > 0 // 若有多项权限, requestCode = 0
             {
                 funcDescription = mDict.First(i => i.RequestCode == requestCode).Description;
+            }
+
+            bool grantResult = true; // 只要含有 1 项授权失败即为失败
+            foreach (var item in grantResults)
+            {
+                grantResult = grantResult && item;
             }
 
             if (grantResult == true)
