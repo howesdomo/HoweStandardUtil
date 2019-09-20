@@ -27,6 +27,9 @@ namespace Util.XamariN.AndroiD
 
         private CancellationTokenSource mCancellationTokenSource { get; set; }
 
+        // 由于 BluetoothSocket 的 .IsConnected 属性不靠谱, 故使用 mIsConnected 记录连接状态
+        // 可能出现的异常状况
+        // 用户在正在连接状态时, 关闭蓝牙然后再开启蓝牙, 导致此 mIsConnected 不是最新的情况
         public bool mIsConnected { get; set; }
 
         public string mDeviceName { get; set; }
@@ -88,6 +91,12 @@ namespace Util.XamariN.AndroiD
                 {
                     r = false;
                 }
+
+                if (r == false && mIsConnected == true) // 
+                {
+                    mIsConnected = false;
+                }
+
                 return r;
             }
         }
