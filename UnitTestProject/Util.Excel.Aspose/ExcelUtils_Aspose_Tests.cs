@@ -26,7 +26,7 @@ namespace UnitTestProject
         public void TestExcel2DataSetStepByStep_Without_ExcelReaderConfig()
         {
             var path = System.IO.Path.Combine(Environment.CurrentDirectory, "Util.Excel.Aspose", "Excel2DataSetTest.xlsx");
-            var ds = Util.Excel.ExcelUtils_Aspose.Excel2DataSetStepByStep(path);
+            var ds = new Util.Excel.ExcelUtils_Aspose().Excel2DataSetStepByStep(path);
 
             // 含有 3 个 Sheet
             Assert.AreEqual<int>(3, ds.Tables.Count);
@@ -92,7 +92,7 @@ namespace UnitTestProject
             excelReaderConfig.Config.Add(toAdd_4);
 
 
-            var ds = Util.Excel.ExcelUtils_Aspose.Excel2DataSetStepByStep(path, excelReaderConfig);
+            var ds = new Util.Excel.ExcelUtils_Aspose().Excel2DataSetStepByStep(path, excelReaderConfig);
 
             // 由于加上读取配置, 故ds只有 3 个 Sheet
             Assert.AreEqual<int>(3, ds.Tables.Count);
@@ -408,5 +408,82 @@ namespace UnitTestProject
 
         }
 
+        [TestMethod]
+        public void Test_DataSet2ExcelStepByStep()
+        {
+            DataSet ds = new DataSet();
+
+            DataTable dt1 = new DataTable();
+            dt1.TableName = "工作簿1";
+            dt1.Columns.Add("姓名");
+            dt1.Columns.Add("性别");
+            dt1.Columns.Add("身高");
+            dt1.Columns.Add("体重");
+
+            DataRow dr0 = dt1.NewRow();
+            dr0["姓名"] = "A";
+            dr0["性别"] = "男";
+            dr0["身高"] = 169;
+            dr0["体重"] = 54.08;
+
+            DataRow dr1 = dt1.NewRow();
+            dr1["姓名"] = "B";
+            dr1["性别"] = "女";
+            dr1["身高"] = 161;
+            dr1["体重"] = 45.08;
+
+            dt1.Rows.Add(dr0);
+            dt1.Rows.Add(dr1);
+
+            ds.Tables.Add(dt1);
+
+            DataTable dt2 = new DataTable();
+            dt2.TableName = "工作簿2";
+            dt2.Columns.Add("时间");
+            dt2.Columns.Add("日期");
+            dt2.Columns.Add("日期时间");
+
+            dr0 = dt2.NewRow();
+            dr1 = dt2.NewRow();
+            DataRow dr2 = dt2.NewRow();
+
+            dr0["时间"] = new TimeSpan(9, 32, 0);
+            dr0["日期"] = new DateTime(2019, 4, 1);
+            dr0["日期时间"] = new DateTime(2019, 4, 1, 9, 31, 11);
+
+            dr1["时间"] = new TimeSpan(23, 40, 0);
+            dr1["日期"] = new DateTime(2019, 5, 1);
+            dr1["日期时间"] = new DateTime(2019, 4, 1, 9, 31, 12);
+
+            dr2["时间"] = new TimeSpan(0, 21, 0);
+            dr2["日期"] = new DateTime(2018, 9, 1);
+            dr2["日期时间"] = new DateTime(2019, 4, 1, 9, 31, 13);
+
+            dt2.Rows.Add(dr0);
+            dt2.Rows.Add(dr1);
+            dt2.Rows.Add(dr2);
+
+            ds.Tables.Add(dt2);
+
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "测试 DataSet2ExcelStepByStep.xlsx");
+
+            new Util.Excel.ExcelUtils_Aspose().DataSet2ExcelStepByStep(path, ds);
+
+            DataSet readResultDataSet = Util.Excel.ExcelUtils_Aspose.Excel2DataSet(path);
+
+            for (int tableIndex = 0; tableIndex < ds.Tables.Count; tableIndex++)
+            {
+                DataTable sources = ds.Tables[tableIndex];
+                DataTable target = readResultDataSet.Tables[tableIndex];
+
+                for (int rowIndex = 0; rowIndex < sources.Rows.Count; rowIndex++)
+                {
+                    for (int columnIndex = 0; columnIndex < sources.Columns.Count; columnIndex++)
+                    {
+                        Assert.AreEqual(sources.Rows[rowIndex][columnIndex].ToString(), target.Rows[rowIndex][columnIndex].ToString());
+                    }
+                }
+            }
+        }
     }
 }

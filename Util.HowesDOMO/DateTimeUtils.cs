@@ -7,6 +7,7 @@ namespace Util
 {
     public class DateTimeUtils
     {
+
         // Timestamp 时间戳是指格林威治时间1970年01月01日00时00分00秒(北京时间1970年01月01日08时00分00秒)起至现在的总秒数。
 
         // Unix时间戳(Unix timestamp)，或称Unix时间(Unix time)、POSIX时间(POSIX time)，是一种时间表示方式，
@@ -60,5 +61,6 @@ namespace Util
         }
 
         #endregion
+
     }
 }

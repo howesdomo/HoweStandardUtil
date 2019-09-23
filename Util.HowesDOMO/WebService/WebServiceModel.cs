@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Util.WebService
@@ -26,7 +27,7 @@ namespace Util.WebService
         /// GZip
         /// </summary>
         public string CompressType { get; set; }
-        
+
         /// <summary>
         /// 加密过的参数
         /// </summary>

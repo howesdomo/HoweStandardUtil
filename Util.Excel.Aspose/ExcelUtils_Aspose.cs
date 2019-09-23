@@ -12,6 +12,13 @@ using Util.Excel;
 
 namespace Util.Excel
 {
+    /// <summary>
+    /// V 1.0.1 2019-9-23 09:50:57
+    /// 检测 Xxx2Excel 方法中, 传入参数 path 后缀名, 不符合则抛错
+    /// 
+    /// V 1.0.0 - 2019-9-20 18:00:00
+    /// 创建版本管理
+    /// </summary>
     public class ExcelUtils_Aspose : IExcelUtils
     {
         #region **** Hot Patch 恢复到未加密状态 **** 
@@ -276,7 +283,7 @@ namespace Util.Excel
         /// <param name="path">文件路径</param>
         /// <param name="config">读取Excel配置</param>
         /// <returns>DataSet 结果集</returns>
-        public static DataSet Excel2DataSetStepByStep(string path, ExcelReaderConfig config = null)
+        public DataSet Excel2DataSetStepByStep(string path, ExcelReaderConfig config = null)
         {
             string copyToTempPath = CopyExcelFileToTempPath(path);
 
@@ -716,7 +723,7 @@ namespace Util.Excel
                     {
                         if (cell.IsFormula == true)
                         {
-                            return cell.StringValue; // TODO 读取复杂的公式时出现问题
+                            return cell.StringValue; // 测试发现读取复杂的公式时出现问题
                         }
                         else
                         {
@@ -1153,6 +1160,10 @@ namespace Util.Excel
             {
                 fileFormatType = FileFormatType.Xlsx;
             }
+            else
+            {
+                throw new Exception($"参数 path 的值有误。后缀名必须是.xlsx或.xls。\r\npath等于{path}");
+            }
 
             using (Workbook workbook = new Workbook(fileFormatType: fileFormatType))
             {
@@ -1205,45 +1216,92 @@ namespace Util.Excel
             }
         }
 
-        ///// <summary>
-        ///// 打印DEMO
-        ///// Aspose.Cell 原理输出为Image, 打印Image
-        ///// </summary>
-        //public static void PrintDemo(string filePath)
-        //{
-        //    Workbook workbook = new Workbook(filePath);
+        public void DataSet2ExcelStepByStep(string path, DataSet dataSet, bool[] showColumnNameArray = null, int[,] positionArray = null)
+        {
+            FileFormatType fileFormatType = FileFormatType.Xlsx;
 
-        //    //Get the worksheet to be printed
-        //    Worksheet worksheet = workbook.Worksheets[0];
+            if (path.EndsWith("xlsx", StringComparison.InvariantCultureIgnoreCase))
+            {
+                fileFormatType = FileFormatType.Xlsx;
+            }
+            else if (path.EndsWith("xls", StringComparison.InvariantCultureIgnoreCase))
+            {
+                fileFormatType = FileFormatType.Xlsx;
+            }
+            else
+            {
+                throw new Exception($"参数 path 的值有误。后缀名必须是.xlsx或.xls。\r\npath等于{path}");
+            }
 
-        //    PageSetup pageSetup = worksheet.PageSetup;
-        //    pageSetup.Orientation = PageOrientationType.Landscape;
-        //    //pageSetup.LeftMargin = 0;
-        //    //pageSetup.RightMargin = 0.1;
-        //    //pageSetup.BottomMargin = 0.3;
-        //    //pageSetup.PrintArea = "A2:J29"; // 打印区域
-        //    //Apply different Image / Print options.
+            using (Workbook workbook = new Workbook(fileFormatType: fileFormatType))
+            {
+                for (int index = 0; index < dataSet.Tables.Count; index++)
+                {
+                    if (workbook.Worksheets.Count - 1 < index)
+                    {
+                        workbook.Worksheets.Add();
+                    }
 
-        //    Aspose.Cells.Rendering.ImageOrPrintOptions options = new Aspose.Cells.Rendering.ImageOrPrintOptions();
+                    Worksheet workSheet = workbook.Worksheets[index];
 
-        //    //Set the Printing page property
-        //    //options.PrintingPage = PrintingPageType.IgnoreStyle;
-        //    //Render the worksheet
+                    DataTable dt = dataSet.Tables[index];
+                    if (dt.TableName.IsNullOrEmpty() == true)
+                    {
+                        workSheet.Name = "Sheet{0}".FormatWith(index + 1);
+                    }
+                    else
+                    {
+                        workSheet.Name = dt.TableName;
+                    }
 
-        //    Aspose.Cells.Rendering.SheetRender sr = new Aspose.Cells.Rendering.SheetRender(worksheet, options);
+                    bool isFieldNameShown = true;
+                    if (showColumnNameArray != null)
+                    {
+                        isFieldNameShown = showColumnNameArray[index];
+                    }
 
-        //    System.Drawing.Image map = sr.ToImage(0); // 核心 -- 将 SheetRendar转为 Image 进行打印
-        //                                              // map.Save(@"D:\HoweDesktop\A{0}".FormatWith(DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")));
+                    int tmpFirstRowIndex = 0;
+                    int tmpFirstColumnIndex = 0;
+                    if (positionArray != null)
+                    {
+                        tmpFirstRowIndex = positionArray[index, 0];
+                        tmpFirstColumnIndex = positionArray[index, 1];
+                    }
 
-        //    // send to printer 核心打印 Image
-        //    System.Drawing.Printing.PrinterSettings printSettings = new System.Drawing.Printing.PrinterSettings();
-        //    string strPrinterName = printSettings.PrinterName;
-        //    sr.ToPrinter(strPrinterName);
-        //}
+                    int currentRowIndex = tmpFirstRowIndex;
 
+                    #region 表头
 
+                    if (isFieldNameShown == true)
+                    {
+                        for (int i = 0; i < dt.Columns.Count; i++)
+                        {
+                            workSheet.Cells[tmpFirstRowIndex, tmpFirstColumnIndex + i].Value = dt.Columns[i].ColumnName;
+                        }
 
+                        currentRowIndex = currentRowIndex + 1;
+                    }
 
+                    #endregion
+
+                    #region 数据
+
+                    for (int rowIndex = 0; rowIndex < dt.Rows.Count; rowIndex++)
+                    {
+                        for (int columnIndex = 0; columnIndex < dt.Columns.Count; columnIndex++)
+                        {
+                            workSheet.Cells[currentRowIndex, tmpFirstColumnIndex + columnIndex].Value = dt.Rows[rowIndex][columnIndex];
+                        }
+
+                        currentRowIndex = currentRowIndex + 1;
+                    }
+
+                    #endregion
+                }
+
+                workbook.Save(path);
+            }
+        }
 
         /// <summary>
         /// 复制需要导入的文件到 \exe目录\Temp\ExcelFiles， 用于解决文件占用问题
@@ -1279,6 +1337,46 @@ namespace Util.Excel
 
             GC.Collect();
         }
+
+
+
+
+
+        ///// <summary>
+        ///// 打印DEMO
+        ///// Aspose.Cell 原理输出为Image, 打印Image
+        ///// </summary>
+        //public static void PrintDemo(string filePath)
+        //{
+        //    Workbook workbook = new Workbook(filePath);
+
+        //    //Get the worksheet to be printed
+        //    Worksheet worksheet = workbook.Worksheets[0];
+
+        //    PageSetup pageSetup = worksheet.PageSetup;
+        //    pageSetup.Orientation = PageOrientationType.Landscape;
+        //    //pageSetup.LeftMargin = 0;
+        //    //pageSetup.RightMargin = 0.1;
+        //    //pageSetup.BottomMargin = 0.3;
+        //    //pageSetup.PrintArea = "A2:J29"; // 打印区域
+        //    //Apply different Image / Print options.
+
+        //    Aspose.Cells.Rendering.ImageOrPrintOptions options = new Aspose.Cells.Rendering.ImageOrPrintOptions();
+
+        //    //Set the Printing page property
+        //    //options.PrintingPage = PrintingPageType.IgnoreStyle;
+        //    //Render the worksheet
+
+        //    Aspose.Cells.Rendering.SheetRender sr = new Aspose.Cells.Rendering.SheetRender(worksheet, options);
+
+        //    System.Drawing.Image map = sr.ToImage(0); // 核心 -- 将 SheetRendar转为 Image 进行打印
+        //                                              // map.Save(@"D:\HoweDesktop\A{0}".FormatWith(DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")));
+
+        //    // send to printer 核心打印 Image
+        //    System.Drawing.Printing.PrinterSettings printSettings = new System.Drawing.Printing.PrinterSettings();
+        //    string strPrinterName = printSettings.PrinterName;
+        //    sr.ToPrinter(strPrinterName);
+        //}
     }
 
 }

@@ -194,6 +194,7 @@ namespace Util.Web
                 else
                 {
                     r = Encoding.UTF8.GetString(buffOfNetworkStream, 0, buffOfNetworkStream.Length);
+                    r = r.Trim('\0');
                 }
 
                 // 释放

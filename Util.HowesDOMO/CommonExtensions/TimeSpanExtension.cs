@@ -14,14 +14,14 @@ namespace System
         /// <returns></returns>
         public static string ToStringAdv(this TimeSpan ts)
         {
-            string r = string.Empty;            
+            string r = string.Empty;
 
             if (ts.Hours > 0)
             {
                 r += "{0}小时".FormatWith(ts.Hours);
             }
-            
-            if(ts.Minutes > 0)
+
+            if (ts.Minutes > 0)
             {
                 r += "{0}分".FormatWith(ts.Minutes);
             }

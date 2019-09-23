@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
 
 namespace Util
 {
@@ -202,58 +205,53 @@ namespace Util
             return result;
         }
 
-        //public static SqlParameter GetSqlParameter(string name, bool value)
-        //{
-        //    return new SqlParameter(name, value);
-        //}
+        public static SqlParameter GetSqlParameter(string name, bool? value)
+        {
+            if (value.HasValue == false)
+            {
+                return new SqlParameter(name, DBNull.Value);
+            }
+            else
+            {
+                return new SqlParameter(name, value.Value);
+            }
+        }
 
-        //public static SqlParameter GetSqlParameter(string name, bool? value)
-        //{
-        //    if (value.HasValue == false)
-        //    {
-        //        return new SqlParameter(name, DBNull.Value);
-        //    }
-        //    else
-        //    {
-        //        return new SqlParameter(name, value.Value);
-        //    }
-        //}
+        public static SqlParameter GetSqlParameter(string name, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return new SqlParameter(name, DBNull.Value);
+            }
+            else
+            {
+                return new SqlParameter(name, value);
+            }
+        }
 
-        //public static SqlParameter GetSqlParameter(string name, string value)
-        //{
-        //    if (string.IsNullOrEmpty(value))
-        //    {
-        //        return new SqlParameter(name, DBNull.Value);
-        //    }
-        //    else
-        //    {
-        //        return new SqlParameter(name, value);
-        //    }
-        //}
+        public static SqlParameter GetSqlParameter(string name, DateTime? value)
+        {
+            if (value.HasValue == false)
+            {
+                return new SqlParameter(name, DBNull.Value);
+            }
+            else
+            {
+                return new SqlParameter(name, value.Value);
+            }
+        }
 
-        //public static SqlParameter GetSqlParameter(string name, DateTime? value)
-        //{
-        //    if (value.HasValue == false)
-        //    {
-        //        return new SqlParameter(name, DBNull.Value);
-        //    }
-        //    else
-        //    {
-        //        return new SqlParameter(name, value.Value);
-        //    }
-        //}
-
-        //public static SqlParameter GetSqlParameter(string name, int? value)
-        //{
-        //    if (value.HasValue == false)
-        //    {
-        //        return new SqlParameter(name, DBNull.Value);
-        //    }
-        //    else
-        //    {
-        //        return new SqlParameter(name, value.Value);
-        //    }
-        //}
+        public static SqlParameter GetSqlParameter(string name, int? value)
+        {
+            if (value.HasValue == false)
+            {
+                return new SqlParameter(name, DBNull.Value);
+            }
+            else
+            {
+                return new SqlParameter(name, value.Value);
+            }
+        }
 
         public static List<string> GetDataTableColumnNames(DataTable dt)
         {

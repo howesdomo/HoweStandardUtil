@@ -50,6 +50,5 @@ namespace System.Net.Sockets
         {
             Util.Web.TcpClientUtils.StandardSend(tcpClient, toSend, encoding);
         }
-
     }
 }
