@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTestProject.Util
+namespace UnitTestProject
 {
     class EMailUtils_UnitTest
     {

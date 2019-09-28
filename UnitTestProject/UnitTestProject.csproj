@@ -7,19 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Util.Excel.Aspose\Aspose.xlsx" />
-    <None Remove="Util.Excel.Aspose\Excel2DataSetTest.xlsx" />
-    <None Remove="Util.Excel.Aspose\Excel2DataSetWithExcelReaderConfig.xlsx" />
+    <None Remove="UnitTest_Util.Excel.Aspose\Aspose.xlsx" />
+    <None Remove="UnitTest_Util.Excel.Aspose\Excel2DataSetTest.xlsx" />
+    <None Remove="UnitTest_Util.Excel.Aspose\Excel2DataSetWithExcelReaderConfig.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Util.Excel.Aspose\Aspose.xlsx">
+    <Content Include="UnitTest_Util.Excel.Aspose\Aspose.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Util.Excel.Aspose\Excel2DataSetTest.xlsx">
+    <Content Include="UnitTest_Util.Excel.Aspose\Excel2DataSetTest.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Util.Excel.Aspose\Excel2DataSetWithExcelReaderConfig.xlsx">
+    <Content Include="UnitTest_Util.Excel.Aspose\Excel2DataSetWithExcelReaderConfig.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
