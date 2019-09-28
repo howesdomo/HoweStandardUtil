@@ -28,12 +28,13 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Util.Data_SQLite\Util.Data_SQLite.csproj" />
     <ProjectReference Include="..\Util.Excel.Aspose\Util.Excel.Aspose.csproj" />
+    <ProjectReference Include="..\Util.HowesDOMO\Util.HowesDOMO.csproj" />
   </ItemGroup>
 
 </Project>
