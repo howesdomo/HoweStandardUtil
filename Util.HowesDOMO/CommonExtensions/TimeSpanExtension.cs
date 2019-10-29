@@ -7,33 +7,74 @@ namespace System
     public static class TimeSpanExtension
     {
         /// <summary>
-        /// 去掉换行符号后 Trim
+        /// 含毫秒信息
         /// </summary>
-        /// <param name="content"></param>
-        /// <param name="args"></param>
+        /// <param name="ts"></param>
         /// <returns></returns>
         public static string ToStringAdv(this TimeSpan ts)
         {
             string r = string.Empty;
 
+            if (ts.Days > 0)
+            {
+                r += $"{ts.Days}天";
+            }
+
             if (ts.Hours > 0)
             {
-                r += "{0}小时".FormatWith(ts.Hours);
+                r += $"{ts.Hours}小时";
             }
 
             if (ts.Minutes > 0)
             {
-                r += "{0}分".FormatWith(ts.Minutes);
+                r += $"{ts.Minutes}分";
             }
 
             if (ts.Seconds > 0)
             {
-                r += "{0}秒".FormatWith(ts.Seconds);
+                r += $"{ts.Seconds}秒";
+            }
+
+            if (ts.Milliseconds > 0)
+            {
+                r += $"{ts.Milliseconds}毫秒";
+            }
+
+            return r;
+        }
+
+        /// <summary>
+        /// 不含毫秒信息
+        /// </summary>
+        /// <param name="ts"></param>
+        /// <returns></returns>
+        public static string ToStringAdvSimple(this TimeSpan ts)
+        {
+            string r = string.Empty;
+
+            if (ts.Days > 0)
+            {
+                r += $"{ts.Days}天";
+            }
+
+            if (ts.Hours > 0)
+            {
+                r += $"{ts.Hours}小时";
+            }
+
+            if (ts.Minutes > 0)
+            {
+                r += $"{ts.Minutes}分";
+            }
+
+            if (ts.Seconds > 0)
+            {
+                r += $"{ts.Seconds}秒";
             }
 
             //if (ts.Milliseconds > 0)
             //{
-            //    r = "{0}毫秒".FormatWith(ts.Milliseconds);
+            //    r += $"{ts.Milliseconds}毫秒";
             //}
 
             return r;

@@ -6,6 +6,13 @@ using System.Text;
 
 namespace Util.UIComponent
 {
+    /// <summary>
+    /// V 1.0.2 ( HoweStandardUtil 特有 ) - 2019-10-28 15:28:22
+    /// 优化 PropertyChanged 代码, 加上 CallerMemberName( 允许您获取该方法的调用者方法或属性名称 )
+    /// 
+    /// V 1.0.1
+    /// 简化 PropertyChanged 代码
+    /// </summary>
     public abstract class VirtualModel : INotifyPropertyChanged
     {
         public VirtualModel()
@@ -101,18 +108,15 @@ namespace Util.UIComponent
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string name)
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName]string name = "")
         {
-            this.OnPropertyChanged(this, name);
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        protected void OnPropertyChanged(object sender, string name)
+        protected void OnPropertyChanged(object sender, [System.Runtime.CompilerServices.CallerMemberName] string name = "")
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(sender, new PropertyChangedEventArgs(name));
-            }
-        }       
+            this.PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(name));
+        }
 
         #endregion
 

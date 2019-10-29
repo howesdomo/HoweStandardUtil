@@ -5,6 +5,11 @@ using System.Text;
 
 namespace Util.IO
 {
+    /// <summary>
+    /// V 1.0.1 - 2019-10-17 14:54:30
+    /// SaveBase64StrToFile 添加可选参数 fileEncoding, 默认输出为 UTF-8
+    /// 
+    /// </summary>
     public class FileUtils
     {
         /// <summary>
@@ -51,7 +56,8 @@ namespace Util.IO
         /// <param name="filePath">文件存放位置</param>
         /// <param name="base64Str">文件base64字符串</param>
         /// <param name="ignoreExistFile">忽略已存在文件，若 true 删除文件</param>
-        public static void SaveBase64StrToFile(string filePath, string base64Str, bool ignoreExistFile = false)
+        /// <param name="fileEncoding">指定文件编码格式 (可空) 默认输出为 UTF-8</param>
+        public static void SaveBase64StrToFile(string filePath, string base64Str, bool ignoreExistFile = false, System.Text.Encoding fileEncoding = null)
         {
             byte[] byteArray;
 
@@ -86,6 +92,12 @@ namespace Util.IO
 
             using (FileStream filestream = new FileStream(filePath, FileMode.CreateNew))
             {
+                if (fileEncoding != null) // 根据程序员指定的格式进行输出, 否则默认输出为 UTF-8
+                {
+                    string str = System.Text.Encoding.UTF8.GetString(byteArray);
+                    byteArray = fileEncoding.GetBytes(str);
+                }
+
                 filestream.Write(byteArray, 0, byteArray.Length);
             }
 
