@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Util.HowesDOMO" Version="1.0.6-alpha5" />
+    <PackageReference Include="Util.HowesDOMO" Version="1.0.6-alpha8" />
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.425677" />
   </ItemGroup>
 

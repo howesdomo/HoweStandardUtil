@@ -16,7 +16,7 @@
     <repository type="git" url="https://github.com/howesdomo/HoweStandardUtil.git" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Util.HowesDOMO" version="1.0.6-alpha5" exclude="Build,Analyzers" />
+        <dependency id="Util.HowesDOMO" version="1.0.6-alpha8" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Forms" version="4.0.0.425677" exclude="Build,Analyzers" />
       </group>
     </dependencies>
