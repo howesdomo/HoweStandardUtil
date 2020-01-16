@@ -9,6 +9,10 @@ using Xamarin.Forms;
 namespace Util.XamariN.Components
 {
     /// <summary>
+    /// V 1.0.1 2020-1-16 09:27:36
+    /// 1 修改CheckBox位置
+    /// 2 增加 UI 属性 (绑定用)
+    /// 
     /// V 1.0.0 2020-1-14 16:32:09
     /// 首次创建
     /// </summary>
@@ -30,8 +34,18 @@ namespace Util.XamariN.Components
             }
         }
 
-        public new int Id { get; set; }
+        private string _TextProperty;
+        public string TextProperty
+        {
+            get { return _TextProperty; }
+            set
+            {
+                _TextProperty = value;
+                this.OnPropertyChanged("TextProperty");
+            }
+        }
 
+        public new int Id { get; set; }
 
         CheckBox mckb { get; set; }
         Label mlbl { get; set; }
@@ -49,6 +63,7 @@ namespace Util.XamariN.Components
             sl.Orientation = StackOrientation.Horizontal;
 
             mckb = new CheckBox();
+            mckb.VerticalOptions = LayoutOptions.StartAndExpand;
             sl.Children.Add(mckb);
 
             mlbl = new Label();
@@ -70,15 +85,15 @@ namespace Util.XamariN.Components
 
         private void initEvent()
         {
-            this.BindingContextChanged += CustomRadioButton_BindingContextChanged;
+            this.BindingContextChanged += BindingContextChangedHandled;
 
             this.mckb.CheckedChanged += checkedChanged;
 
-            Binding binding = new Binding("IsChecked");
-            binding.Source = this;
-            binding.Mode = BindingMode.TwoWay;
+            Binding b_IsChecked = new Binding("IsChecked");
+            b_IsChecked.Source = this;
+            b_IsChecked.Mode = BindingMode.TwoWay;
 
-            this.mckb.SetBinding(CheckBox.IsCheckedProperty, binding);
+            this.mckb.SetBinding(CheckBox.IsCheckedProperty, b_IsChecked);
         }
 
         private void checkedChanged(object sender, CheckedChangedEventArgs e)
@@ -89,29 +104,203 @@ namespace Util.XamariN.Components
             }
         }
 
-        private void CustomRadioButton_BindingContextChanged(object sender, EventArgs e)
+        private void BindingContextChangedHandled(object sender, EventArgs e)
+        {           
+            mlbl.Text = this.BindingContext.ToString();
+        }
+
+        public void SetTextBinding(string name)
         {
-            dynamic d = this.BindingContext;
+            Binding b_Text = new Binding(name);
+            b_Text.Source = this.BindingContext;
+            b_Text.Mode = BindingMode.TwoWay;
 
-            // Step 1
-            try
+            this.mlbl.SetBinding(Label.TextProperty, b_Text);
+        }
+
+        public string Text
+        {
+            get { return this.mlbl.Text; }
+        }
+
+        // UI
+
+        #region FontSizeProperty
+
+        public static readonly BindableProperty FontSizeProperty = BindableProperty.Create
+        (
+            propertyName: "FontSize",
+            returnType: typeof(double),
+            declaringType: typeof(BindableRadioButton),
+            propertyChanged: fontSizePropertyChanged
+        );
+
+        public double FontSize
+        {
+            get { return (double)GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
+        }
+
+        private static void fontSizePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            BindableRadioButton target = bindable as BindableRadioButton;
+
+            if (target.mlbl.FontSize.ToString() == newValue.ToString())
             {
-                mlbl.Text = d.DisplayName;
-            }
-            catch (Exception)
-            {
-                mlbl.Text = this.BindingContext.ToString();
+                return;
             }
 
-            // Step 2
-            try
-            {
-                this.IsChecked = d.IsChecked;
-            }
-            catch (Exception)
-            {
+            double tmp = 0;
 
+            if (double.TryParse(newValue.ToString(), out tmp))
+            {
+                target.mlbl.FontSize = tmp;
             }
         }
+
+        #endregion
+
+        #region FontAttributesProperty
+
+        public static readonly BindableProperty FontAttributesProperty = BindableProperty.Create
+        (
+            propertyName: "FontAttributes",
+            returnType: typeof(string),
+            declaringType: typeof(BindableRadioButton),
+            propertyChanged: fontAttributesPropertyChanged
+        );
+
+        public string FontAttributes
+        {
+            get { return (string)GetValue(FontAttributesProperty); }
+            set { SetValue(FontAttributesProperty, value); }
+        }
+
+        private static void fontAttributesPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            BindableRadioButton target = bindable as BindableRadioButton;
+            if (target.mlbl.FontAttributes.ToString() == newValue.ToString())
+            {
+                return;
+            }
+
+            target.mlbl.FontAttributes = (FontAttributes)new Converters.FontAttributesConverter().Convert(newValue, null, null, null);
+        }
+
+        #endregion
+
+        #region TextColor
+
+        public static readonly BindableProperty TextColorProperty = BindableProperty.Create
+        (
+            propertyName: "TextColor",
+            returnType: typeof(Xamarin.Forms.Color),
+            declaringType: typeof(BindableRadioButton),
+            propertyChanged: textColorPropertyChanged
+        );
+
+        public string TextColor
+        {
+            get { return (string)GetValue(TextColorProperty); }
+            set { SetValue(TextColorProperty, value); }
+        }
+
+        private static void textColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            BindableRadioButton target = bindable as BindableRadioButton;
+            if (target.mlbl.TextColor == (Xamarin.Forms.Color)newValue)
+            {
+                return;
+            }
+
+            target.mlbl.TextColor = (Xamarin.Forms.Color)newValue;
+        }
+
+        #endregion
+
+        #region CheckBoxColor
+
+        public static readonly BindableProperty CheckBoxColorProperty = BindableProperty.Create
+        (
+            propertyName: "CheckBoxColor",
+            returnType: typeof(Xamarin.Forms.Color),
+            declaringType: typeof(BindableRadioButton),
+            propertyChanged: CheckBoxColorPropertyChanged
+        );
+
+        public string CheckBoxColor
+        {
+            get { return (string)GetValue(CheckBoxColorProperty); }
+            set { SetValue(CheckBoxColorProperty, value); }
+        }
+
+        private static void CheckBoxColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            BindableRadioButton target = bindable as BindableRadioButton;
+            if (target.mckb.Color == (Xamarin.Forms.Color)newValue)
+            {
+                return;
+            }
+
+            target.mckb.Color = (Xamarin.Forms.Color)newValue;
+        }
+
+        #endregion
+
+        #region CheckBoxMargin
+
+        public static readonly BindableProperty CheckBoxMarginProperty = BindableProperty.Create
+        (
+            propertyName: "CheckBoxMargin",
+            returnType: typeof(string),
+            declaringType: typeof(BindableRadioButton),
+            propertyChanged: checkBoxMarginPropertyPropertyChanged
+        );
+
+        public string CheckBoxMargin
+        {
+            get { return (string)GetValue(CheckBoxMarginProperty); }
+            set { SetValue(CheckBoxMarginProperty, value); }
+        }
+
+        private static void checkBoxMarginPropertyPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            BindableRadioButton target = bindable as BindableRadioButton;
+            Thickness margin = Common.ThicknessUtils.CalcThickness(newValue);
+            if (target.mckb.Margin != margin)
+            {
+                target.mckb.Margin = margin;
+            }
+        }
+
+        #endregion
+
+        #region LabelMargin
+
+        public static readonly BindableProperty LabelMarginProperty = BindableProperty.Create
+        (
+            propertyName: "LabelMargin",
+            returnType: typeof(string),
+            declaringType: typeof(BindableRadioButton),
+            propertyChanged: labelMarginPropertyPropertyChanged
+        );
+
+        public string LabelMargin
+        {
+            get { return (string)GetValue(LabelMarginProperty); }
+            set { SetValue(LabelMarginProperty, value); }
+        }
+
+        private static void labelMarginPropertyPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            BindableRadioButton target = bindable as BindableRadioButton;
+            Thickness margin = Common.ThicknessUtils.CalcThickness(newValue);
+            if (target.mlbl.Margin != margin)
+            {
+                target.mlbl.Margin = margin;
+            }
+        }
+
+        #endregion
     }
 }

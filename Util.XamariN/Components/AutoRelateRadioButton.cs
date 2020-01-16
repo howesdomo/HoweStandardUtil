@@ -6,6 +6,9 @@ using Xamarin.Forms;
 namespace Util.XamariN.Components
 {
     /// <summary>
+    /// V 1.0.1 2020-1-15 17:43:25
+    /// 修复返回类型 FontAttributes 
+    /// 
     /// V 1.0.0 2020-1-14 16:32:09
     /// 首次创建
     /// </summary>
@@ -200,7 +203,7 @@ namespace Util.XamariN.Components
         public static readonly BindableProperty FontAttributesProperty = BindableProperty.Create
         (
             propertyName: "FontAttributes",
-            returnType: typeof(double),
+            returnType: typeof(string),
             declaringType: typeof(AutoRelateRadioButton),
             propertyChanged: fontAttributesPropertyChanged
         );
