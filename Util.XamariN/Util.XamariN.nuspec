@@ -18,7 +18,7 @@
       <group targetFramework=".NETStandard2.0">
         <dependency id="Microsoft.CSharp" version="4.5.0" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Forms" version="4.4.0.991477" exclude="Build,Analyzers" />
-        <dependency id="Util.HowesDOMO" version="1.0.6-alpha8" exclude="Build,Analyzers" />        
+        <dependency id="Util.HowesDOMO" version="1.0.6" exclude="Build,Analyzers" />        
       </group>
     </dependencies>
  </metadata>
