@@ -193,9 +193,9 @@ namespace Util.XamariN.Components
             propertyChanged: textColorPropertyChanged
         );
 
-        public string TextColor
+        public Xamarin.Forms.Color TextColor
         {
-            get { return (string)GetValue(TextColorProperty); }
+            get { return (Xamarin.Forms.Color)GetValue(TextColorProperty); }
             set { SetValue(TextColorProperty, value); }
         }
 
@@ -222,9 +222,9 @@ namespace Util.XamariN.Components
             propertyChanged: CheckBoxColorPropertyChanged
         );
 
-        public string CheckBoxColor
+        public Xamarin.Forms.Color CheckBoxColor
         {
-            get { return (string)GetValue(CheckBoxColorProperty); }
+            get { return (Xamarin.Forms.Color)GetValue(CheckBoxColorProperty); }
             set { SetValue(CheckBoxColorProperty, value); }
         }
 

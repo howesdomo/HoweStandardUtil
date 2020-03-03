@@ -39,6 +39,7 @@ namespace Util.XamariN.Components
             propertyName: "ItemsSource",
             returnType: typeof(IEnumerable),
             declaringType: typeof(BindableRadioGroupView),
+            defaultBindingMode: BindingMode.TwoWay,
             propertyChanged: ItemsSourcePropertyChanged
         );
 
@@ -116,12 +117,12 @@ namespace Util.XamariN.Components
                     rad.SetTextBinding(view.DisplayPath);
                 }
 
-                if (view.CheckBoxColor.IsNullOrWhiteSpace() == false)
+                if (view.CheckBoxColor != Xamarin.Forms.Color.Transparent)
                 {
                     rad.CheckBoxColor = view.CheckBoxColor;
                 }
 
-                if (view.TextColor.IsNullOrWhiteSpace() == false)
+                if (view.TextColor != Xamarin.Forms.Color.Transparent)
                 {
                     rad.TextColor = view.TextColor;
                 }
@@ -194,6 +195,7 @@ namespace Util.XamariN.Components
             propertyName: "SelectedItem"
             , returnType: typeof(object)
             , declaringType: typeof(BindableRadioGroupView)
+            , defaultBindingMode: BindingMode.TwoWay
             , defaultValue: null
         // , propertyChanged: selectedItemPropertyChanged
         );
@@ -230,6 +232,7 @@ namespace Util.XamariN.Components
             propertyName: "SelectedText",
             returnType: typeof(string),
             declaringType: typeof(BindableRadioGroupView),
+            defaultBindingMode: BindingMode.TwoWay,
             defaultValue: null,
             propertyChanged: selectedTextPropertyChanged
         );
@@ -266,6 +269,7 @@ namespace Util.XamariN.Components
             propertyName: "SelectedIndex"
             , returnType: typeof(int)
             , declaringType: typeof(BindableRadioGroupView)
+            , defaultBindingMode: BindingMode.TwoWay
             , defaultValue: -1
         // , propertyChanged: selectedIndexPropertyChanged
         );
@@ -298,8 +302,9 @@ namespace Util.XamariN.Components
         (
             propertyName: "SelectedNo",
             returnType: typeof(string),
-            defaultValue: "0",
             declaringType: typeof(BindableRadioGroupView),
+            defaultBindingMode: BindingMode.TwoWay,
+            defaultValue: "0",
             propertyChanged: selectedNoPropertyChanged
         );
 
@@ -328,7 +333,7 @@ namespace Util.XamariN.Components
 
         #region DisplayPath
 
-        public static readonly BindableProperty DisplayPathProperty = BindableProperty.Create
+        public static BindableProperty DisplayPathProperty = BindableProperty.Create
         (
             propertyName: "DisplayPath",
             returnType: typeof(string),
@@ -363,7 +368,7 @@ namespace Util.XamariN.Components
         // UI
         #region FontSizeProperty
 
-        public static readonly BindableProperty FontSizeProperty = BindableProperty.Create
+        public static BindableProperty FontSizeProperty = BindableProperty.Create
         (
             propertyName: "FontSize",
             returnType: typeof(double),
@@ -394,7 +399,7 @@ namespace Util.XamariN.Components
 
         #region FontAttributesProperty
 
-        public static readonly BindableProperty FontAttributesProperty = BindableProperty.Create
+        public static BindableProperty FontAttributesProperty = BindableProperty.Create
         (
             propertyName: "FontAttributes",
             returnType: typeof(string),
@@ -422,17 +427,18 @@ namespace Util.XamariN.Components
 
         #region TextColor
 
-        public static readonly BindableProperty TextColorProperty = BindableProperty.Create
+        public static BindableProperty TextColorProperty = BindableProperty.Create
         (
             propertyName: "TextColor",
-            returnType: typeof(string),
+            returnType: typeof(Xamarin.Forms.Color),
             declaringType: typeof(BindableRadioGroupView),
+            defaultValue: Xamarin.Forms.Color.Black,
             propertyChanged: textColorPropertyChanged
         );
 
-        public string TextColor
+        public Xamarin.Forms.Color TextColor
         {
-            get { return (string)GetValue(TextColorProperty); }
+            get { return (Xamarin.Forms.Color)GetValue(TextColorProperty); }
             set { SetValue(TextColorProperty, value); }
         }
 
@@ -441,7 +447,7 @@ namespace Util.XamariN.Components
             BindableRadioGroupView target = bindable as BindableRadioGroupView;
             foreach (BindableRadioButton btn in target.radioButtons)
             {
-                btn.TextColor = newValue.ToString();
+                btn.TextColor = (Xamarin.Forms.Color)newValue;
             }
         }
 
@@ -449,17 +455,18 @@ namespace Util.XamariN.Components
 
         #region CheckBoxColor
 
-        public static readonly BindableProperty CheckBoxColorProperty = BindableProperty.Create
+        public static BindableProperty CheckBoxColorProperty = BindableProperty.Create
         (
             propertyName: "CheckBoxColor",
-            returnType: typeof(string),
+            returnType: typeof(Xamarin.Forms.Color),
             declaringType: typeof(BindableRadioGroupView),
+            defaultValue: Xamarin.Forms.Color.Red,
             propertyChanged: CheckBoxColorPropertyChanged
         );
 
-        public string CheckBoxColor
+        public Xamarin.Forms.Color CheckBoxColor
         {
-            get { return (string)GetValue(CheckBoxColorProperty); }
+            get { return (Xamarin.Forms.Color)GetValue(CheckBoxColorProperty); }
             set { SetValue(CheckBoxColorProperty, value); }
         }
 
@@ -468,7 +475,7 @@ namespace Util.XamariN.Components
             BindableRadioGroupView target = bindable as BindableRadioGroupView;
             foreach (BindableRadioButton btn in target.radioButtons)
             {
-                btn.CheckBoxColor = newValue.ToString();
+                btn.CheckBoxColor = (Xamarin.Forms.Color)newValue;
             }
         }
 
@@ -476,7 +483,7 @@ namespace Util.XamariN.Components
 
         #region CheckBoxMargin
 
-        public static readonly BindableProperty CheckBoxMarginProperty = BindableProperty.Create
+        public static BindableProperty CheckBoxMarginProperty = BindableProperty.Create
         (
             propertyName: "CheckBoxMargin",
             returnType: typeof(string),
@@ -503,7 +510,7 @@ namespace Util.XamariN.Components
 
         #region LabelMargin
 
-        public static readonly BindableProperty LabelMarginProperty = BindableProperty.Create
+        public static BindableProperty LabelMarginProperty = BindableProperty.Create
         (
             propertyName: "LabelMargin",
             returnType: typeof(string),
