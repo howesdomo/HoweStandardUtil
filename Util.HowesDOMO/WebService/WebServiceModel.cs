@@ -138,7 +138,7 @@ namespace Util.WebService
         {
             r.IsComplete = true;
             r.IsSuccess = false;
-            r.BusinessExceptionInfo = ex.Message;
+            r.BusinessExceptionInfo = ex.GetInfo();
         }
 
     }
