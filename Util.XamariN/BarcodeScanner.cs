@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Util.XamariN
+namespace Client.Common
 {
-    public class BarcodeScannerEvents
+    public partial class BarcodeScanner
     {
         public static EventHandler<BarcodeScanModel> BarcodeScanEvent;
 
-        public static void OnBarcodeScan(BarcodeScanModel args)
+        public static void OnBarcodeScan(object sender, BarcodeScanModel args)
         {
             if (BarcodeScanEvent != null)
             {
-                BarcodeScannerEvents.BarcodeScanEvent.Invoke(null, args);
+                BarcodeScanner.BarcodeScanEvent.Invoke(sender, args);
             }
         }
     }
 
-    public class BarcodeScanModel : EventArgs
+    public partial class BarcodeScanModel : EventArgs
     {
         public BarcodeScanModel
         (
