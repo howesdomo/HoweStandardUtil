@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.7
+    /// Receive 方法中增加对 Socket 状态的判断
+    /// 
     /// V 1.0.6
     /// 1 优化标准接收时清理空出来的Byte
     /// 2 增强校验, 发送信息前校验服务状态
@@ -352,6 +355,8 @@ namespace Util.Web
             {
                 obj.TcpClient_AutoSetEvent.Reset();
 
+                if (obj.TcpClient.Client.IsConnectedAdv() == false) { break; }
+
                 new Task(() =>
                 {
                     string receiveMsg = string.Empty;
@@ -367,6 +372,9 @@ namespace Util.Web
                         {
                             receiveMsg = obj.TcpClient.Receive(mReceiveEncoding ?? Encoding.UTF8);
                         }
+
+                        // 接收到的内容全是\0, 马上检验当前Socket状态
+                        if (receiveMsg.IsNullOrWhiteSpace() == true && obj.TcpClient.Client.IsConnectedAdv() == false) { return; }
 
                         DateTime receiveDateTime = DateTime.Now;
                         onStatusChange($"从[{obj.TcpClient.Client.RemoteEndPoint}]接收到信息, 信息长度{receiveMsg.Length}, 信息内容:\r\n{receiveMsg}", Util.UIModel.ConsoleMsgType.INFO, receiveDateTime);

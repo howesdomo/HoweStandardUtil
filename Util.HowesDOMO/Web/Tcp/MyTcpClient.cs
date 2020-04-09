@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.7
+    /// Receive 方法中增加对 Socket 状态的判断
+    /// 
     /// V 1.0.6
     /// 1 增加属性 IsConnectServer
     /// 2 修复BUG 当服务器未开启服务时, 执行 Start() 方法报错捕获
@@ -176,9 +179,28 @@ namespace Util.Web
         {
             while (mContinue)
             {
+                if (mTcpClient.Client.IsConnectedAdv() == false) { break; }
+
                 try
                 {
-                    string receiveMsg = mTcpClient.Receive(); // 自定义扩展方法
+                    string receiveMsg = string.Empty;
+                    if (mIsStandardReceive) // 标准接收方式
+                    {
+                        receiveMsg = mTcpClient.StandardReceive();
+                    }
+                    else // Howe 自定义接收方式
+                    {
+                        receiveMsg = mTcpClient.Receive();
+                    }
+
+                    // 由于无法提前知晓信息长度, 故需要处理多出来的 \0
+                    receiveMsg = receiveMsg.Trim('\0');
+
+                    if (receiveMsg.IsNullOrWhiteSpace() == true && mTcpClient.Client.IsConnectedAdv() == false)
+                    {
+                        throw new Exception("与服务器已断开连接（可能是服务端已停止服务）");
+                    }
+
                     DateTime receiveDateTime = DateTime.Now;
                     onStatusChange(msg: $"接收到的信息:{receiveMsg}", entryTime: receiveDateTime);
                     onReceiveText(new TcpXxxEventArgs(receiveMsg, mTcpClient.Client.RemoteEndPoint.ToString(), receiveDateTime));
@@ -243,6 +265,9 @@ namespace Util.Web
             while (mContinue)
             {
                 mTcpListen_AutoSetEvent.Reset();
+
+                if (mTcpClient.Client.IsConnectedAdv() == false) { break; }
+
                 try
                 {
                     NetworkStream stream = mTcpClient.GetStream();
