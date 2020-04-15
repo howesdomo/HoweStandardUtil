@@ -239,6 +239,30 @@ namespace Util.Web
             strBuffer = null;
         }
 
+        /// <summary>
+        /// 标准发送
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="toSend">发送内容</param>
+        public static void StandardSend(System.Net.Sockets.TcpClient tcpClient, byte[] toSend)
+        {
+            if (tcpClient == null)
+            {
+                return;
+            }
+
+            if (tcpClient.Connected == false)
+            {
+                return;
+            }
+
+            System.Net.Sockets.NetworkStream ns = tcpClient.GetStream();
+
+            ns.Write(toSend, 0, toSend.Length);
+
+            toSend = null;
+        }
+
         #endregion
     }
 }

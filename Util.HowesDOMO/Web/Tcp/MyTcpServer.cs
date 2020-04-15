@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.8
+    /// StartServer 指定IP地址的情况下, 增加2个成功校验的情况 ( localhost 与 127.0.0.1 )
+    /// 
     /// V 1.0.7
     /// Receive 方法中增加对 Socket 状态的判断
     /// 
@@ -147,7 +150,14 @@ namespace Util.Web
 
                 if (ip == null)
                 {
-                    throw new ArgumentNullException($"输入IP地址有误。{argsIP} 不在 Dns.GetHostName() 返回结果中");
+                    if (argsIP == "localhost" || argsIP == "127.0.0.1")
+                    {
+                        ip = IPAddress.Parse(argsIP);
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException($"输入IP地址有误。{argsIP} 不在 Dns.GetHostName() 返回结果中");
+                    }
                 }
             }
 
@@ -445,6 +455,30 @@ namespace Util.Web
                 countSendClient = countSendClient + 1;
             }
             onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息:{sendContent}");
+        }
+
+        public void StandardSend(byte[] byteArr)
+        {
+            if (this.IsServerStart == false)
+            {
+                onStatusChange("Server服务未启动", UIModel.ConsoleMsgType.ERROR);
+                return;
+            }
+
+            int countSendClient = 0;
+            foreach (var item in mRemoteClientLinkedList)
+            {
+                var tcpClient = item.TcpClient;
+                if (tcpClient.Client.IsConnectedAdv() == false)
+                {
+                    return;
+                }
+
+                tcpClient.StandardSend(byteArr); // 自定义扩展方法
+                countSendClient = countSendClient + 1;
+            }
+            // onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息:{sendContent}"); // TODO
+            onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息"); // TODO
         }
 
         #region 定时器

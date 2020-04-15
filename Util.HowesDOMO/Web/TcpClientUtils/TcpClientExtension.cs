@@ -50,5 +50,16 @@ namespace System.Net.Sockets
         {
             Util.Web.TcpClientUtils.StandardSend(tcpClient, toSend, encoding);
         }
+
+        /// <summary>
+        /// 标准发送
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="toSend">发送内容</param>
+        /// <param name="encoding">默认UTF-8</param>
+        public static void StandardSend(this System.Net.Sockets.TcpClient tcpClient, byte[] byteArr)
+        {
+            Util.Web.TcpClientUtils.StandardSend(tcpClient, byteArr);
+        }
     }
 }
