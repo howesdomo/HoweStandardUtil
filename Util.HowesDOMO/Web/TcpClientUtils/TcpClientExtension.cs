@@ -30,6 +30,17 @@ namespace System.Net.Sockets
         }
 
         /// <summary>
+        /// 发送
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="toSend">发送内容</param>
+        /// <param name="encoding">默认UTF-8</param>
+        public static void Send(this System.Net.Sockets.TcpClient tcpClient, byte[] toSend)
+        {
+            Util.Web.TcpClientUtils.Send(tcpClient, toSend);
+        }
+
+        /// <summary>
         /// 标准接收
         /// </summary>
         /// <param name="tcpClient"></param>

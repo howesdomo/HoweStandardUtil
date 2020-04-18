@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.9
+    /// 1 服务器发送信息优化为 并行foreach
+    /// 2 增加 Send byte[]
+    /// 3 发送信息增加参数 isShowSendContent
+    /// 4 TaskReceive 设置为 LongRunning
+    /// 
     /// V 1.0.8
     /// StartServer 指定IP地址的情况下, 增加2个成功校验的情况 ( localhost 与 127.0.0.1 )
     /// 
@@ -269,7 +275,7 @@ namespace Util.Web
             onStatusChange(msg);
 
             // 创建线程循环接收客户端发送的数据
-            Task taskReceive = new Task(() => Receive(new StateObject(remoteClient)));
+            Task taskReceive = new Task(() => Receive(new StateObject(remoteClient)), TaskCreationOptions.LongRunning);
             taskReceive.ContinueWith((task) =>
             {
                 if (task.Exception != null)
@@ -410,40 +416,85 @@ namespace Util.Web
             }
         }
 
-        public void Send(string sendContent)
+        public void Send(string sendContent, bool isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
-                onStatusChange("Server服务未启动", Util.UIModel.ConsoleMsgType.ERROR);
+                onStatusChange("Server服务未启动", UIModel.ConsoleMsgType.ERROR);
                 return;
             }
 
             int countSendClient = 0;
-            foreach (var item in mRemoteClientLinkedList)
+            Parallel.ForEach(mRemoteClientLinkedList, item =>
             {
                 var tcpClient = item.TcpClient;
 
                 if (tcpClient.Client.IsConnectedAdv() == false)
                 {
-                    continue;
+                    return;
                 }
 
                 tcpClient.Send(sendContent, mSendEncoding ?? Encoding.UTF8); // 自定义扩展方法
                 countSendClient = countSendClient + 1;
+            });
+
+            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
+            if (isShowSendContent == true)
+            {
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
             }
-            onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息:{sendContent}");
+            else
+            {
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{sendContent.Length}";
+            }
+            onStatusChange(statusChangeMsg);
         }
 
-        public void StandardSend(string sendContent)
+        public void Send(byte[] byteArr, bool isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
-                onStatusChange("Server服务未启动", Util.UIModel.ConsoleMsgType.ERROR);
+                onStatusChange("Server服务未启动", UIModel.ConsoleMsgType.ERROR);
                 return;
             }
 
             int countSendClient = 0;
-            foreach (var item in mRemoteClientLinkedList)
+            Parallel.ForEach(mRemoteClientLinkedList, item =>
+            {
+                var tcpClient = item.TcpClient;
+
+                if (tcpClient.Client.IsConnectedAdv() == false)
+                {
+                    return;
+                }
+
+                tcpClient.Send(byteArr); // 自定义扩展方法
+                countSendClient = countSendClient + 1;
+            });
+
+            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
+            if (isShowSendContent == true)
+            {
+                var sendContent = (mSendEncoding ?? Encoding.UTF8).GetString(byteArr);
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
+            }
+            else
+            {
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{byteArr.Length}";
+            }
+            onStatusChange(statusChangeMsg);
+        }
+
+        public void StandardSend(string sendContent, bool isShowSendContent = false)
+        {
+            if (this.IsServerStart == false)
+            {
+                onStatusChange("Server服务未启动", UIModel.ConsoleMsgType.ERROR);
+                return;
+            }
+
+            int countSendClient = 0;
+            Parallel.ForEach(mRemoteClientLinkedList, item =>
             {
                 var tcpClient = item.TcpClient;
                 if (tcpClient.Client.IsConnectedAdv() == false)
@@ -453,11 +504,21 @@ namespace Util.Web
 
                 tcpClient.StandardSend(sendContent, mSendEncoding ?? Encoding.UTF8); // 自定义扩展方法
                 countSendClient = countSendClient + 1;
+            });
+
+            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
+            if (isShowSendContent == true)
+            {
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
             }
-            onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息:{sendContent}");
+            else
+            {
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{sendContent.Length}";
+            }
+            onStatusChange(statusChangeMsg);
         }
 
-        public void StandardSend(byte[] byteArr)
+        public void StandardSend(byte[] byteArr, bool isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
@@ -466,7 +527,7 @@ namespace Util.Web
             }
 
             int countSendClient = 0;
-            foreach (var item in mRemoteClientLinkedList)
+            Parallel.ForEach(mRemoteClientLinkedList, item =>
             {
                 var tcpClient = item.TcpClient;
                 if (tcpClient.Client.IsConnectedAdv() == false)
@@ -474,11 +535,21 @@ namespace Util.Web
                     return;
                 }
 
-                tcpClient.StandardSend(byteArr); // 自定义扩展方法
+                tcpClient.StandardSend(byteArr);
                 countSendClient = countSendClient + 1;
+            });
+
+            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
+            if (isShowSendContent == true)
+            {
+                var sendContent = (mSendEncoding ?? Encoding.UTF8).GetString(byteArr);
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
             }
-            // onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息:{sendContent}"); // TODO
-            onStatusChange($"Send:向 {countSendClient} 个客户端发送信息\r\n发送信息"); // TODO
+            else
+            {
+                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{byteArr.Length}";
+            }
+            onStatusChange(statusChangeMsg);
         }
 
         #region 定时器

@@ -164,6 +164,35 @@ namespace Util.Web
             buffer = null;
         }
 
+        /// <summary>
+        /// 发送
+        /// </summary>
+        /// <param name="tcpClient"></param>
+        /// <param name="toSend">发送内容</param>
+        /// <param name="encoding">默认UTF-8</param>
+        public static void Send(System.Net.Sockets.TcpClient tcpClient, byte[] toSend)
+        {
+            if (tcpClient == null)
+            {
+                return;
+            }
+
+            if (tcpClient.Connected == false)
+            {
+                return;
+            }
+
+            System.Net.Sockets.NetworkStream ns = tcpClient.GetStream();
+
+            // 发送
+            TcpClientModel socketModel = new Util.Web.TcpClientModel();
+            socketModel.Content = toSend;
+            byte[] buffer = socketModel.ToByteArray();
+            ns.Write(buffer, 0, buffer.Length);
+
+            buffer = null;
+        }
+
         #region 标准接收&发送
 
         /// <summary>
