@@ -21,7 +21,7 @@ namespace Util.XamariN.AndroiD
     {
         private static object _LOCK_ = new object();
 
-        public static int Bluetooth_RequestCode = 8766; // Blue
+        public const int Bluetooth_RequestCode = 8766; // Blue
 
         private BluetoothSocket mBluetoothSocket { get; set; } = null;
 

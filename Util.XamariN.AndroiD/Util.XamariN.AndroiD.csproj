@@ -53,6 +53,8 @@
     <Compile Include="Essentials\VersionTrackUtils.cs" />
     <Compile Include="MyAndroidAssetsUtils.cs" />
     <Compile Include="MyAndroidIntentUtils.cs" />
+    <Compile Include="MyAndroidScreenRecord.cs" />
+    <Compile Include="MyAndroidScreenshot.cs" />
     <Compile Include="MyAudioPlayer.cs" />
     <Compile Include="MyBluetooth.cs" />
     <Compile Include="MyAndroidPermission.cs" />

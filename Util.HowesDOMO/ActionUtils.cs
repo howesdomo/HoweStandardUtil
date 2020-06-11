@@ -108,7 +108,7 @@ namespace Util.ActionUtils
     }
 
     /// <summary>
-    /// 连续的多次调用，只有在调用停止之后的一段时间内不再调用，然后才执行一次处理过程。
+    /// 连续的多次调用，只有在调用停止之后的一段时间(指定间隔时间)内不再调用，然后才执行一次处理过程。
     /// </summary>
     public class DebounceAction
     {

@@ -15,7 +15,7 @@ namespace Util.XamariN.AndroiD
 {
     public class MyTTS : Activity, Util.XamariN.ITTS, TextToSpeech.IOnInitListener
     {
-        public static int TTS_RequestCode = 775;
+        public const int TTS_RequestCode = 775;
 
         // 成功启动 TTS
         private bool mTTS_Init_Success = false;
