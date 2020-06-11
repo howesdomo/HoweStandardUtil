@@ -13,6 +13,8 @@ using Android.Widget;
 namespace Util.XamariN.AndroiD
 {
     /// <summary>
+    /// 弃用 请使用 Xamarin.Essentials.Permissions 进行授权
+    /// 
     /// V 1.0.2 - 2019-9-20 11:06:50
     /// 对于 [对于多个授权操作, 采用分别逐个权限申请] 做法测试效果不理想
     /// 
@@ -24,6 +26,7 @@ namespace Util.XamariN.AndroiD
     /// V 1.0.0 
     /// 首次创建安卓授权接口的实现
     /// </summary>
+    [Obsolete]
     public class MyAndroidPermission : Util.XamariN.IAndroidPermission
     {
         private Android.App.Activity mAppActivity { get; set; }
@@ -256,6 +259,7 @@ namespace Util.XamariN.AndroiD
         #endregion
     }
 
+    [Obsolete]
     public class MyPermissionModel
     {
         public string Name { get; set; }

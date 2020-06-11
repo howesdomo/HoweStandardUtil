@@ -7,6 +7,9 @@ using System.Text;
 namespace Util.XamariN.AndroiD
 {
     /// <summary>
+    /// V 1.0.3 - 2020-06-11 17:01:44
+    /// 增强录屏设置 Audio 逻辑, 当前没有录音权限则不对录音进行配置
+    /// 
     /// V 1.0.2 - 2020-06-11 14:00:02
     /// 增加接口逻辑, 使 Client 端更方便地使用
     /// 
@@ -212,9 +215,16 @@ namespace Util.XamariN.AndroiD
         {
             mMediaRecorder = new Android.Media.MediaRecorder();
 
-            // 遇到的坑 -- 用户权限没有赋予 Mic 会报错 "setAudioSource failed." // TODO 界面处统一开启权限
-            // mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mMediaRecorder.SetAudioSource(Android.Media.AudioSource.Mic);
+            // 遇到的坑 -- 用户权限没有赋予 Mic 会报错 "setAudioSource failed.", 故此处进行判断是否含有麦克风权限
+            if (Xamarin.Essentials.DeviceInfo.Version.Major >= 6)
+            {
+                Android.Content.PM.Permission permission = mAppActivity.CheckSelfPermission("RECORD_AUDIO");
+                if (permission == Android.Content.PM.Permission.Granted)
+                {
+                    // mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    mMediaRecorder.SetAudioSource(Android.Media.AudioSource.Mic);
+                }
+            }
 
             // mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
             mMediaRecorder.SetVideoSource(Android.Media.VideoSource.Surface);

@@ -16,6 +16,21 @@ namespace Util.XamariN
         /// </summary>
         void PlayError();
 
+        /// <summary>
+        /// 默认音效 警告
+        /// </summary>
+        void PlayWarn();
+
+        /// <summary>
+        /// 默认音效 拍照声
+        /// </summary>
+        void PlayTakePhoto();
+
+        /// <summary>
+        /// 默认音效 截图声
+        /// </summary>
+        void PlayScreenshot();
+
 
 
         /// <summary>

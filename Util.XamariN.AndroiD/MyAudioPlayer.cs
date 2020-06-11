@@ -12,6 +12,13 @@ using Android.Widget;
 
 namespace Util.XamariN.AndroiD
 {
+    /// <summary>
+    /// V 1.0.1 - 2020-06-11 17:34:39
+    /// 增加3个常驻音效
+    /// 
+    /// V 1.0.0
+    /// 首次创建
+    /// </summary>
     public class MyAudioPlayer : Util.XamariN.IAudioPlayer
     {
         #region 构造函数 + 单例模式
@@ -238,7 +245,8 @@ namespace Util.XamariN.AndroiD
 
                 if (mPlayer_SoundEffect_Beep == null)
                 {
-                    mPlayer_SoundEffect_Beep = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.beep);
+                    // mPlayer_SoundEffect_Beep = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.beep);
+                    mPlayer_SoundEffect_Beep = Android.Media.MediaPlayer.Create(Xamarin.Essentials.Platform.AppContext, Resource.Raw.beep);                    
                 }
 
                 mPlayer_SoundEffect_Beep.SetVolume(mEffectsVolume, mEffectsVolume);
@@ -259,7 +267,8 @@ namespace Util.XamariN.AndroiD
 
                 if (mPlayer_SoundEffect_Error == null)
                 {
-                    mPlayer_SoundEffect_Error = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.error);
+                    // mPlayer_SoundEffect_Error = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.error);
+                    mPlayer_SoundEffect_Error = Android.Media.MediaPlayer.Create(Xamarin.Essentials.Platform.AppContext, Resource.Raw.error);
                 }
 
                 mPlayer_SoundEffect_Error.SetVolume(mEffectsVolume, mEffectsVolume);
@@ -267,6 +276,71 @@ namespace Util.XamariN.AndroiD
             }
         }
 
+        private Android.Media.MediaPlayer mPlayer_SoundEffect_Warn { get; set; }
+
+        public void PlayWarn()
+        {
+            lock (_LOCK_)
+            {
+                if (mIsEffectsOn == false)
+                {
+                    return;
+                }
+
+                if (mPlayer_SoundEffect_Warn == null)
+                {
+                    // mPlayer_SoundEffect_Warn = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.warn);
+                    mPlayer_SoundEffect_Warn = Android.Media.MediaPlayer.Create(Xamarin.Essentials.Platform.AppContext, Resource.Raw.warn);                    
+                }
+
+                mPlayer_SoundEffect_Warn.SetVolume(mEffectsVolume, mEffectsVolume);
+                mPlayer_SoundEffect_Warn.Start();
+            }
+        }
+
+        private Android.Media.MediaPlayer mPlayer_SoundEffect_TakePhoto { get; set; }
+
+        public void PlayTakePhoto()
+        {
+            lock (_LOCK_)
+            {
+                if (mIsEffectsOn == false)
+                {
+                    return;
+                }
+
+                if (mPlayer_SoundEffect_TakePhoto == null)
+                {
+                    // mPlayer_SoundEffect_TakePhoto = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.takephoto);
+                    mPlayer_SoundEffect_TakePhoto = Android.Media.MediaPlayer.Create(Xamarin.Essentials.Platform.AppContext, Resource.Raw.takephoto);
+                }
+
+                mPlayer_SoundEffect_TakePhoto.SetVolume(mEffectsVolume, mEffectsVolume);
+                mPlayer_SoundEffect_TakePhoto.Start();
+            }
+        }
+
+        private Android.Media.MediaPlayer mPlayer_SoundEffect_Screenshot { get; set; }
+
+        public void PlayScreenshot()
+        {
+            lock (_LOCK_)
+            {
+                if (mIsEffectsOn == false)
+                {
+                    return;
+                }
+
+                if (mPlayer_SoundEffect_Screenshot == null)
+                {
+                    // mPlayer_SoundEffect_Screenshot = Android.Media.MediaPlayer.Create((Activity)Xamarin.Forms.Forms.Context, Resource.Raw.screenshot);
+                    mPlayer_SoundEffect_Screenshot = Android.Media.MediaPlayer.Create(Xamarin.Essentials.Platform.AppContext, Resource.Raw.screenshot);
+                }
+
+                mPlayer_SoundEffect_Screenshot.SetVolume(mEffectsVolume, mEffectsVolume);
+                mPlayer_SoundEffect_Screenshot.Start();
+            }
+        }
 
     }
 }
