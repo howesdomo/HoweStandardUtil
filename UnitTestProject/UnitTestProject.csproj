@@ -35,6 +35,7 @@
     <ProjectReference Include="..\Util.Data_SQLite\Util.Data_SQLite.csproj" />
     <ProjectReference Include="..\Util.Excel.Aspose\Util.Excel.Aspose.csproj" />
     <ProjectReference Include="..\Util.HowesDOMO\Util.HowesDOMO.csproj" />
+    <ProjectReference Include="..\Util.Web\Util.Web.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,9 @@ using System.Text;
 namespace Util.XamariN.AndroiD
 {
     /// <summary>
+    /// V 1.0.2 - 2020-6-12 16:35:54
+    /// 截图成功后, 返回文件保存路径
+    /// 
     /// V 1.0.1 - 2020-06-11 13:50:58
     /// 增加接口逻辑, 使 Client 端更方便地使用
     /// 
@@ -136,14 +139,14 @@ namespace Util.XamariN.AndroiD
         /// </summary>
         /// <param name="imageFileDateTime">时间参数 - 屏幕截图文件名命名规则所需</param>
         /// <param name="dirName">屏幕截图保存文件夹名称</param>
-        public void OnScreenshot(DateTime? imageFileDateTime, string dirName = "")
+        public System.IO.FileInfo OnScreenshot(DateTime? imageFileDateTime, string dirName = "")
         {
             if (s_IsRunning.Get() == true)
             {
                 string msg = "正在进行截屏, 无法再多开一个";
                 System.Diagnostics.Debug.WriteLine(msg);
                 showToast(msg);
-                return;
+                return null;
             }
 
             s_IsRunning.Set(true);
@@ -153,6 +156,8 @@ namespace Util.XamariN.AndroiD
 
             Android.Content.Intent intent = mProjectionManager.CreateScreenCaptureIntent();
             mAppActivity.StartActivityForResult(intent, s_Screenshot_Request_Code);
+
+            return MyAndroidScreenshot.GetScreenshotFileInfo(mImageFileDateTime, mDirName);
         }
 
         public void Screenshot_ActualMethod(Android.App.Result resultCode, Android.Content.Intent data)
@@ -281,7 +286,7 @@ namespace Util.XamariN.AndroiD
 
         #region 实现接口方法 - OnScreenshotFromActivity
 
-        public void OnScreenshotFromActivity(DateTime? imageFileDateTime = null, string dirName = "")
+        public System.IO.FileInfo OnScreenshotFromActivity(DateTime? imageFileDateTime = null, string dirName = "")
         {
             mImageFileDateTime = imageFileDateTime;
             mDirName = dirName;
@@ -339,6 +344,8 @@ namespace Util.XamariN.AndroiD
             string msg = "成功保存屏幕截图";
             System.Diagnostics.Debug.WriteLine(msg);
             showToast(msg);
+
+            return imagefileInfo;
         }
 
         #endregion

@@ -7,10 +7,16 @@ using System.Text;
 namespace Util.XamariN.AndroiD
 {
     /// <summary>
-    /// V 1.0.3 - 2020-06-11 17:01:44
+    /// V 1.0.4 - 2020-06-16 11:11:39
+    /// 修复保存路径Bug
+    /// 
+    /// V 1.0.3 - 2020-06-12 16:35:12
+    /// 开始录制执行成功后 返回保存文件路径
+    /// 
+    /// V 1.0.2 - 2020-06-11 17:01:44
     /// 增强录屏设置 Audio 逻辑, 当前没有录音权限则不对录音进行配置
     /// 
-    /// V 1.0.2 - 2020-06-11 14:00:02
+    /// V 1.0.1 - 2020-06-11 14:00:02
     /// 增加接口逻辑, 使 Client 端更方便地使用
     /// 
     /// V 1.0.0 - 2020-06-09 18:51:40
@@ -102,7 +108,11 @@ namespace Util.XamariN.AndroiD
             private set;
         }
 
-        private Android.Media.MediaRecorder mMediaRecorder { get; set; }
+        public Android.Media.MediaRecorder mMediaRecorder
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// 录制视频帧率 默认值30
@@ -141,14 +151,14 @@ namespace Util.XamariN.AndroiD
         /// </summary>
         /// <param name="imageFileDateTime">时间参数 - 屏幕截图文件名命名规则所需</param>
         /// <param name="dirName">屏幕截图保存文件夹名称</param>
-        public void StartRecord(DateTime? imageFileDateTime = null, string dirName = "")
+        public FileInfo StartRecord(DateTime? imageFileDateTime = null, string dirName = "")
         {
             if (s_IsRunning.Get() == true)
             {
                 string msg = "正在进行录屏, 无法再多开一个";
                 System.Diagnostics.Debug.WriteLine(msg);
                 showToast(msg);
-                return;
+                return null;
             }
 
             s_IsRunning.Set(true);
@@ -158,6 +168,8 @@ namespace Util.XamariN.AndroiD
 
             Android.Content.Intent intent = mProjectionManager.CreateScreenCaptureIntent();
             mAppActivity.StartActivityForResult(intent, s_ScreenRecord_Request_Code);
+
+            return MyAndroidScreenRecord.GetScreenVideoFileInfo(mImageFileDateTime, dirName);
         }
 
         /// <summary>
@@ -178,7 +190,7 @@ namespace Util.XamariN.AndroiD
             }
 
             // System.Threading.Thread.Sleep(500); // 以防截取到授权窗口，停顿 500 ms
-            System.Threading.Thread.Sleep(1000); // 以防截取到授权窗口，停顿 500 ms
+            System.Threading.Thread.Sleep(1000);
 
             mProjection = mProjectionManager.GetMediaProjection((int)resultCode, data); // ok = -1
 
@@ -188,13 +200,12 @@ namespace Util.XamariN.AndroiD
             int height = displayMetrics.HeightPixels;
 
             initRecorder(width, height);
-
             mDisplay = mProjection.CreateVirtualDisplay
             (
                 name: "MyAndroidScreenRecord",
                 width: width,
                 height: height,
-                dpi: (int)Android.Util.DisplayMetricsDensity.Medium,
+                dpi: (int)Android.Util.DisplayMetricsDensity.Medium, // TODO Dpi
 
                 // DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, // TODO Xamarin.Android 中没有此参数
                 flags: Android.Views.DisplayFlags.Presentation,
@@ -208,7 +219,10 @@ namespace Util.XamariN.AndroiD
             System.Diagnostics.Debug.WriteLine(msg);
             // showToast(msg); // 不显示开始信息, 更好地进行录像
 
-            mMediaRecorder.Start();
+            //Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(() =>
+            //{
+                mMediaRecorder.Start();
+            //});
         }
 
         private void initRecorder(int width, int height)
@@ -218,7 +232,7 @@ namespace Util.XamariN.AndroiD
             // 遇到的坑 -- 用户权限没有赋予 Mic 会报错 "setAudioSource failed.", 故此处进行判断是否含有麦克风权限
             if (Xamarin.Essentials.DeviceInfo.Version.Major >= 6)
             {
-                Android.Content.PM.Permission permission = mAppActivity.CheckSelfPermission("RECORD_AUDIO");
+                Android.Content.PM.Permission permission = mAppActivity.CheckSelfPermission(Android.Manifest.Permission.RecordAudio);
                 if (permission == Android.Content.PM.Permission.Granted)
                 {
                     // mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -234,7 +248,7 @@ namespace Util.XamariN.AndroiD
 
             // mediaRecorder.setOutputFile(getsaveDirectory() + System.currentTimeMillis() + ".mp4");
             // 遇到的坑 -- 目录没有创建会报出 Java.IO.FileNotFoundException, 要先判断 Dir 是否存在, 不存在则进行创建
-            var mp4FileInfo = MyAndroidScreenRecord.GetScreenVideoFileInfo();
+            var mp4FileInfo = MyAndroidScreenRecord.GetScreenVideoFileInfo(mImageFileDateTime, mDirName);
             if (mp4FileInfo.Directory.Exists == false)
             {
                 mp4FileInfo.Directory.Create();
@@ -248,8 +262,16 @@ namespace Util.XamariN.AndroiD
             // mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mMediaRecorder.SetVideoEncoder(Android.Media.VideoEncoder.H264);
 
-            // mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            mMediaRecorder.SetAudioEncoder(Android.Media.AudioEncoder.AmrNb);
+            // 遇到的坑 -- 用户权限没有赋予 Mic 会报错 "setAudioSource failed.", 故此处进行判断是否含有麦克风权限
+            if (Xamarin.Essentials.DeviceInfo.Version.Major >= 6)
+            {
+                Android.Content.PM.Permission permission = mAppActivity.CheckSelfPermission(Android.Manifest.Permission.RecordAudio);
+                if (permission == Android.Content.PM.Permission.Granted)
+                {
+                    // mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    mMediaRecorder.SetAudioEncoder(Android.Media.AudioEncoder.AmrNb);
+                }
+            }
 
             // mediaRecorder.setVideoEncodingBitRate(5 * 1024 * 1024);
             mMediaRecorder.SetVideoEncodingBitRate(5 * 1024 * 1024);
@@ -280,7 +302,9 @@ namespace Util.XamariN.AndroiD
             if (mMediaRecorder != null)
             {
                 mMediaRecorder.Stop();
-                mMediaRecorder.Reset();
+                // mMediaRecorder.Reset();
+                mMediaRecorder.Release();
+                mMediaRecorder = null;
             }
 
             if (mDisplay != null)

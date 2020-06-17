@@ -5,6 +5,9 @@ using System.Text;
 namespace Util.XamariN
 {
     /// <summary>
+    /// V 1.0.2 - 2020-6-12 16:35:54
+    /// 截图成功后, 返回文件保存路径
+    /// 
     /// V 1.0.1 - 2020-06-11 13:50:58
     /// 增加接口逻辑, 使 Client 端更方便地使用
     /// 
@@ -18,14 +21,16 @@ namespace Util.XamariN
         /// </summary>
         /// <param name="imageFileDateTime">时间参数 - 屏幕截图文件名命名规则所需</param>
         /// <param name="dirName">屏幕截图保存文件夹名称</param>
-        void OnScreenshot(DateTime? imageFileDateTime = null, string dirName = "");
+        /// <returns></returns>
+        System.IO.FileInfo OnScreenshot(DateTime? imageFileDateTime = null, string dirName = "");
 
         /// <summary>
         /// 截取屏幕图片
         /// </summary>
         /// <param name="imageFileDateTime">时间参数 - 屏幕截图文件名命名规则所需</param>
         /// <param name="dirName">屏幕截图保存文件夹名称</param>
-        void OnScreenshotFromActivity(DateTime? imageFileDateTime = null, string dirName = "");
+        /// <returns></returns>
+        System.IO.FileInfo OnScreenshotFromActivity(DateTime? imageFileDateTime = null, string dirName = "");
 
         /// <summary>
         /// 设置静默模式
