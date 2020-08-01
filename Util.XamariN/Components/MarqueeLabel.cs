@@ -70,7 +70,7 @@ namespace Util.XamariN.Components
             {
                 return false;
             }
-            // throw new Exception("每秒阅读字数不能小于1");
+            
             return v > 0 ? true : false;
         }
 
