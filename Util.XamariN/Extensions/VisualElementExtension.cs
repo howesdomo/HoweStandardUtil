@@ -9,7 +9,7 @@ namespace Xamarin.Forms
     /// V 1.0.0 - 2020-08-02 16:32:14
     /// 补充动画扩展方法
     /// </summary>
-    public static class VisualElementExtensions
+    public static class VisualElementExtension
     {
         #region Animation ColorTo (动画变换颜色)
 
