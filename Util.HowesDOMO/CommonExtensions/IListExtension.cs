@@ -5,6 +5,9 @@ using System.Text;
 namespace System.Collections
 {
     /// <summary>
+    /// V 1.0.1 - 2020-08-13 14:31:25
+    /// 增加 ToList T 方法
+    /// 
     /// V 1.0.0 - 2020-07-21 15:41:22
     /// 首次创建
     /// </summary>
@@ -51,6 +54,18 @@ namespace System.Collections
             }
 
             IList r = (IList)l;
+            return r;
+        }
+
+        public static List<T> ToList<T>(this IList l)
+        {
+            List<T> r = new List<T>();
+
+            foreach (object item in l)
+            {
+                r.Add((T)item);
+            }
+
             return r;
         }
     }

@@ -23,7 +23,6 @@ namespace Util_Font
             List<FontAwesomeModel> r = new List<FontAwesomeModel>();
 
             // 采用 FontAwesome 5 Pro 分两种 普通 与 商标
-            r.Add(new FontAwesomeModel() { Name = "FiveHundredPX", Code = "\uf26e", Code_XML = "&#xf26e" });
             r.Add(new FontAwesomeModel() { Name = "Abacus", Code = "\uf640", Code_XML = "&#xf640" });
             r.Add(new FontAwesomeModel() { Name = "AccessibleIcon", Code = "\uf368", Code_XML = "&#xf368" });
             r.Add(new FontAwesomeModel() { Name = "Accusoft", Code = "\uf369", Code_XML = "&#xf369" });
@@ -684,6 +683,7 @@ namespace Util_Font
             r.Add(new FontAwesomeModel() { Name = "Firstdraft", Code = "\uf3a1", Code_XML = "&#xf3a1" });
             r.Add(new FontAwesomeModel() { Name = "Fish", Code = "\uf578", Code_XML = "&#xf578" });
             r.Add(new FontAwesomeModel() { Name = "FistRaised", Code = "\uf6de", Code_XML = "&#xf6de" });
+			r.Add(new FontAwesomeModel() { Name = "FiveHundredPX", Code = "\uf26e", Code_XML = "&#xf26e" });
             r.Add(new FontAwesomeModel() { Name = "Flag", Code = "\uf024", Code_XML = "&#xf024" });
             r.Add(new FontAwesomeModel() { Name = "FlagAlt", Code = "\uf74c", Code_XML = "&#xf74c" });
             r.Add(new FontAwesomeModel() { Name = "FlagCheckered", Code = "\uf11e", Code_XML = "&#xf11e" });
@@ -1549,7 +1549,6 @@ namespace Util_Font
             r.Add(new FontAwesomeModel() { Name = "Teeth", Code = "\uf62e", Code_XML = "&#xf62e" });
             r.Add(new FontAwesomeModel() { Name = "TeethOpen", Code = "\uf62f", Code_XML = "&#xf62f" });
             r.Add(new FontAwesomeModel() { Name = "Telegram", Code = "\uf2c6", Code_XML = "&#xf2c6" });
-
             r.Add(new FontAwesomeModel() { Name = "TelegramPlane", Code = "\uf3fe", Code_XML = "&#xf3fe" });
             r.Add(new FontAwesomeModel() { Name = "TemperatureFrigid", Code = "\uf768", Code_XML = "&#xf768" });
             r.Add(new FontAwesomeModel() { Name = "TemperatureHigh", Code = "\uf769", Code_XML = "&#xf769" });
