@@ -16,8 +16,8 @@
     <Description>Util.HowesDOMO is common library for dotNet Standard</Description>
     <AssemblyName>Util.HowesDOMO</AssemblyName>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <AssemblyVersion>1.0.14.0</AssemblyVersion>
-    <FileVersion>1.0.14.0</FileVersion>
+    <AssemblyVersion>1.0.15.0</AssemblyVersion>
+    <FileVersion>1.0.15.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

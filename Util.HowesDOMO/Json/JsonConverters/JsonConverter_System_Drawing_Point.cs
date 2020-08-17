@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Util
+namespace Util_JsonConverters
 {
 	public class JsonConverter_System_Drawing_Point : JsonConverter
 	{
