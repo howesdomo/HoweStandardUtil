@@ -14,14 +14,47 @@
     <PackageTags>Xamarin.Forms dotnetStandard</PackageTags>
     <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE</licenseUrl>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <AssemblyVersion>1.0.12.0</AssemblyVersion>
-    <FileVersion>1.0.12.0</FileVersion>
+    <AssemblyVersion>1.0.13.0</AssemblyVersion>
+    <FileVersion>1.0.13.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="FileExplorer\Images\doc.svg" />
+    <None Remove="FileExplorer\Images\file.svg" />
+    <None Remove="FileExplorer\Images\folder.svg" />
+    <None Remove="FileExplorer\Images\html.svg" />
+    <None Remove="FileExplorer\Images\javascript.svg" />
+    <None Remove="FileExplorer\Images\jpg.svg" />
+    <None Remove="FileExplorer\Images\pdf.svg" />
+    <None Remove="FileExplorer\Images\png.svg" />
+    <None Remove="FileExplorer\Images\txt.svg" />
+    <None Remove="FileExplorer\Images\xls.svg" />
+    <None Remove="FileExplorer\Images\xml.svg" />
+    <None Remove="FileExplorer\Images\zip.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="FileExplorer\Images\doc.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\file.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\folder.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\html.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\javascript.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\jpg.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\pdf.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\png.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\txt.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\xls.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\xml.svg" />
+    <EmbeddedResource Include="FileExplorer\Images\zip.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.442" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="Util.HowesDOMO" Version="1.0.13" />
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.1073" />
+    <PackageReference Include="Util.HowesDOMO" Version="1.0.15" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1260" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +62,33 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="FileExplorer\UcBottomBar_CopyCutMode.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcBottomBar_Main.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcBottomBar_SelectMode.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcFileExplorer.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcFileExplorerView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcNavigationBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcSearchBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="FileExplorer\UcSelectBar.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

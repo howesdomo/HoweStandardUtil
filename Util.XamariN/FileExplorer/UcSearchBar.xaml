@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.FileExplorer.UcSearchBar"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Util.XamariN.Components;assembly=Util.XamariN"
+    mc:Ignorable="d">
+    <!--  搜索栏  -->
+    <ContentView.Content>
+        <StackLayout
+            BackgroundColor="Black"
+            HeightRequest="35"
+            Spacing="0"
+            VerticalOptions="Start">
+            <ui:FilterBar
+                IsTextChangeExecute="True"
+                Placeholder="请输入过滤信息"
+                PlaceholderColor="LightGray"
+                SearchCommand="{Binding CMD_ExcuteFilter}"
+                TextColor="White" />
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

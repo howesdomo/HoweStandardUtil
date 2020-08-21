@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.FileExplorer.UcNavigationBar"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Util.XamariN.Behaviors;assembly=Util.XamariN"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Util.XamariN.Components;assembly=Util.XamariN"
+    xmlns:utilFont="clr-namespace:Util_Font;assembly=Util.HowesDOMO"
+    mc:Ignorable="d">
+    <!--  导航栏  -->
+    <ContentView.Content>
+        <StackLayout
+            BackgroundColor="Black"
+            HorizontalOptions="Fill"
+            Orientation="Horizontal"
+            VerticalOptions="Fill">
+            <Image
+                Margin="8,0,0,0"
+                HorizontalOptions="Start"
+                Source="{FontImage FontFamily=FontAwesome,
+                                   Glyph={x:Static utilFont:FontAwesomeIcons.List},
+                                   Size=25,
+                                   Color=White}" />
+
+            <Grid
+                ColumnDefinitions="*,*"
+                ColumnSpacing="0"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand">
+
+
+                <Label
+                    Padding="5,0,5,0"
+                    HorizontalOptions="FillAndExpand"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="MiddleTruncation"
+                    Text="{Binding NavBarParentFolderName}"
+                    TextColor="CornflowerBlue"
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_Tap_NavBarParentFolderName}"
+                            NumberOfTapsRequired="1" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+                <Label
+                    Grid.Column="1"
+                    HorizontalOptions="Start"
+                    LineBreakMode="MiddleTruncation"
+                    Text="&gt;"
+                    TextColor="Silver"
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center" />
+
+
+                <Label
+                    Grid.Column="1"
+                    Padding="10,0,5,0"
+                    HorizontalOptions="FillAndExpand"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="MiddleTruncation"
+                    Text="{Binding NavBarCurrentFolderName}"
+                    TextColor="CornflowerBlue"
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center" />
+
+                <Label
+                    Grid.ColumnSpan="2"
+                    Padding="5,0,5,0"
+                    BackgroundColor="Black"
+                    HorizontalOptions="FillAndExpand"
+                    HorizontalTextAlignment="Center"
+                    IsVisible="{Binding IsCurrentDirectoryEqBaseDirectory}"
+                    LineBreakMode="MiddleTruncation"
+                    Text="根目录"
+                    TextColor="CornflowerBlue"
+                    VerticalOptions="FillAndExpand"
+                    VerticalTextAlignment="Center" />
+            </Grid>
+
+            <Frame
+                Margin="0,0,5,0"
+                Padding="6"
+                BackgroundColor="Transparent"
+                CornerRadius="30"
+                HasShadow="False"
+                HorizontalOptions="Center"
+                IsClippedToBounds="True"
+                VerticalOptions="Center">
+                <Image
+                    HorizontalOptions="Start"
+                    Source="{FontImage FontFamily=FontAwesome,
+                                       Glyph={x:Static utilFont:FontAwesomeIcons.CheckSquare},
+                                       Size=25,
+                                       Color=White}" />
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_ChangeSelectionMode}"
+                        NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <Frame.Behaviors>
+                    <behaviors:FrameTapLikeButtonBehavior />
+                </Frame.Behaviors>
+            </Frame>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

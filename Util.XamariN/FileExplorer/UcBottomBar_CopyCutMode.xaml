@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.FileExplorer.UcBottomBar_CopyCutMode"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Util.XamariN.Behaviors;assembly=Util.XamariN"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilFont="clr-namespace:Util_Font;assembly=Util.HowesDOMO"
+    mc:Ignorable="d">
+    <ContentView.Content>
+        <Grid
+            Padding="0,8,0,0"
+            BackgroundColor="Black"
+            ColumnDefinitions="*,*,*">
+            <StackLayout Grid.Column="0">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_Tap_Paste}"
+                        NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout.Behaviors>
+                    <behaviors:ViewTapLikeButtonBehavior />
+                </StackLayout.Behaviors>
+
+                <Image
+                    Source="{FontImage Color=White,
+                                       FontFamily=FontAwesome,
+                                       Size=20,
+                                       Glyph={x:Static utilFont:FontAwesomeIcons.Paste}}"
+                    WidthRequest="30" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="粘贴"
+                    TextColor="White" />
+            </StackLayout>
+
+            <StackLayout Grid.Column="1">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_CopyCutMode_CreateDir}"
+                        NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout.Behaviors>
+                    <behaviors:ViewTapLikeButtonBehavior />
+                </StackLayout.Behaviors>
+                <Image
+                    Rotation="-90"
+                    Source="{FontImage Color=White,
+                                       FontFamily=FontAwesome,
+                                       Size=20,
+                                       Glyph={x:Static utilFont:FontAwesomeIcons.Plus}}"
+                    WidthRequest="30" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="新建"
+                    TextColor="White" />
+            </StackLayout>
+
+            <StackLayout Grid.Column="2">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_ExitCopyCutMode}"
+                        NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout.Behaviors>
+                    <behaviors:ViewTapLikeButtonBehavior />
+                </StackLayout.Behaviors>
+                <Image
+                    Source="{FontImage Color=White,
+                                       FontFamily=FontAwesome,
+                                       Size=20,
+                                       Glyph={x:Static utilFont:FontAwesomeIcons.Ban}}"
+                    WidthRequest="30" />
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="取消"
+                    TextColor="White" />
+            </StackLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

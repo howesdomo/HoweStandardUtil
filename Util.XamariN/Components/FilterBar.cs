@@ -9,6 +9,9 @@ using Xamarin.Forms.Internals;
 namespace Util.XamariN.Components
 {
     /// <summary>
+    /// V 1.0.1 - 2020-08-20 16:44:12
+    /// 优化 Text 属性, 改为绑定属性 ( 双向绑定 )
+    /// 
     /// V 1.0.0 - 2020-08-09 09:49:52
     /// Xamarin.Forms 原生 SearchBar有一个缺点输入框没有内容时不会触发 SearchCommand, 
     /// 故自制的控件 FilterBar 修复输入框没有内容时不会触发 SearchCommand 的问题
@@ -94,45 +97,63 @@ namespace Util.XamariN.Components
 
         #endregion
 
-        #region [弃用]Text 绑定属性
+        #region Text 绑定属性
 
-        //public static readonly BindableProperty TextProperty = BindableProperty.Create
-        //(
-        //    propertyName: "Text",
-        //    returnType: typeof(string),
-        //    declaringType: typeof(FilterBar),
-        //    defaultValue: string.Empty,
-        //    validateValue: text_IsValidValue,
-        //    propertyChanged: textPropertyChanged
-        //);
+        public static readonly BindableProperty TextProperty = BindableProperty.Create
+        (
+            propertyName: "Text",
+            returnType: typeof(string),
+            declaringType: typeof(FilterBar),
+            defaultValue: string.Empty,
+            validateValue: text_IsValidValue,
+            // propertyChanged: textPropertyChanged,
+            defaultBindingMode: BindingMode.TwoWay
+        );
 
-        //public string Text
-        //{
-        //    get
-        //    {
-        //        return (string)base.GetValue(TextProperty);
-        //    }
-        //    set
-        //    {
-        //        base.SetValue(TextProperty, value);
-        //    }
-        //}
+        public string Text
+        {
+            get
+            {
+                return (string)base.GetValue(TextProperty);
+            }
+            set
+            {
+                base.SetValue(TextProperty, value);
+            }
+        }
 
 
-        //private static bool text_IsValidValue(BindableObject view, object value)
-        //{
-        //    if (value == null || value is string)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
+        private static bool text_IsValidValue(BindableObject bindable, object value)
+        {
+            if (value == null || value is string)
+            {
+                // 对 txtFilter.Text 赋值改在 text_IsValidValue 中进行
+                if (value == null) 
+                {
+                    (bindable as FilterBar).txtFilter.Text = string.Empty;
+                }
+                else 
+                {
+                    (bindable as FilterBar).txtFilter.Text = value as string;
+                }
 
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //// 第一次赋值时能进入 textPropertyChanged, 但第二次时却无法进入, 未能知道原因, 
+        //// 故暂时不在 textPropertyChanged 中对 txtFilter.Text 进行赋值
         //private static void textPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         //{
+        //    if (newValue == null)
+        //    {
+        //        return;
+        //    }
+
         //    string value = (string)newValue;
         //    if ((string)oldValue == value)
         //    {
@@ -145,21 +166,21 @@ namespace Util.XamariN.Components
 
         #endregion
 
-        #region Text
+        //#region [弃用]Text // 需要用到双向绑定, 直接赋值的方法不够灵活
 
-        public string Text
-        {
-            get
-            {
-                return txtFilter.Text;
-            }
-            set
-            {
-                txtFilter.Text = value;
-            }
-        }
+        //public string Text
+        //{
+        //    get
+        //    {
+        //        return txtFilter.Text;
+        //    }
+        //    set
+        //    {
+        //        txtFilter.Text = value;
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
         #region TextColorProperty
 

@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.FileExplorer.UcFileExplorerView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Util.XamariN.Components;assembly=Util.XamariN"
+    xmlns:utilFont="clr-namespace:Util_Font;assembly=Util.HowesDOMO"
+    mc:Ignorable="d">
+    <ContentView.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label
+                FontSize="24"
+                HorizontalTextAlignment="Center"
+                Text="视图"
+                TextColor="SteelBlue" />
+            <Grid
+                Grid.Row="1"
+                ColumnDefinitions="*, *, *"
+                RowDefinitions="*,*,*">
+
+                <StackLayout Grid.Column="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="图标(大)"
+                        TextColor="Black" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="1">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="图标(中)"
+                        TextColor="Black" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="2">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="图标(小)"
+                        TextColor="Black" />
+                </StackLayout>
+
+
+
+
+
+                <StackLayout
+                    Grid.Row="1"
+                    Grid.Column="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="列表(大)"
+                        TextColor="Black" />
+                </StackLayout>
+                <StackLayout
+                    Grid.Row="1"
+                    Grid.Column="1">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="列表(中)"
+                        TextColor="Black" />
+                </StackLayout>
+                <StackLayout
+                    Grid.Row="1"
+                    Grid.Column="2">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="列表(小)"
+                        TextColor="Black" />
+                </StackLayout>
+
+
+
+
+
+                <StackLayout
+                    Grid.Row="2"
+                    Grid.Column="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="详情(大)"
+                        TextColor="Black" />
+                </StackLayout>
+                <StackLayout
+                    Grid.Row="2"
+                    Grid.Column="1">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="详情(中)"
+                        TextColor="Black" />
+                </StackLayout>
+                <StackLayout
+                    Grid.Row="2"
+                    Grid.Column="2">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_OrderBy}"
+                            NumberOfTapsRequired="1" />
+                    </StackLayout.GestureRecognizers>
+                    <Image
+                        Source="{FontImage Color=Black,
+                                           FontFamily=FontAwesome,
+                                           Size=20,
+                                           Glyph={x:Static utilFont:FontAwesomeIcons.GripHorizontal}}"
+                        WidthRequest="30" />
+                    <Label
+                        HorizontalTextAlignment="Center"
+                        Text="详情(小)"
+                        TextColor="Black" />
+                </StackLayout>
+            </Grid>
+
+            <Label
+                Grid.Row="2"
+                FontSize="24"
+                HorizontalTextAlignment="Center"
+                Text="排序"
+                TextColor="SteelBlue" />
+            <Grid
+                Grid.Row="3"
+                ColumnDefinitions="*, *, *, *"
+                RowDefinitions="Auto,*">
+
+
+                <Label
+                    Grid.Column="0"
+                    HorizontalTextAlignment="Center"
+                    Text="名称"
+                    TextColor="Black" />
+                <Label
+                    Grid.Column="1"
+                    HorizontalTextAlignment="Center"
+                    Text="类型"
+                    TextColor="Black" />
+                <Label
+                    Grid.Column="2"
+                    HorizontalTextAlignment="Center"
+                    Text="大小"
+                    TextColor="Black" />
+                <Label
+                    Grid.Column="3"
+                    HorizontalTextAlignment="Center"
+                    Text="修改时间"
+                    TextColor="Black" />
+
+
+                <CollectionView
+                    Grid.Row="1"
+                    Grid.ColumnSpan="4"
+                    ItemsSource="{Binding FileSortList}"
+                    SelectedItem="{Binding SelectedFileSort}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="4"
+                            VerticalItemSpacing="0" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout
+                                HeightRequest="40"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Start">
+                                <AbsoluteLayout
+                                    Grid.Row="1"
+                                    Grid.Column="3"
+                                    HeightRequest="25"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="CenterAndExpand"
+                                    WidthRequest="25">
+                                    <Image
+                                        Source="{Binding SortTypeImage}"
+                                        WidthRequest="20" />
+                                    <Image
+                                        Margin="18,13,0,0"
+                                        Source="{Binding DirectionImage}" />
+                                </AbsoluteLayout>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

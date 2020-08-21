@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.FileExplorer.UcFileExplorer"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Util.XamariN.Behaviors;assembly=Util.XamariN"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+    xmlns:local="clr-namespace:Util.XamariN.FileExplorer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Util.XamariN.Components;assembly=Util.XamariN"
+    xmlns:utilFont="clr-namespace:Util_Font;assembly=Util.HowesDOMO"
+    mc:Ignorable="d">
+    <!--<ContentView.BindingContext>
+        <local:FileExplorer_ViewModel>
+            <x:Arguments>
+                <x:String>/storage/emulated/0/FileExplorerOpenFileTest</x:String>
+            </x:Arguments>
+        </local:FileExplorer_ViewModel>
+    </ContentView.BindingContext>-->
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="normalMode">
+                <Grid>
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type local:FileExplorer_ViewModel}}, Path=CMD_TapFileInfoModel}"
+                            CommandParameter="{Binding}"
+                            NumberOfTapsRequired="1" />
+                    </Grid.GestureRecognizers>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+
+                    <ffimageloadingsvg:SvgCachedImage
+                        Margin="5"
+                        HeightRequest="40"
+                        HorizontalOptions="StartAndExpand"
+                        Source="{Binding ModelIcon}"
+                        WidthRequest="40" />
+
+                    <Grid
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            FontSize="14"
+                            Text="{Binding Info}"
+                            TextColor="Black"
+                            VerticalTextAlignment="Center" />
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Row="0"
+                                FontSize="10"
+                                Text="{Binding Info2}"
+                                TextColor="Silver"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                FontSize="10"
+                                Text="-drw-"
+                                VerticalTextAlignment="Center" />
+                            <Grid
+                                Grid.Column="2"
+                                HeightRequest="25">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    BackgroundColor="Transparent"
+                                    FontSize="9"
+                                    Text="{Binding LastWriteDateInfo}"
+                                    VerticalTextAlignment="Start" />
+                                <Label
+                                    Grid.Row="1"
+                                    BackgroundColor="Transparent"
+                                    FontSize="9"
+                                    Text="{Binding LastWriteTimeInfo}"
+                                    VerticalTextAlignment="End" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="selectMode">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+
+                    <ffimageloadingsvg:SvgCachedImage
+                        Margin="5"
+                        HeightRequest="40"
+                        HorizontalOptions="StartAndExpand"
+                        Source="{Binding ModelIcon}"
+                        WidthRequest="40" />
+
+                    <CheckBox
+                        x:Name="checkBox"
+                        Grid.Column="2"
+                        Color="Blue" />
+
+                    <Grid
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="0"
+                            FontSize="14"
+                            Text="{Binding Info}"
+                            TextColor="Black"
+                            VerticalTextAlignment="Center" />
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Row="0"
+                                FontSize="10"
+                                Text="{Binding Info2}"
+                                TextColor="Silver"
+                                VerticalTextAlignment="Center" />
+                            <Label
+                                Grid.Column="1"
+                                FontSize="10"
+                                Text="-drw-"
+                                VerticalTextAlignment="Center" />
+                            <Grid
+                                Grid.Column="2"
+                                HeightRequest="25">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    BackgroundColor="Transparent"
+                                    FontSize="9"
+                                    Text="{Binding LastWriteDateInfo}"
+                                    VerticalTextAlignment="Start" />
+                                <Label
+                                    Grid.Row="1"
+                                    BackgroundColor="Transparent"
+                                    FontSize="9"
+                                    Text="{Binding LastWriteTimeInfo}"
+                                    VerticalTextAlignment="End" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                    <Setter TargetName="checkBox" Property="CheckBox.IsChecked" Value="false" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                    <Setter TargetName="checkBox" Property="CheckBox.IsChecked" Value="true" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <Grid
+            RowDefinitions="Auto, Auto, *, Auto"
+            RowSpacing="0">
+
+            <!--  导航栏  -->
+            <local:UcNavigationBar BindingContext="{Binding}" />
+
+            <!--  搜索栏  -->
+            <local:UcSearchBar
+                BindingContext="{Binding}"
+                IsVisible="{Binding FilterBarIsVisible}" />
+
+            <!--  选择模式提示栏  -->
+            <local:UcSelectBar
+                BindingContext="{Binding}"
+                IsVisible="{Binding SelectBarIsVisible}" />
+
+            <BoxView
+                Grid.Row="1"
+                BackgroundColor="Blue"
+                HeightRequest="1" />
+
+            <CollectionView
+                Grid.Row="2"
+                ItemSizingStrategy="MeasureFirstItem"
+                ItemTemplate="{Binding ItemTemplate}"
+                ItemsSource="{Binding FilterList}"
+                SelectedItems="{Binding SelectedItems, Mode=TwoWay}"
+                SelectionChangedCommand="{Binding CMD_OnSelectionChanged}"
+                SelectionMode="{Binding SelectionMode}"
+                VerticalScrollBarVisibility="Always">
+                <CollectionView.EmptyView>
+                    <Grid>
+                        <Label
+                            FontSize="24"
+                            HorizontalTextAlignment="Center"
+                            Text="空目录"
+                            TextColor="LightGray"
+                            VerticalTextAlignment="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
+
+            </CollectionView>
+
+            <!--  视图  -->
+            <local:UcFileExplorerView
+                Grid.Row="0"
+                Grid.RowSpan="3"
+                BindingContext="{Binding}"
+                IsVisible="{Binding UcFileExplorerSortView_IsVisible}" />
+
+            <!--  BottomBar Main 主界面功能栏  -->
+            <local:UcBottomBar_Main
+                Grid.Row="3"
+                BindingContext="{Binding}" />
+
+            <!--  BottomBar 选择模式功能栏  -->
+            <local:UcBottomBar_SelectMode
+                Grid.Row="3"
+                BindingContext="{Binding}"
+                IsVisible="{Binding SelectBarIsVisible}" />
+
+            <!--  BottomBar 复制剪贴功能栏  -->
+            <local:UcBottomBar_CopyCutMode
+                Grid.Row="3"
+                BindingContext="{Binding}"
+                IsVisible="{Binding IsCopyCutMode}" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

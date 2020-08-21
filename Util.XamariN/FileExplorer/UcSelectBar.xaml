@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.FileExplorer.UcSelectBar"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:Util.XamariN.Behaviors;assembly=Util.XamariN"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:utilFont="clr-namespace:Util_Font;assembly=Util.HowesDOMO"
+    mc:Ignorable="d">
+    <!--  选择模式提示栏  -->
+    <ContentView.Content>
+        <StackLayout
+            BackgroundColor="Black"
+            HorizontalOptions="Fill"
+            Orientation="Horizontal"
+            VerticalOptions="Fill">
+
+            <Label
+                Margin="5,0,0,0"
+                FontSize="22"
+                LineBreakMode="TailTruncation"
+                Text="选择模式"
+                TextColor="White"
+                VerticalTextAlignment="Center" />
+
+            <!--<Image
+                Margin="8,0,0,0"
+                HorizontalOptions="Start"
+                Source="{FontImage FontFamily=FontAwesome,
+                                   Glyph={x:Static utilFont:FontAwesomeIcons.Check},
+                                   Size=25,
+                                   Color=White}" />-->
+
+            <Grid
+                ColumnSpacing="0"
+                HeightRequest="40"
+                HorizontalOptions="FillAndExpand">
+
+                <Label
+                    Margin="5,0,0,0"
+                    FontSize="22"
+                    LineBreakMode="TailTruncation"
+                    Text="{Binding SelectedItemsInfo}"
+                    TextColor="White"
+                    VerticalTextAlignment="Center" />
+            </Grid>
+
+            <Frame
+                Margin="0,0,10,0"
+                Padding="6"
+                BackgroundColor="Transparent"
+                CornerRadius="30"
+                HasShadow="False"
+                HorizontalOptions="Center"
+                IsClippedToBounds="True"
+                VerticalOptions="Center">
+                <Image
+                    HorizontalOptions="Start"
+                    Source="{FontImage FontFamily=FontAwesome,
+                                       Glyph={x:Static utilFont:FontAwesomeIcons.BallotCheck},
+                                       Size=25,
+                                       Color=White}" />
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_Reverse}"
+                        NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <Frame.Behaviors>
+                    <behaviors:FrameTapLikeButtonBehavior />
+                </Frame.Behaviors>
+            </Frame>
+
+
+            <Frame
+                Margin="0,0,5,0"
+                Padding="6"
+                BackgroundColor="Transparent"
+                CornerRadius="30"
+                HasShadow="False"
+                HorizontalOptions="Center"
+                IsClippedToBounds="True"
+                VerticalOptions="Center">
+                <Image
+                    HorizontalOptions="Start"
+                    Source="{FontImage FontFamily=FontAwesome,
+                                       Glyph={x:Static utilFont:FontAwesomeIcons.CheckDouble},
+                                       Size=25,
+                                       Color=White}" />
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_CheckAll}"
+                        NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <Frame.Behaviors>
+                    <behaviors:FrameTapLikeButtonBehavior />
+                </Frame.Behaviors>
+            </Frame>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
