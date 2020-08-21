@@ -77,6 +77,15 @@ namespace Util.XamariN.FileExplorer
             }
         }
 
+        private string _FilePermission;
+
+        public string FilePermission
+        {
+            get { return _FilePermission; }
+            set { _FilePermission = value; }
+        }
+
+
         public string Info2
         {
             get

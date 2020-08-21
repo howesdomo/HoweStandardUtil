@@ -20,11 +20,12 @@ namespace Util.XamariN.FileExplorer
     /// <summary>
     /// V 1.0.1 - 2020-08-21 11:46:45
     /// 增加 assembly 参数, 修改引用嵌入式资源
+    /// 优化 -drw- 由原本写死的信息, 改为根据实际情况进行解析
     /// 
     /// V 1.0.0 - 2020-08-11 10:00:00
     /// 首次创建
     /// </summary>
-    public class FileExplorer_ViewModel : BaseViewModel
+    public class FileExplorer_ViewModel : INotifyPropertyChanged
     {
         double mActionIntervalDefault
         {
@@ -265,6 +266,18 @@ namespace Util.XamariN.FileExplorer
             this.List = list;
         }
 
+        private string getFilePermission(DirectoryInfo di)
+        {
+            string r = "drw";            
+            return r;
+        }
+
+        private string getFilePermission(FileInfo fi)
+        {   
+            string r = "-r{0}".FormatWith(fi.IsReadOnly?"-":"w");
+            return r;
+        }
+
         /// <summary>
         /// 遍历文件夹
         /// </summary>
@@ -277,7 +290,7 @@ namespace Util.XamariN.FileExplorer
 
             try
             {
-                #region 
+                #region 返回上一层 [已弃用于UI, 但逻辑仍在使用此对象 ( 判断能否返回上一层 / 获取当前层级信息 / .. )
 
                 if (this.BaseDirectory == dirPath)
                 {
@@ -304,7 +317,10 @@ namespace Util.XamariN.FileExplorer
                         FullName = string.Empty,
 
                         // 图标
-                        ModelIcon = SvgImageSource.FromResource("Util.XamariN.FileExplorer.Images.folder.svg", mAssembly)
+                        ModelIcon = SvgImageSource.FromResource("Util.XamariN.FileExplorer.Images.folder.svg", mAssembly),
+
+                        // 文件权限
+                        FilePermission = getFilePermission(di),
                     };
 
                     mUpperFileInfoModel = toAdd;
@@ -336,10 +352,13 @@ namespace Util.XamariN.FileExplorer
                             // 文件
                             Name = di.Name,
                             Extension = di.Extension,
-                            FullName = di.FullName,
+                            FullName = di.FullName,                            
 
                             // 图标
-                            ModelIcon = SvgImageSource.FromResource("Util.XamariN.FileExplorer.Images.folder.svg", mAssembly)
+                            ModelIcon = SvgImageSource.FromResource("Util.XamariN.FileExplorer.Images.folder.svg", mAssembly),
+
+                            // 文件权限
+                            FilePermission = getFilePermission(di),
                         };
 
                         list.Add(toAdd);
@@ -377,7 +396,11 @@ namespace Util.XamariN.FileExplorer
                             FileLength = di.Length,
                             FileLengthInfo = Util.IO.FileUtils.GetFileLengthInfo(di.Length),
 
-                            ModelIcon = getSVGImageSource(di.Extension.ToLower())
+                            // 图标
+                            ModelIcon = getSVGImageSource(di.Extension.ToLower()),
+
+                            // 文件权限
+                            FilePermission = getFilePermission(di),
                         };
 
                         list.Add(toAdd);
@@ -1690,19 +1713,7 @@ namespace Util.XamariN.FileExplorer
         }
 
         #endregion
-
-    }
-
-
-    /// <summary>
-    /// 1.0.2 - 2019-10-28 10:36:44
-    /// 整合 NotifyPropertyChanged 到 OnPropertyChanged
-    /// 
-    /// 1.0.1 - 2019-9-26 15:46:09
-    /// 增加 NotifyPropertyChanged 方法
-    /// </summary>
-    public class BaseViewModel : INotifyPropertyChanged
-    {
+    
         #region INotifyPropertyChanged成员
 
         public event PropertyChangedEventHandler PropertyChanged;
