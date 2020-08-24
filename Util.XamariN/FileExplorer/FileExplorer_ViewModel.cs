@@ -18,6 +18,9 @@ using System.Reflection;
 namespace Util.XamariN.FileExplorer
 {
     /// <summary>
+    /// V 1.0.2 - 2020-08-24 16:08:54
+    /// 新增 提交选中文件/文件夹 ( 使用 Messaging Center 方式进行发送 )
+    /// 
     /// V 1.0.1 - 2020-08-21 11:46:45
     /// 增加 assembly 参数, 修改引用嵌入式资源
     /// 优化 -drw- 由原本写死的信息, 改为根据实际情况进行解析
@@ -93,6 +96,8 @@ namespace Util.XamariN.FileExplorer
 
             CMD_Tap_Delete = new Command(tapDeleteFake);
             CMD_Tap_Rename = new Command(tapRenameFake);
+
+            CMD_ConfirmSelect = new Command(confirmSelectFake);
         }
 
         void initUIData()
@@ -268,13 +273,13 @@ namespace Util.XamariN.FileExplorer
 
         private string getFilePermission(DirectoryInfo di)
         {
-            string r = "drw";            
+            string r = "drw";
             return r;
         }
 
         private string getFilePermission(FileInfo fi)
-        {   
-            string r = "-r{0}".FormatWith(fi.IsReadOnly?"-":"w");
+        {
+            string r = "-r{0}".FormatWith(fi.IsReadOnly ? "-" : "w");
             return r;
         }
 
@@ -352,7 +357,7 @@ namespace Util.XamariN.FileExplorer
                             // 文件
                             Name = di.Name,
                             Extension = di.Extension,
-                            FullName = di.FullName,                            
+                            FullName = di.FullName,
 
                             // 图标
                             ModelIcon = SvgImageSource.FromResource("Util.XamariN.FileExplorer.Images.folder.svg", mAssembly),
@@ -441,7 +446,7 @@ namespace Util.XamariN.FileExplorer
 
         ImageSource getSVGImageSource(string extensionName)
         {
-            
+
 
             ImageSource r = null;
             switch (extensionName)
@@ -1097,6 +1102,47 @@ namespace Util.XamariN.FileExplorer
 
         #endregion
 
+        #region 提交选中文件/文件夹
+
+        public static readonly string MessageTag_ConfirmSelect = "FileExplorer_ConfirmSelect";
+
+        /// <summary>
+        /// 提交选中文件/文件夹
+        /// </summary>
+        public Command CMD_ConfirmSelect { get; set; }
+
+        void confirmSelectFake()
+        {
+            mDebounceAction.Debounce
+            (
+                interval: mActionIntervalDefault,
+                action: () =>
+                {
+                    Device.BeginInvokeOnMainThread(confirmSelect);
+                },
+                syncInvoke: null
+            );
+        }
+
+        void confirmSelect()
+        {
+            if (this.SelectedItems == null || this.SelectedItems.Count <= 0)
+            {
+                Acr.UserDialogs.UserDialogs.Instance.Toast("提交失败（请勾选需要提交的文件或文件夹）。");
+                return;
+            }
+
+            var msg = Util.JsonUtils.SerializeObjectWithFormatted(this.SelectedItems);
+            MessagingCenter.Send<FileExplorer_ViewModel, string>
+            (
+                sender: this,
+                message: FileExplorer_ViewModel.MessageTag_ConfirmSelect,
+                args: msg
+            );
+        }
+
+        #endregion
+
         #region 选择模式 导航栏 (上方)
 
         private bool _SelectBarIsVisible;
@@ -1713,7 +1759,9 @@ namespace Util.XamariN.FileExplorer
         }
 
         #endregion
-    
+
+        
+
         #region INotifyPropertyChanged成员
 
         public event PropertyChangedEventHandler PropertyChanged;

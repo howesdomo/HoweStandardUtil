@@ -24,14 +24,6 @@
                 TextColor="White"
                 VerticalTextAlignment="Center" />
 
-            <!--<Image
-                Margin="8,0,0,0"
-                HorizontalOptions="Start"
-                Source="{FontImage FontFamily=FontAwesome,
-                                   Glyph={x:Static utilFont:FontAwesomeIcons.Check},
-                                   Size=25,
-                                   Color=White}" />-->
-
             <Grid
                 ColumnSpacing="0"
                 HeightRequest="40"
@@ -90,6 +82,34 @@
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer
                         Command="{Binding CMD_CheckAll}"
+                        NumberOfTapsRequired="1" />
+                </Frame.GestureRecognizers>
+                <Frame.Behaviors>
+                    <behaviors:FrameTapLikeButtonBehavior />
+                </Frame.Behaviors>
+            </Frame>
+
+            <BoxView
+                BackgroundColor="SteelBlue"
+                WidthRequest="1" />
+
+            <Frame
+                Margin="0,0,5,0"
+                Padding="6"
+                BackgroundColor="Transparent"
+                CornerRadius="30"
+                HasShadow="False"
+                HorizontalOptions="Center"
+                IsClippedToBounds="True"
+                VerticalOptions="Center">
+                <Label
+                    HorizontalTextAlignment="Center"
+                    Text="提交"
+                    TextColor="White"
+                    VerticalTextAlignment="Center" />
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Command="{Binding CMD_ConfirmSelect}"
                         NumberOfTapsRequired="1" />
                 </Frame.GestureRecognizers>
                 <Frame.Behaviors>

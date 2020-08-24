@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
@@ -12,6 +13,7 @@ namespace Util.XamariN.FileExplorer
 
         }
 
+        [JsonIgnore]
         public ImageSource ModelIcon { get; set; }
 
         public int Level { get; set; }

@@ -100,9 +100,7 @@
 
             <StackLayout Grid.Column="4">
                 <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer
-                        Command="{Binding CMD_Tap_Delete}"
-                        NumberOfTapsRequired="1" />
+                    <TapGestureRecognizer NumberOfTapsRequired="1" />
                 </StackLayout.GestureRecognizers>
                 <StackLayout.Behaviors>
                     <behaviors:ViewTapLikeButtonBehavior />
