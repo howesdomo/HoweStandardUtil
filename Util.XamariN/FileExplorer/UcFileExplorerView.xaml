@@ -29,7 +29,7 @@
                 <StackLayout Grid.Column="0">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -47,7 +47,7 @@
                 <StackLayout Grid.Column="1">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -65,7 +65,7 @@
                 <StackLayout Grid.Column="2">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -89,7 +89,7 @@
                     Grid.Column="0">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -108,7 +108,7 @@
                     Grid.Column="1">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -127,7 +127,7 @@
                     Grid.Column="2">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -151,7 +151,7 @@
                     Grid.Column="0">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -170,7 +170,7 @@
                     Grid.Column="1">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image
@@ -189,7 +189,7 @@
                     Grid.Column="2">
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer
-                            Command="{Binding CMD_OrderBy}"
+                            Command="{Binding CMD_ChangeDataTemplate}"
                             NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Image

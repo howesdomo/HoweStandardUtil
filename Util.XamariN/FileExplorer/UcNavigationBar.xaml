@@ -80,7 +80,14 @@
                     Text="根目录"
                     TextColor="CornflowerBlue"
                     VerticalOptions="FillAndExpand"
-                    VerticalTextAlignment="Center" />
+                    VerticalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding CMD_Tap_NavBarRoot}"
+                            NumberOfTapsRequired="2" />
+                    </Label.GestureRecognizers>
+
+                </Label>
             </Grid>
 
             <Frame

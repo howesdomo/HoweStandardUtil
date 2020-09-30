@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\MarqueeLabelRenderer.cs" />
+    <Compile Include="Components\WebViewAdvRenderer.cs" />
     <Compile Include="DLLVersion.cs" />
     <Compile Include="Essentials\DeviceInfoUtils.cs" />
     <Compile Include="Essentials\DisplayInfoUtils.cs" />

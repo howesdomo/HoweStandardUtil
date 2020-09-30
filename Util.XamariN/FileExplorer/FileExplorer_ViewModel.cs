@@ -18,6 +18,10 @@ using System.Reflection;
 namespace Util.XamariN.FileExplorer
 {
     /// <summary>
+    /// V 1.0.3 - 2020-08-25 15:31:35
+    /// 新增触摸2次根目录, 显示根目录实际路径
+    /// 优化提交防抖时间
+    /// 
     /// V 1.0.2 - 2020-08-24 16:08:54
     /// 新增 提交选中文件/文件夹 ( 使用 Messaging Center 方式进行发送 )
     /// 
@@ -37,7 +41,17 @@ namespace Util.XamariN.FileExplorer
 
         DebounceAction mDebounceAction = new DebounceAction();
 
+        public FileExplorer_ViewModel()
+        {
+            init(Xamarin.Essentials.FileSystem.AppDataDirectory);
+        }
+
         public FileExplorer_ViewModel(string baseDirectory)
+        {
+            init(baseDirectory);
+        }
+
+        void init(string baseDirectory)
         {
             initCheckBasePath(baseDirectory);
             initCommand();
@@ -67,6 +81,7 @@ namespace Util.XamariN.FileExplorer
 
         void initCommand()
         {
+            CMD_Tap_NavBarRoot = new Command(tap_NavBarRoot);
             CMD_Tap_NavBarParentFolderName = new Command(tap_NavBarParentFolderName);
 
             CMD_TapFileInfoModel = new Command<FileInfoModel>((m) => tapFileInfoModel(m));
@@ -79,6 +94,7 @@ namespace Util.XamariN.FileExplorer
             CMD_Refresh = new Command(refreshFake);
 
             CMD_Tap_SortView = new Command(tap_SortViewFake);
+            CMD_ChangeDataTemplate = new Command(changeDataTemplate);
 
             CMD_ChangeSelectionMode = new Command(changeSelectionModeFake);
             CMD_OnSelectionChanged = new Command(onSelectionChanged);
@@ -567,6 +583,30 @@ namespace Util.XamariN.FileExplorer
 
         #region 导航栏
 
+        #region 根目录
+
+        public Command CMD_Tap_NavBarRoot { get; private set; }
+
+        void tap_NavBarRoot()
+        {
+            Acr.UserDialogs.UserDialogs.Instance.Confirm(new ConfirmConfig()
+            {
+                Title = "根目录地址",
+                Message = this.BaseDirectory,
+                CancelText = "关闭",
+                OkText = "拷贝到剪贴板",
+                OnAction = async (r) =>
+                {
+                    if (r)
+                    {
+                        await Xamarin.Essentials.Clipboard.SetTextAsync(this.BaseDirectory);
+                    }
+                }
+            });
+        }
+
+        #endregion
+
         #region 非根目录导航栏-左
         public string NavBarParentFolderName
         {
@@ -838,7 +878,18 @@ namespace Util.XamariN.FileExplorer
 
         #endregion
 
-        #region 视图
+        #region 视图 - 界面
+
+        public Command CMD_ChangeDataTemplate { get; private set; }
+
+        void changeDataTemplate()
+        {
+            System.Diagnostics.Debug.WriteLine("敬请期待");
+        }
+
+        #endregion
+
+        #region 视图 - 排序
 
         private bool _UcFileExplorerSortView_IsVisible;
 
@@ -1115,7 +1166,8 @@ namespace Util.XamariN.FileExplorer
         {
             mDebounceAction.Debounce
             (
-                interval: mActionIntervalDefault,
+                // interval: mActionIntervalDefault,
+                interval: 500,
                 action: () =>
                 {
                     Device.BeginInvokeOnMainThread(confirmSelect);
@@ -1760,7 +1812,7 @@ namespace Util.XamariN.FileExplorer
 
         #endregion
 
-        
+
 
         #region INotifyPropertyChanged成员
 
