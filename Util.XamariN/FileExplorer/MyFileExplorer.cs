@@ -81,5 +81,7 @@ namespace Util.XamariN.FileExplorer
 
             return true;
         }
+
+        public static IShareUtils ShareUtils { get; set; }
     }
 }

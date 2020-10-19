@@ -270,7 +270,7 @@ namespace Util.XamariN.FileExplorer
             }
             else
             {
-                openFileByFileType(m.Extension);
+                openFileByFileType(m);
             }
         }
 
@@ -521,53 +521,59 @@ namespace Util.XamariN.FileExplorer
         }
 
 
-        void openFileByFileType(string extensionName)
+        void openFileByFileType(FileInfoModel m)
         {
             // TODO 为常用文件类型打开
-            switch (extensionName)
+            switch (m.Extension)
             {
-                case "txt":
-                case "html":
-                case "javascript":
-                case "xml":
+                case ".txt":
+                case ".html":
+                case ".javascript":
+                case ".xml":
                     {
-                        // TODO
+                        openFile(m);
                     }
                     break;
 
-                case "doc":
-                case "docx":
+                case ".doc":
+                case ".docx":
                     {
-
+                        openFile(m);
                     }
                     break;
 
-                case "xls":
-                case "xlsx":
+                case ".xls":
+                case ".xlsx":
                     {
-
+                        openFile(m);
                     }
                     break;
 
-                case "pdf":
+                case ".pdf":
                     {
-
+                        openFile(m);
                     }
                     break;
 
-                case "zip":
-                case "rar":
-                case "7z":
+                case ".zip":
+                case ".rar":
+                case ".7z":
                     {
-
+                        openFile(m);
                     }
                     break;
 
 
-                case "jpg":
-                case "png":
+                case ".jpg":
+                case ".png":
                     {
+                        openImageFile(m);
+                    }
+                    break;
 
+                case ".mp4":
+                    {
+                        openMp4(m);
                     }
                     break;
 
@@ -578,6 +584,54 @@ namespace Util.XamariN.FileExplorer
                     break;
             }
         }
+
+        void openFile(FileInfoModel m)
+        {
+            UserDialogs.Instance.ActionSheet
+            (
+                new ActionSheetConfig()
+                    .SetTitle("选择")
+                    .Add(text: "分享", action: () => { MyFileExplorer.ShareUtils.ShareFile(m.FullName); })
+            );
+        }
+
+        void openImageFile(FileInfoModel m)
+        {
+            UserDialogs.Instance.ActionSheet
+            (
+                new ActionSheetConfig()
+                    .SetTitle("选择")
+                    .Add(text: "分享到腾讯系", action: () => { shareTencent(m); })
+                    .Add(text: "分享", action: () => { MyFileExplorer.ShareUtils.ShareFile(m.FullName); })
+            );
+        }
+
+        void openMp4(FileInfoModel m)
+        {
+            UserDialogs.Instance.ActionSheet
+            (
+                new ActionSheetConfig()
+                    .SetTitle("选择")
+                    .Add(text: "分享到腾讯系", action: ()=> { shareTencent(m); })
+            );
+        }
+
+        void shareTencent(FileInfoModel m)
+        {
+            if (MyFileExplorer.ShareUtils == null)
+            {
+                throw new Exception("未为 MyFileExplorer.ShareUtils 设置具体实现。MyFileExplorer.ShareUtils == null");
+            }
+
+            MyFileExplorer.ShareUtils.ShareFile
+            (
+                filePath: m.FullName,
+                filters: new List<string>() { "tencent" },
+                chooserTitle: "分享到"
+            );
+        }
+
+        
 
         #endregion
 
@@ -1811,7 +1865,6 @@ namespace Util.XamariN.FileExplorer
         }
 
         #endregion
-
 
 
         #region INotifyPropertyChanged成员
