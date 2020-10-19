@@ -46,12 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Android_Graphics_BitmapUtils.cs" />
     <Compile Include="Components\MarqueeLabelRenderer.cs" />
     <Compile Include="Components\WebViewAdvRenderer.cs" />
     <Compile Include="DLLVersion.cs" />
     <Compile Include="Essentials\DeviceInfoUtils.cs" />
     <Compile Include="Essentials\DisplayInfoUtils.cs" />
     <Compile Include="Essentials\VersionTrackUtils.cs" />
+    <Compile Include="Extensions\Android_Graphics_BitmapExtensions.cs" />
     <Compile Include="MyAndroidAssetsUtils.cs" />
     <Compile Include="MyAndroidIntentUtils.cs" />
     <Compile Include="MyAndroidScreenRecord.cs" />
@@ -59,6 +61,7 @@
     <Compile Include="MyAudioPlayer.cs" />
     <Compile Include="MyBluetooth.cs" />
     <Compile Include="MyAndroidPermission.cs" />
+    <Compile Include="MyShareUtils.cs" />
     <Compile Include="MyScreen.cs" />
     <Compile Include="MyTTS.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -70,10 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Util.HowesDOMO">
-      <Version>1.0.15</Version>
-    </PackageReference>
-    <PackageReference Include="Util.XamariN">
-      <Version>1.0.12</Version>
+      <Version>1.0.16</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Essentials">
@@ -96,12 +96,6 @@
     <AndroidResource Include="Resources\raw\error.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Util.XamariN\Util.XamariN.csproj">
-      <Project>{3691a925-9d91-4c2f-84b3-a30164240b7a}</Project>
-      <Name>Util.XamariN</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\raw\screenshot.mp3">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
@@ -115,6 +109,12 @@
     <AndroidResource Include="Resources\raw\warn.mp3">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Util.XamariN\Util.XamariN.csproj">
+      <Project>{5fe21ebe-0678-4384-80b0-a45764c877b5}</Project>
+      <Name>Util.XamariN</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

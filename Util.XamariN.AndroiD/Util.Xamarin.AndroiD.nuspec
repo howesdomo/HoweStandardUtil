@@ -19,8 +19,8 @@
       <group targetFramework=".NETStandard2.0">
         <dependency id="Xamarin.Forms" version="4.7.0" exclude="Build,Analyzers" />
         <dependency id="Xamarin.Essentials" version="1.5.0" exclude="Build,Analyzers" />
-        <dependency id="Util.HowesDOMO" version="1.0.15" exclude="Build,Analyzers" />
-        <dependency id="Util.XamariN" version="1.0.14" exclude="Build,Analyzers" />
+        <dependency id="Util.HowesDOMO" version="1.0.16" exclude="Build,Analyzers" />
+        <dependency id="Util.XamariN" version="1.0.15" exclude="Build,Analyzers" />
       </group>
     </dependencies>
  </metadata>
