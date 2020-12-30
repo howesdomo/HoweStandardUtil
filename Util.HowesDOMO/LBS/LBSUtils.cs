@@ -10,6 +10,9 @@ using System.Text;
 /// 
 /// V2 -- 2019-05-06 18:00:43
 /// 待完成中国地图电子围栏
+/// 
+/// V3 -- 2020-11-3 14:13:19
+/// 增加两点间距离计算方法
 /// </summary>
 namespace Util.LBS
 {
@@ -298,6 +301,43 @@ namespace Util.LBS
             new LBSPoint(lng: 120.61733, lat:52.26965, locType: LocationType.WGS_84 ),
             new LBSPoint(lng: 119.68349, lat:52.92362, locType: LocationType.WGS_84 ),
         };
+
+        #endregion
+
+        #region 两点间距离计算
+
+        /// <summary>
+        ///计算两点GPS坐标的距离
+        /// </summary>
+        /// <param name="n1">第一点的纬度坐标</param>
+        /// <param name="e1">第一点的经度坐标</param>
+        /// <param name="n2">第二点的纬度坐标</param>
+        /// <param name="e2">第二点的经度坐标</param>
+        /// <returns></returns>
+        public static double Distance(double p1_WeiDu, double p1_JingDu, double p2_WeiDu, double p2_JingDu)
+        {
+            return LBS.LBSUtils.Distance(new LBSPoint(p1_WeiDu, p1_JingDu), new LBSPoint(p2_WeiDu, p2_JingDu));
+        }
+
+        /// <summary>
+        ///计算两点GPS坐标的距离
+        /// </summary>
+        /// <param name="n1">第一点的纬度坐标</param>
+        /// <param name="e1">第一点的经度坐标</param>
+        /// <returns></returns>
+        public static double Distance(LBS.LBSPoint p1, LBS.LBSPoint p2)
+        {
+            if (p1.LocationType != p2.LocationType)
+            {
+                throw new Exception("坐标体系不一致, 请先进行转换");
+            }
+
+            double jl_lng = 102834.74258026089786013677476285;
+            double jl_lat = 111712.69150641055729984301412873;
+            double b = Math.Abs((p1.Lng - p2.Lng) * jl_lng);
+            double a = Math.Abs((p1.Lat - p2.Lat) * jl_lat);
+            return Math.Sqrt((a * a + b * b));
+        }
 
         #endregion
     }

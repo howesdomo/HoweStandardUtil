@@ -12,12 +12,12 @@ namespace System
         public const string cEnd = "\u0003";
 
 
-        public BusinessException(string exMsg) : base("{0}{1}{2}".FormatWith(cStart, exMsg, cEnd))
+        public BusinessException(string exMsg) : base($"{cStart}{exMsg}{cEnd}")
         {
 
         }
 
-        public BusinessException(string exMsg, Exception innerEx) : base("{0}{1}{2}".FormatWith(cStart, exMsg, cEnd), innerEx)
+        public BusinessException(string exMsg, Exception innerEx) : base("{cStart}{exMsg}{cEnd}", innerEx)
         {
 
         }
