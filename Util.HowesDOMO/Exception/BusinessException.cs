@@ -17,7 +17,7 @@ namespace System
 
         }
 
-        public BusinessException(string exMsg, Exception innerEx) : base("{cStart}{exMsg}{cEnd}", innerEx)
+        public BusinessException(string exMsg, Exception innerEx) : base($"{cStart}{exMsg}{cEnd}", innerEx)
         {
 
         }
