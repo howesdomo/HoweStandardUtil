@@ -13,6 +13,9 @@ using Util.Excel;
 namespace Util.Excel
 {
     /// <summary>
+    /// V 1.0.2 2021-02-02 10:05:00
+    /// 为实现 interface 的方法增加多个静态方法 ( StaticMethod ), 方便调用    
+    /// 
     /// V 1.0.1 2019-9-23 09:50:57
     /// 检测 Xxx2Excel 方法中, 传入参数 path 后缀名, 不符合则抛错
     /// 
@@ -1340,7 +1343,91 @@ namespace Util.Excel
 
 
 
+        #region 为实现 interface 的方法增加多个静态方法 ( StaticMethod ), 方便调用        
 
+        private static Util.Excel.ExcelUtils_Aspose sInstance = new Util.Excel.ExcelUtils_Aspose();
+
+        public static List<T> WorkSheet2List_StaticMethod<T>(
+            string path,
+            List<PropertyColumn> objectProps,
+            int worksheetIndex = 0,
+            bool isContainColumnHeader = true,
+            int startCellRowIndex = 0, int startCellColumnIndex = 0,
+            bool ignoreRepeatColumnHeaderName = false
+            ) where T : class, new()
+        {
+
+            return sInstance.WorkSheet2List<T>
+            (
+                path: path,
+                objectProps: objectProps,
+                worksheetIndex: worksheetIndex,
+                isContainColumnHeader: isContainColumnHeader,
+                startCellRowIndex: startCellRowIndex,
+                startCellColumnIndex: startCellColumnIndex,
+                ignoreRepeatColumnHeaderName: ignoreRepeatColumnHeaderName
+            );
+        }
+
+        public static void WorkSheet2ListAsync_StaticMethod<T>
+        (
+            Action<Task<List<T>>> actionHandler,
+            string path,
+            List<PropertyColumn> objectProps,
+            int worksheetIndex = 0,
+            bool isContainColumnHeader = true,
+            int startCellRowIndex = 0, int startCellColumnIndex = 0,
+            bool ignoreRepeatColumnHeaderName = false
+        ) where T : class, new()
+        {
+            sInstance.WorkSheet2ListAsync<T>
+            (
+                actionHandler: actionHandler,
+                path: path,
+                objectProps: objectProps,
+                worksheetIndex: worksheetIndex,
+                isContainColumnHeader: isContainColumnHeader,
+                startCellRowIndex: startCellRowIndex,
+                startCellColumnIndex: startCellColumnIndex,
+                ignoreRepeatColumnHeaderName: ignoreRepeatColumnHeaderName
+            );
+        }
+
+        public static DataSet Excel2DataSetStepByStep_StaticMethod(string path, ExcelReaderConfig config = null)
+        {
+            return sInstance.Excel2DataSetStepByStep
+            (
+                path: path,
+                config: config
+            );
+        }
+
+        public static void DataSet2ExcelStepByStep_StaticMethod(string path, DataSet dataSet, bool[] showColumnNameArray = null, int[,] positionArray = null)
+        {
+            sInstance.DataSet2ExcelStepByStep
+            (
+                path: path,
+                dataSet: dataSet,
+                showColumnNameArray: showColumnNameArray,
+                positionArray: positionArray
+            );
+        }
+
+        #endregion
+
+
+
+        /// <summary>
+        /// 检查是否授权成功
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsLicensed()
+        {
+            using (Aspose.Cells.Workbook wb = new Workbook())
+            {
+                return wb.IsLicensed;
+            }
+        }
 
         ///// <summary>
         ///// 打印DEMO

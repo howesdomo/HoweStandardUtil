@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="2.12">
-    <id>$id$</id>
+    <id>Util.Excel.Aspose</id>
     <version>$version$</version>
     <title>Util.Excel.Aspose</title>
     <authors>HowesDOMO</authors>
     <owners>HowesDOMO</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/howesdomo/HoweStandardUtil</projectUrl>
-    <iconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</iconUrl>
-    <description>Util.Excel.Aspose is common library for Xamarin.Forms</description>
-    <copyright>Copyright 2019 HowesDOMO</copyright>
-    <tags>Xamarin.Forms Excel Aspose.Cells</tags>
-    <repository type="git" url="https://github.com/howesdomo/HoweStandardUtil.git" />
-    <!--<releaseNotes>Lastest Release.</releaseNotes>-->
+    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweUtil/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/howesdomo/HoweUtil</projectUrl>
+    <iconUrl>https://github.com/howesdomo/HoweUtil/raw/master/icon.png</iconUrl>
+    <description>Util.Excel.Aspose is excel common library</description>
+    <copyright>Copyright 2021 HowesDOMO</copyright>
+    <tags>Excel, Aspose</tags>
+    <repository type="git" url="https://github.com/howesdomo/HoweUtil.git" />
     <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Util.HowesDOMO" version="1.0.16" exclude="Build,Analyzers" />
+        <dependency id="Aspose.Cells" version="[18.12.0]" />
+      </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="Util.HowesDOMO" version="1.0.3" exclude="Build,Analyzers" />
-        <dependency id="Aspose.Cells" version="19.5.0" exclude="Build,Analyzers" />
+        <dependency id="Util.HowesDOMO" version="1.0.16" exclude="Build,Analyzers" />
+        <dependency id="Aspose.Cells" version="[18.12.0]" />
       </group>
     </dependencies>
- </metadata>
+  </metadata>
 </package>
