@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.10 - 2021-03-08 14:30:00
+    /// 1 修复Bug : 属性  (System.Threading.ManualResetEvent) mTcpListen_AutoSetEvent 改为非静态属性
+    /// 在一个项目中启用多个 MyTcpClient 实例时, 静态的 (System.Threading.ManualResetEvent) mTcpListen_AutoSetEvent 属性
+    /// 会导致不同实例的读取时机错乱
+    /// 2 SendMethods 修改参数 bool isShowSendContent 改为 bool?, 新增参数 Encoding 用于发送与 mSendEncoding 不相同的编码的数据
+    /// 
     /// V 1.0.9
     /// 1 服务器发送信息优化为 并行foreach
     /// 2 增加 Send byte[]
@@ -222,7 +228,10 @@ namespace Util.Web
         }
 
         bool mTcpListen_WhileArgs { get; set; }
-        public static System.Threading.ManualResetEvent mTcpListen_AutoSetEvent = new System.Threading.ManualResetEvent(false);
+
+        // 2021-03-08 不能采用静态, 创建多个实例时, 会令到读取的控制混乱
+        // public static System.Threading.ManualResetEvent mTcpListen_AutoSetEvent = new System.Threading.ManualResetEvent(false);
+        public System.Threading.ManualResetEvent mTcpListen_AutoSetEvent { get; set; } = new System.Threading.ManualResetEvent(false);
 
         // 监听
         private void ListenClientConnect()
@@ -416,7 +425,24 @@ namespace Util.Web
             }
         }
 
-        public void Send(string sendContent, bool isShowSendContent = false)
+        void handleIsShowSendContent(bool? isShowSendContent, int countSendClient, string sendContent)
+        {
+            if (isShowSendContent.HasValue == true)
+            {
+                string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
+                if (isShowSendContent.Value == true)
+                {
+                    statusChangeMsg += $"\r\n发送信息:{sendContent}";
+                }
+                else
+                {
+                    statusChangeMsg += $"\r\n发送信息长度:{sendContent.Length}";
+                }
+                onStatusChange(statusChangeMsg);
+            }
+        }
+
+        public void Send(string sendContent, Encoding encoding = null, bool? isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
@@ -434,23 +460,21 @@ namespace Util.Web
                     return;
                 }
 
-                tcpClient.Send(sendContent, mSendEncoding ?? Encoding.UTF8); // 自定义扩展方法
+                if (encoding != null)
+                {
+                    tcpClient.Send(sendContent, encoding); // 自定义扩展方法
+                }
+                else
+                {
+                    tcpClient.Send(sendContent, mSendEncoding ?? Encoding.UTF8); // 自定义扩展方法
+                }
                 countSendClient = countSendClient + 1;
             });
 
-            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
-            if (isShowSendContent == true)
-            {
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
-            }
-            else
-            {
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{sendContent.Length}";
-            }
-            onStatusChange(statusChangeMsg);
+            handleIsShowSendContent(isShowSendContent, countSendClient, sendContent);
         }
 
-        public void Send(byte[] byteArr, bool isShowSendContent = false)
+        public void Send(byte[] byteArr, Encoding encodingGetString = null, bool? isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
@@ -472,20 +496,24 @@ namespace Util.Web
                 countSendClient = countSendClient + 1;
             });
 
-            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
-            if (isShowSendContent == true)
+            if (isShowSendContent.HasValue == true)
             {
-                var sendContent = (mSendEncoding ?? Encoding.UTF8).GetString(byteArr);
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
+                var sendContent = string.Empty;
+
+                if (encodingGetString == null)
+                {
+                    sendContent = encodingGetString.GetString(byteArr);
+                }
+                else
+                {
+                    sendContent = (mSendEncoding ?? Encoding.UTF8).GetString(byteArr);
+                }
+
+                handleIsShowSendContent(isShowSendContent, countSendClient, sendContent);
             }
-            else
-            {
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{byteArr.Length}";
-            }
-            onStatusChange(statusChangeMsg);
         }
 
-        public void StandardSend(string sendContent, bool isShowSendContent = false)
+        public void StandardSend(string sendContent, Encoding encoding = null, bool? isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
@@ -502,23 +530,22 @@ namespace Util.Web
                     return;
                 }
 
-                tcpClient.StandardSend(sendContent, mSendEncoding ?? Encoding.UTF8); // 自定义扩展方法
+                if (encoding != null)
+                {
+                    tcpClient.StandardSend(sendContent, encoding); // 自定义扩展方法
+                }
+                else
+                {
+                    tcpClient.StandardSend(sendContent, mSendEncoding ?? Encoding.UTF8); // 自定义扩展方法
+                }
+
                 countSendClient = countSendClient + 1;
             });
 
-            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
-            if (isShowSendContent == true)
-            {
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
-            }
-            else
-            {
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{sendContent.Length}";
-            }
-            onStatusChange(statusChangeMsg);
+            handleIsShowSendContent(isShowSendContent, countSendClient, sendContent);
         }
 
-        public void StandardSend(byte[] byteArr, bool isShowSendContent = false)
+        public void StandardSend(byte[] byteArr, Encoding encodingGetString = null, bool? isShowSendContent = false)
         {
             if (this.IsServerStart == false)
             {
@@ -539,17 +566,21 @@ namespace Util.Web
                 countSendClient = countSendClient + 1;
             });
 
-            string statusChangeMsg = $"Send:向 {countSendClient} 个客户端发送信息";
-            if (isShowSendContent == true)
+            if (isShowSendContent.HasValue == true)
             {
-                var sendContent = (mSendEncoding ?? Encoding.UTF8).GetString(byteArr);
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息:{sendContent}";
+                var sendContent = string.Empty;
+
+                if (encodingGetString == null)
+                {
+                    sendContent = encodingGetString.GetString(byteArr);
+                }
+                else
+                {
+                    sendContent = (mSendEncoding ?? Encoding.UTF8).GetString(byteArr);
+                }
+
+                handleIsShowSendContent(isShowSendContent, countSendClient, sendContent);
             }
-            else
-            {
-                statusChangeMsg = statusChangeMsg + $"\r\n发送信息长度:{byteArr.Length}";
-            }
-            onStatusChange(statusChangeMsg);
         }
 
         #region 定时器
@@ -634,6 +665,25 @@ namespace Util.Web
         }
 
         #endregion
+
+        /// <summary>
+        /// 设置发送/接收信息编码
+        /// </summary>
+        /// <param name="e"></param>
+        public void SetEncoding(Encoding e1, Encoding e2)
+        {
+            mSendEncoding = e1;
+            mReceiveEncoding = e2;
+        }
+
+        /// <summary>
+        /// 设置发送/接收信息编码 ( 发送/接收信息编码相同 )
+        /// </summary>
+        /// <param name="e"></param>
+        public void SetEncoding(Encoding e)
+        {
+            SetEncoding(e, e);
+        }
 
         #region 注册事件 - 服务状态更新时间
 

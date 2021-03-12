@@ -7,6 +7,9 @@ using System.Text;
 namespace Util.UIComponent
 {
     /// <summary>
+    /// V 1.0.1 - 2021-02-22 17:14:00
+    /// 修复 CollectionChanged 为 null 却执行通知事件
+    /// 
     /// V 1.0.0 - 2021-01-28 17:00:00
     /// 首次创建
     /// </summary>
@@ -49,7 +52,7 @@ namespace Util.UIComponent
             base.Clear();
             if (this.CollectionChanged != null)
             {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -59,7 +62,7 @@ namespace Util.UIComponent
             fix();
             if (this.CollectionChanged != null)
             {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
         }
 
@@ -69,7 +72,7 @@ namespace Util.UIComponent
             fix();
             if (this.CollectionChanged != null)
             {
-                CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
             return item;
         }
@@ -96,8 +99,10 @@ namespace Util.UIComponent
                 base.Dequeue();
             }
 
-            CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            if (this.CollectionChanged != null)
+            {
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            }
         }
-
     }
 }

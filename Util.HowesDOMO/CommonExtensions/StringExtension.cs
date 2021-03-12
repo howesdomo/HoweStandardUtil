@@ -199,8 +199,87 @@ namespace System
             return s[0].ToString().ToUpper() + s.Substring(1);
         }
 
+
+        /// <summary>
+        /// 根据选定的字符编码, 转换成对应的 Hex 字符串
+        /// </summary>
+        /// <param name="s">源字符串信息</param>
+        /// <param name="encoding">字符编码</param>
+        /// <param name="separator">分割符号(默认:空格)</param>
+        /// <param name="isLower">是小写显示(默认:大写)</param>
+        /// <returns>转换后 Hex 字符串信息</returns>
+        public static string ToHexString
+        (
+            this string s,
+            Encoding encoding,
+            string separator = " ",
+            bool isLower = false
+        )
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (byte i in encoding.GetBytes(s))
+            {
+                if (isLower)
+                {
+                    // sb.Append(separator.ToLower()).Append($"{i:x}".PadLeft(2, '0')); // 直接采用 x2 不用自己写逻辑向前补零
+                    sb.Append(separator).Append($"{i:x2}");
+                }
+                else
+                {
+                    // sb.Append(separator.ToUpper()).Append($"{i:X}".PadLeft(2, '0')); // 直接采用 X2 不用自己写逻辑向前补零
+                    sb.Append(separator).Append($"{i:X2}");
+                }
+            }
+
+            string temp = sb.ToString();
+            return temp.Substring(temp.IndexOf(separator) + separator.Length); // 去掉首个分割符号	
+        }
+
+        /// <summary>
+        /// Hex字符串转换为byte[]
+        /// </summary>
+        /// <param name="s">源Hex字符串信息</param>
+        /// <param name="separator">分割符号(默认:无)</param>
+        /// <returns>byte[]</returns>
+        public static byte[] HexString2ByteArray
+        (
+            this string s,
+            string separator = ""
+        )
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return null;
+            }
+
+            string hexString = s.ReplaceWithRegexPattern(separator, string.Empty); // 采用正则表达式去掉HexString内的分隔符
+
+            if (hexString.Length % 2 != 0)
+            {
+                // throw new ArgumentException(String.Format(System.Globalization.CultureInfo.InvariantCulture, "The binary key cannot have an odd number of digits: {0}", hexString));
+                throw new ArgumentException("不通过HexString的偶数位校验");
+            }
+
+            byte[] data = new byte[hexString.Length / 2];
+
+            for (int index = 0; index < data.Length; index++)
+            {
+                string byteValue = hexString.Substring(index * 2, 2);
+                data[index] = byte.Parse(byteValue, System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            return data;
+        }
+
         /// <summary>
         /// 显示特殊字符，可以用于检测 SerialPort 接收回来的数据
+        /// V 1.0.1 增加显示 27[ESC] 127[DEL]
         /// <para>例如常用的符号<para>
         /// <para>x02 显示为[STX],<para>
         /// <para>/r 显示为 [CR], <para>
@@ -246,7 +325,7 @@ namespace System
                     case 24: sb.Append("[0x24]"); break;
                     case 25: sb.Append("[0x25]"); break;
                     case 26: sb.Append("[0x26]"); break;
-                    case 27: sb.Append("[0x27]"); break;
+                    case 27: sb.Append("[ESC]"); break;
                     case 28: sb.Append("[0x28]"); break;
                     case 29: sb.Append("[0x29]"); break;
                     case 30: sb.Append("[0x30]"); break;
@@ -358,7 +437,7 @@ namespace System
                     //			case 124: sb.Append("[0x124]"); break;
                     //			case 125: sb.Append("[0x125]"); break;
                     //			case 126: sb.Append("[0x126]"); break;
-                    case 127: sb.Append("[0x127]"); break;
+                    case 127: sb.Append("[DEL]"); break;
                     //// 大于 127 的变成了问号			
                     //			case 128: sb.Append("[0x128]"); break;
                     //			case 129: sb.Append("[0x129]"); break;

@@ -6,6 +6,10 @@ using System.Text;
 namespace Util.IO
 {
     /// <summary>
+    /// V 1.0.1 - 2021-02-22 16:37:08
+    /// 1 新增Char2Key
+    /// 2 新增String2Key
+    /// 
     /// V 1.0.0 - 2021-02-04 15:10:02
     /// 1 模拟键盘输入
     /// 2 检查键盘 NumLock / Caspcase 状态
@@ -30,8 +34,8 @@ namespace Util.IO
         #endregion
 
         #region [user32.dll] 检查键盘状态
-
-        // [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
+        
+        // [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetKeyState", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         public static extern short GetKeyState(int keyCode);
 
@@ -1043,6 +1047,7 @@ namespace Util.IO
         /// 根据keyCode参数, 对该键先进行按下, 然后松开的操作
         /// </summary>
         /// <param name="keyCode"></param>
+        /// <param name="delayTimespan">延迟输入时间</param>
         public static void Execute(byte keyCode, TimeSpan? delayTimespan = null)
         {
             if (delayTimespan.HasValue == true && int.TryParse(delayTimespan.Value.TotalMilliseconds.ToString(), out int v) == true)
@@ -1071,6 +1076,201 @@ namespace Util.IO
         {
             return GetKeyState(keyCode) == 1 ? true : false;
         }
+
+        #region String2Key & Char2Key
+
+        public static bool IsDebug = false;
+
+
+        /// <summary>
+        /// 模拟键盘输出string中匹配的char
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="delayTimespan"></param>
+        public static void String2Key(string args, TimeSpan? delayTimespan = null)
+        {
+            foreach (char c in args)
+            {
+                bool isMatch = Char2Key(c, delayTimespan);
+                if (IsDebug && isMatch == false) System.Diagnostics.Debug.WriteLine($"{c.ToString().StringShowSpecialSymbol()} is not match");                
+            }
+        }
+
+        /// <summary>
+        /// 模拟键盘输出匹配的char
+        /// </summary>
+        /// <param name="c">传入char</param>
+        /// <param name="delayTimespan">延迟输入时间</param>
+        /// <returns>是匹配成功</returns>
+        public static bool Char2Key(char c, TimeSpan? delayTimespan = null)
+        {
+            bool isMatch = true;
+            switch (c)
+            {
+                case 'A': ExecuteUpper(A, delayTimespan); break;
+                case 'a': ExecuteLower(A, delayTimespan); break;
+                case 'B': ExecuteUpper(B, delayTimespan); break;
+                case 'b': ExecuteLower(B, delayTimespan); break;
+                case 'C': ExecuteUpper(C, delayTimespan); break;
+                case 'c': ExecuteLower(C, delayTimespan); break;
+                case 'D': ExecuteUpper(D, delayTimespan); break;
+                case 'd': ExecuteLower(D, delayTimespan); break;
+                case 'E': ExecuteUpper(E, delayTimespan); break;
+                case 'e': ExecuteLower(E, delayTimespan); break;
+                case 'F': ExecuteUpper(F, delayTimespan); break;
+                case 'f': ExecuteLower(F, delayTimespan); break;
+                case 'G': ExecuteUpper(G, delayTimespan); break;
+                case 'g': ExecuteLower(G, delayTimespan); break;
+                case 'H': ExecuteUpper(H, delayTimespan); break;
+                case 'h': ExecuteLower(H, delayTimespan); break;
+                case 'I': ExecuteUpper(I, delayTimespan); break;
+                case 'i': ExecuteLower(I, delayTimespan); break;
+                case 'J': ExecuteUpper(J, delayTimespan); break;
+                case 'j': ExecuteLower(J, delayTimespan); break;
+                case 'K': ExecuteUpper(K, delayTimespan); break;
+                case 'k': ExecuteLower(K, delayTimespan); break;
+                case 'L': ExecuteUpper(L, delayTimespan); break;
+                case 'l': ExecuteLower(L, delayTimespan); break;
+                case 'M': ExecuteUpper(M, delayTimespan); break;
+                case 'm': ExecuteLower(M, delayTimespan); break;
+                case 'N': ExecuteUpper(N, delayTimespan); break;
+                case 'n': ExecuteLower(N, delayTimespan); break;
+                case 'O': ExecuteUpper(O, delayTimespan); break;
+                case 'o': ExecuteLower(O, delayTimespan); break;
+                case 'P': ExecuteUpper(P, delayTimespan); break;
+                case 'p': ExecuteLower(P, delayTimespan); break;
+                case 'Q': ExecuteUpper(Q, delayTimespan); break;
+                case 'q': ExecuteLower(Q, delayTimespan); break;
+                case 'R': ExecuteUpper(R, delayTimespan); break;
+                case 'r': ExecuteLower(R, delayTimespan); break;
+                case 'S': ExecuteUpper(S, delayTimespan); break;
+                case 's': ExecuteLower(S, delayTimespan); break;
+                case 'T': ExecuteUpper(T, delayTimespan); break;
+                case 't': ExecuteLower(T, delayTimespan); break;
+                case 'U': ExecuteUpper(U, delayTimespan); break;
+                case 'u': ExecuteLower(U, delayTimespan); break;
+                case 'V': ExecuteUpper(V, delayTimespan); break;
+                case 'v': ExecuteLower(V, delayTimespan); break;
+                case 'W': ExecuteUpper(W, delayTimespan); break;
+                case 'w': ExecuteLower(W, delayTimespan); break;
+                case 'X': ExecuteUpper(X, delayTimespan); break;
+                case 'x': ExecuteLower(X, delayTimespan); break;
+                case 'Y': ExecuteUpper(Y, delayTimespan); break;
+                case 'y': ExecuteLower(Y, delayTimespan); break;
+                case 'Z': ExecuteUpper(Z, delayTimespan); break;
+                case 'z': ExecuteLower(Z, delayTimespan); break;
+
+
+                case '!': ExecuteUpper(D1, delayTimespan); break;
+                case '1': ExecuteLower(D1, delayTimespan); break;
+                case '@': ExecuteUpper(D2, delayTimespan); break;
+                case '2': ExecuteLower(D2, delayTimespan); break;
+                case '#': ExecuteUpper(D3, delayTimespan); break;
+                case '3': ExecuteLower(D3, delayTimespan); break;
+                case '$': ExecuteUpper(D4, delayTimespan); break;
+                case '4': ExecuteLower(D4, delayTimespan); break;
+                case '%': ExecuteUpper(D5, delayTimespan); break;
+                case '5': ExecuteLower(D5, delayTimespan); break;
+                case '^': ExecuteUpper(D6, delayTimespan); break;
+                case '6': ExecuteLower(D6, delayTimespan); break;
+                case '&': ExecuteUpper(D7, delayTimespan); break;
+                case '7': ExecuteLower(D7, delayTimespan); break;
+                case '*': ExecuteUpper(D8, delayTimespan); break;
+                case '8': ExecuteLower(D8, delayTimespan); break;
+                case '(': ExecuteUpper(D9, delayTimespan); break;
+                case '9': ExecuteLower(D9, delayTimespan); break;
+                case ')': ExecuteUpper(D0, delayTimespan); break;
+                case '0': ExecuteLower(D0, delayTimespan); break;
+
+
+                case '`': ExecuteUpper(VK_OEM_3, delayTimespan); break;
+                case '~': ExecuteLower(VK_OEM_3, delayTimespan); break;
+                case '_': ExecuteUpper(VK_OEM_MINUS, delayTimespan); break;
+                case '-': ExecuteLower(VK_OEM_MINUS, delayTimespan); break;
+                case '+': ExecuteUpper(VK_OEM_PLUS, delayTimespan); break;
+                case '=': ExecuteLower(VK_OEM_PLUS, delayTimespan); break;
+                case '{': ExecuteUpper(VK_OEM_4, delayTimespan); break;
+                case '[': ExecuteLower(VK_OEM_4, delayTimespan); break;
+                case '}': ExecuteUpper(VK_OEM_6, delayTimespan); break;
+                case ']': ExecuteLower(VK_OEM_6, delayTimespan); break;
+                case ':': ExecuteUpper(VK_OEM_1, delayTimespan); break;
+                case ';': ExecuteLower(VK_OEM_1, delayTimespan); break;
+                case '"': ExecuteUpper(VK_OEM_7, delayTimespan); break;  // 双引号
+                case '\'': ExecuteLower(VK_OEM_7, delayTimespan); break; // 单引号
+                case '|': ExecuteUpper(VK_OEM_5, delayTimespan); break;
+                case '\\': ExecuteLower(VK_OEM_5, delayTimespan); break;
+                case '<': ExecuteUpper(VK_OEM_COMMA, delayTimespan); break;
+                case ',': ExecuteLower(VK_OEM_COMMA, delayTimespan); break;
+                case '>': ExecuteUpper(VK_OEM_PERIOD, delayTimespan); break;
+                case '.': ExecuteLower(VK_OEM_PERIOD, delayTimespan); break;
+                case '?': ExecuteUpper(VK_OEM_2, delayTimespan); break;
+                case '/': ExecuteLower(VK_OEM_2, delayTimespan); break;
+
+
+                case '\t': ExecuteLower(VK_TAB, delayTimespan); break;
+                case ' ': ExecuteLower(VK_SPACE, delayTimespan); break;
+                case '\n': ExecuteLower(VK_RETURN, delayTimespan); break; // n 含义换行
+
+
+                default:
+                    isMatch = false;
+                    break;
+            }
+
+            return isMatch;
+        }
+
+        /// <summary>
+        /// 输出小写
+        /// 1 确保 Caps Lock 在关闭状态
+        /// 2 输出 VitualKeyCode 对应键值
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="delayTimespan"></param>
+        public static void ExecuteLower(byte args, TimeSpan? delayTimespan = null)
+        {
+            if (delayTimespan.HasValue == true && int.TryParse(delayTimespan.Value.TotalMilliseconds.ToString(), out int v) == true)
+            {
+                System.Threading.Thread.Sleep(v);
+            }
+
+            CapsLockOff();
+            Execute(args);
+        }
+
+        /// <summary>
+        /// 输出大写
+        /// 1 确保 Caps Lock 在关闭状态
+        /// 2 按住 Shift 输出 VitualKeyCode 对应键值
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="delayTimespan"></param>
+        public static void ExecuteUpper(byte args, TimeSpan? delayTimespan = null)
+        {
+            if (delayTimespan.HasValue == true && int.TryParse(delayTimespan.Value.TotalMilliseconds.ToString(), out int v) == true)
+            {
+                System.Threading.Thread.Sleep(v);
+            }
+
+            CapsLockOff();
+            Shift_XKey(args);
+        }
+
+        private static void Shift_XKey(byte args, TimeSpan? delayTimespan = null)
+        {
+            if (delayTimespan.HasValue == true && int.TryParse(delayTimespan.Value.TotalMilliseconds.ToString(), out int v) == true)
+            {
+                System.Threading.Thread.Sleep(v);
+            }
+
+            keybd_event(VK_SHIFT, 0, KEYEVENTF_EXTENDEDKEY, 0); // 按下 shift
+            keybd_event(args, 0, KEYEVENTF_EXTENDEDKEY, 0); // 按下 X
+
+            keybd_event(VK_SHIFT, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0); // 松开 shift
+            keybd_event(args, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0); // 松开 X
+        }
+
+        #endregion
 
         #region 常用键按下松开
 
@@ -1137,7 +1337,6 @@ namespace Util.IO
 
         #region ShortcutKey
 
-
         public static void ShortcutKey_CtrlV()
         {
             keybd_event(VK_CONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0); // 按下 ctrl
@@ -1166,6 +1365,7 @@ namespace Util.IO
         }
 
         #endregion
+
 
     }
 }
