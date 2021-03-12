@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 
 using Android.App;
@@ -62,7 +63,7 @@ namespace Util.XamariN.AndroiD.Components
                 #endregion
                 webView.Settings.UseWideViewPort = true; // 设置 WebView 支持 viewport meta tag
 
-                webView.SetWebViewClient(new MyWebViewClient());
+                webView.SetWebViewClient(new MyWebViewClient(this));
 
                 webView.SetWebChromeClient(new MyWebChromeClient());
             }
@@ -70,14 +71,78 @@ namespace Util.XamariN.AndroiD.Components
 
         private class MyWebViewClient : Android.Webkit.WebViewClient
         {
+            RequestModel mReceiveError { get; set; }
+
+            WebViewAdvRenderer mRenderer;
+
+            public MyWebViewClient(WebViewAdvRenderer renderer)
+            {
+                mRenderer = renderer ?? throw new ArgumentNullException("renderer");
+            }
+
             public override void OnPageStarted(Android.Webkit.WebView view, string url, Android.Graphics.Bitmap favicon)
             {
                 base.OnPageStarted(view, url, favicon);
+
+                //// 如加上以下代码, 会触发2次 Navigating 事件, 故暂时进行注释                
+                //// 2020-11-01 20:13:44 解决XF中无法进入 Navigating 事件
+                //var args = new Xamarin.Forms.WebNavigatingEventArgs
+                //(
+                //    Xamarin.Forms.WebNavigationEvent.NewPage,
+                //    new Xamarin.Forms.UrlWebViewSource { Url = url },
+                //    url
+                //);
+                //_renderer.ElementController.SendNavigating(args);
             }
 
             public override void OnPageFinished(Android.Webkit.WebView view, string url)
             {
                 base.OnPageFinished(view, url);
+
+                // 2020-11-01 20:13:44 解决XF中无法进入 Navigated 事件
+                var source = new Xamarin.Forms.UrlWebViewSource { Url = url };
+
+                // 判断最近有没有 OnReceivedError, 若有异常则停止操作
+                if (mReceiveError != null && mReceiveError.IsSameRequest(url) == true)
+                {
+                    // navigationResult = Xamarin.Forms.WebNavigationResult.Failure;
+                    return;                    
+                }
+                else 
+                {
+                    mReceiveError = null;
+                }
+
+                var args = new Xamarin.Forms.WebNavigatedEventArgs
+                (
+                    Xamarin.Forms.WebNavigationEvent.NewPage,
+                    source,
+                    url,
+                    Xamarin.Forms.WebNavigationResult.Success
+                );
+
+                mRenderer.ElementController.SendNavigated(args);
+            }
+
+            public override void OnReceivedError(WebView view, IWebResourceRequest request, WebResourceError error)
+            {
+                base.OnReceivedError(view, request, error);
+
+                string url = request.Url.ToString();
+
+                // 2020-11-01 20:13:44 解决XF中无法进入 Navigated 事件
+                var source = new Xamarin.Forms.UrlWebViewSource { Url = url };
+                var args = new Xamarin.Forms.WebNavigatedEventArgs
+                (
+                    Xamarin.Forms.WebNavigationEvent.NewPage,
+                    source,
+                    url,
+                    Xamarin.Forms.WebNavigationResult.Failure
+                );
+
+                mReceiveError = new RequestModel(url);
+
+                mRenderer.ElementController.SendNavigated(args);
             }
 
             public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, Android.Webkit.IWebResourceRequest request)
@@ -113,6 +178,32 @@ namespace Util.XamariN.AndroiD.Components
                     // 没有安装该app时，返回true，表示拦截自定义链接，但不跳转，避免弹出上面的错误页面
                     return true;
                 }
+            }
+        }
+
+        private class RequestModel
+        {
+            public RequestModel(string url)
+            {
+                this.Url = url;
+                this.EntryTime = DateTime.Now;
+            }
+
+            public DateTime EntryTime { get; set; }
+
+            public string Url { get; set; }
+
+            public bool IsSameRequest(string url)
+            {
+                var n = DateTime.Now;
+                bool r = false;
+
+                if (url == this.Url && TimeSpan.FromTicks(n.Ticks - this.EntryTime.Ticks) <= TimeSpan.FromMilliseconds(1000))
+                {
+                    r = true;
+                }
+
+                return r;
             }
         }
 

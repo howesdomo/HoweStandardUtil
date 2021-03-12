@@ -64,6 +64,7 @@
     <Compile Include="MyShareUtils.cs" />
     <Compile Include="MyScreen.cs" />
     <Compile Include="MyTTS.cs" />
+    <Compile Include="MyVisitSystemSettingUtils.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
