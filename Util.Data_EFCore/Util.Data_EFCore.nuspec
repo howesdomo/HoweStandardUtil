@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>Util.Data_EFCore</title>
+    <authors>HowesDOMO</authors>
+    <owners>HowesDOMO</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/howesdomo/HoweStandardUtil/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/howesdomo/HoweStandardUtil</projectUrl>
+    <iconUrl>https://github.com/howesdomo/HoweStandardUtil/raw/master/icon.png</iconUrl>
+    <description>Util.Data_EFCore use for EntityFrameworkCore, which is arranged useful Codes for EFCore</description>
+    <copyright>Copyright 2021 HowesDOMO</copyright>
+    <tags>EntityFramework</tags>
+    <repository type="git" url="https://github.com/howesdomo/HoweStandardUtil.git" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Util.HowesDOMO" version="1.0.17" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="3.1.0" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="3.1.0" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
