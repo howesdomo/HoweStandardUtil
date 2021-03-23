@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.11 - 2021-03-15 10:32:12
+    /// 修复 Send 与 StandardSend Encoding 参数的错误调用
+    /// 
     /// V 1.0.10 - 2021-03-08 14:30:00
     /// 1 修复Bug : 属性  (System.Threading.ManualResetEvent) mTcpListen_AutoSetEvent 改为非静态属性
     /// 在一个项目中启用多个 MyTcpClient 实例时, 静态的 (System.Threading.ManualResetEvent) mTcpListen_AutoSetEvent 属性
@@ -500,7 +503,7 @@ namespace Util.Web
             {
                 var sendContent = string.Empty;
 
-                if (encodingGetString == null)
+                if (encodingGetString != null)
                 {
                     sendContent = encodingGetString.GetString(byteArr);
                 }
@@ -570,7 +573,7 @@ namespace Util.Web
             {
                 var sendContent = string.Empty;
 
-                if (encodingGetString == null)
+                if (encodingGetString != null)
                 {
                     sendContent = encodingGetString.GetString(byteArr);
                 }
