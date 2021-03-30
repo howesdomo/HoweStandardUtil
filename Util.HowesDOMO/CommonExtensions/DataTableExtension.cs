@@ -42,5 +42,17 @@
 
             return r;
         }
+
+        public static System.Collections.Generic.List<T> GetList<T>(this DataTable dt)
+        {
+            string jsonStr = Util.JsonUtils.SerializeObject(dt);
+            return Util.JsonUtils.DeserializeObject<System.Collections.Generic.List<T>>(jsonStr);
+        }
+
+        public static System.Collections.Generic.List<dynamic> GetList(this DataTable dt)
+        {
+            string jsonStr = Util.JsonUtils.SerializeObject(dt);
+            return Util.JsonUtils.DeserializeObject<System.Collections.Generic.List<dynamic>>(jsonStr);
+        }
     }
 }
