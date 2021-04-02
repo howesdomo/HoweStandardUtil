@@ -6,9 +6,13 @@ using System.Text;
 namespace Util.IO
 {
     /// <summary>
+    /// 不要直接复制到 HoweUtil
+    /// 
+    /// V 1.0.2 - 2021-04-02 13:48:35
+    /// 获取文件的MD5值
+    /// 
     /// V 1.0.1 - 2019-10-17 14:54:30
     /// SaveBase64StrToFile 添加可选参数 fileEncoding, 默认输出为 UTF-8
-    /// 
     /// </summary>
     public class FileUtils
     {
@@ -196,6 +200,28 @@ namespace Util.IO
             {
                 return fileInfo.Name.Substring(0, match[match.Count - 1].Index);
             }
+        }
+		
+		/// <summary>
+        /// 获取文件的MD5值
+        /// </summary>
+        /// <param name="fi"></param>
+        /// <returns></returns>
+        public static string MD5(FileInfo fi)
+        {
+            StringBuilder sb = new StringBuilder(capacity: 32); // MD5 长度是32位字符串
+
+            System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            using (FileStream file = new FileStream(fi.FullName, FileMode.Open))
+            {
+                byte[] byteArray = md5.ComputeHash(file);
+                for (int i = 0; i < byteArray.Length; i++)
+                {
+                    sb.Append(byteArray[i].ToString("x2"));
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }
