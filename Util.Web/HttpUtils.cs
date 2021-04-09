@@ -9,45 +9,45 @@ using System.Threading.Tasks;
 namespace Util.Web
 {
     /// <summary>
+    /// V 1.0.2 -- 2021-04-09 22:46:08
+    /// 整理优化代码（未完善）
+    /// 
     /// V 1.0.1
     /// 整理常用的 Post 方法
     /// </summary>
     public class HttpUtils
     {
-        private const double s_Timeout = 30000; // 30 秒
+        private const double s_TimeoutMilliseconds = 30000; // 30 秒
 
         #region Post == form-data
 
         /// <summary>
         /// 采用 form-data 方式进行 Post, 推荐使用进行发送文件 + 数据
         /// </summary>
-        /// <param name="url">访问地址</param>
+        /// <param name="uri">访问地址</param>
         /// <param name="data">传输数据 dynamic</param>
         /// <param name="fileInfos">上传文件FileInfo集合</param>
-        /// <param name="encodingName">设置编码码制 ( 默认UTF-8 )</param>
+        /// <param name="encoding">设置编码码制 ( 默认UTF-8 )</param>
         /// <param name="timeout">设置超时 ( 默认30秒 )</param>
         /// <returns></returns>
-        public static Task<string> HttpPostWithFileInfos(string url, dynamic data, IEnumerable<System.IO.FileInfo> fileInfos, string encodingName = "utf-8", double timeout = s_Timeout)
+        public static Task<string> HttpPostWithFileInfos(Uri uri, dynamic data, IEnumerable<System.IO.FileInfo> fileInfos, Encoding encoding = null, TimeSpan? timeout = null)
         {
-            if (url.ToLower().StartsWith("https:"))
+            // if (uriStr.ToLower().StartsWith("https:"))
+            if (uri.Scheme.Equals("https", StringComparison.CurrentCultureIgnoreCase))
             {
+                // 在 android 9 Xamarin.Forms中测试发现没有效果，new HttpClient 时 需要传 Handle 作为参数， 才能成功访问 https 
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => { return true; });
             }
 
-            Encoding encoding = null;
-
-            try
-            {
-                encoding = Encoding.GetEncoding(encodingName);
-            }
-            catch (Exception)
+            if (encoding == null)
             {
                 encoding = Encoding.UTF8;
             }
 
             using (var client = new System.Net.Http.HttpClient())
             {
-                client.Timeout = TimeSpan.FromMilliseconds(timeout);
+                if (timeout.HasValue == false) { timeout = TimeSpan.FromMilliseconds(s_TimeoutMilliseconds); }
+                client.Timeout = timeout.Value;
 
                 using (MultipartFormDataContent form = new MultipartFormDataContent())
                 {
@@ -84,7 +84,7 @@ namespace Util.Web
 
                     #endregion
 
-                    HttpResponseMessage resMsg = client.PostAsync(url, form).Result;
+                    HttpResponseMessage resMsg = client.PostAsync(uri, form).Result;
 
                     return resMsg.Content.ReadAsStringAsync();
                 }
@@ -94,16 +94,46 @@ namespace Util.Web
         /// <summary>
         /// 采用 form-data 方式进行 Post, 推荐使用进行发送文件 + 数据
         /// </summary>
-        /// <param name="url">访问地址</param>
+        /// <param name="uri">访问地址</param>
+        /// <param name="data">传输数据 dynamic</param>
+        /// <param name="filePaths">上传文件路径集合</param>
+        /// <param name="encoding">设置编码码制 ( 默认UTF-8 )</param>
+        /// <param name="timeoutMilliseconds">设置超时 ( 默认30秒 )</param>
+        /// <returns></returns>
+        public static Task<string> HttpPostWithFileInfos(Uri uri, dynamic data, IEnumerable<string> filePaths, Encoding encoding = null, double timeoutMilliseconds = s_TimeoutMilliseconds)
+        {
+            return HttpPostWithFileInfos
+            (
+                uri: uri,
+                data: data,
+                fileInfos: filePaths.Select(i => new FileInfo(i)),
+                encoding: encoding,
+                timeout: TimeSpan.FromMilliseconds(timeoutMilliseconds)
+            );
+        }
+
+        /// <summary>
+        /// 采用 form-data 方式进行 Post, 推荐使用进行发送文件 + 数据
+        /// </summary>
+        /// <param name="uriStr">访问地址</param>
         /// <param name="data">传输数据 dynamic</param>
         /// <param name="filePaths">上传文件路径集合</param>
         /// <param name="encodingName">设置编码码制 ( 默认UTF-8 )</param>
-        /// <param name="timeout">设置超时 ( 默认30秒 )</param>
+        /// <param name="timeoutMilliseconds">设置超时 ( 默认30秒 )</param>
         /// <returns></returns>
-        public static Task<string> HttpPostWithFilePaths(string url, dynamic data, IEnumerable<string> filePaths, string encodingName = "utf-8", double timeout = s_Timeout)
+        public static Task<string> HttpPostWithFilePaths(string uriStr, dynamic data, IEnumerable<string> filePaths, string encodingName = "utf-8", double timeoutMilliseconds = s_TimeoutMilliseconds)
         {
-            return HttpPostWithFileInfos(url, data, filePaths.Select(i => new FileInfo(i)), encodingName, timeout);
+            return HttpPostWithFileInfos
+            (
+                uri: new Uri(uriStr),
+                data: data,
+                fileInfos: filePaths.Select(i => new FileInfo(i)),
+                encoding: Encoding.GetEncoding(encodingName),
+                timeout: TimeSpan.FromMilliseconds(timeoutMilliseconds)
+            );
         }
+
+
 
         #endregion
 
@@ -123,7 +153,7 @@ namespace Util.Web
         /// <param name="encodingName">设置编码码制 ( 默认UTF-8 )</param>
         /// <param name="timeout">设置超时 ( 默认30秒 )</param>
         /// <returns></returns>
-        public static Task<string> HttpPostWithFormUrlEncodedContent(string url, dynamic data, string encodingName = "utf-8", double timeout = s_Timeout)
+        public static Task<string> HttpPostWithFormUrlEncodedContent(string url, dynamic data, string encodingName = "utf-8", double timeout = s_TimeoutMilliseconds)
         {
             if (url.ToLower().StartsWith("https:"))
             {
@@ -187,23 +217,18 @@ namespace Util.Web
         /// </summary>
         /// <param name="url">访问地址</param>
         /// <param name="data">传输数据 dynamic</param>
-        /// <param name="encodingName">设置编码码制 ( 默认UTF-8 )</param>
+        /// <param name="encoding">设置编码码制 ( 默认UTF-8 )</param>
         /// <param name="timeout">设置超时 ( 默认30秒 )</param>
         /// <returns></returns>
-        public static Task<string> HttpPostWithStringContent(string url, dynamic data, string encodingName = "utf-8", double timeout = s_Timeout)
+        public static Task<string> HttpPostWithStringContent(string url, dynamic data, Encoding encoding = null, double timeout = s_TimeoutMilliseconds)
         {
+            // TODO 
             if (url.ToLower().StartsWith("https:"))
             {
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => { return true; });
             }
 
-            Encoding encoding = null;
-
-            try
-            {
-                encoding = Encoding.GetEncoding(encodingName);
-            }
-            catch (Exception)
+            if (encoding == null)
             {
                 encoding = Encoding.UTF8;
             }
@@ -223,7 +248,6 @@ namespace Util.Web
             }
 
             System.Net.Http.StringContent httpContent = new System.Net.Http.StringContent(postContent, encoding, "application/json");
-            // return client.PostAsync(url, httpContent);
             HttpResponseMessage resMsg = client.PostAsync(url, httpContent).Result;
             return resMsg.Content.ReadAsStringAsync();
         }
@@ -232,18 +256,19 @@ namespace Util.Web
 
         #region Get
 
-        public static Task<string> HttpGet(string url, double timeout = s_Timeout)
+        public static Task<string> HttpGet(string uriStr, double timeoutMilliseconds = s_TimeoutMilliseconds)
         {
-            if (url.ToLower().StartsWith("https:"))
+            // TODO 
+            if (uriStr.ToLower().StartsWith("https:"))
             {
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => { return true; });
             }
 
             var client = new System.Net.Http.HttpClient();
-            client.Timeout = TimeSpan.FromMilliseconds(timeout);
+            client.Timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
 
             // return client.GetAsync(url);
-            HttpResponseMessage httpResMsg = client.GetAsync(url).Result;
+            HttpResponseMessage httpResMsg = client.GetAsync(uriStr).Result;
             return httpResMsg.Content.ReadAsStringAsync();
         }
 
