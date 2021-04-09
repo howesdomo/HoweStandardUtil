@@ -8,6 +8,13 @@ using System.Text;
 namespace Util
 {
     /// <summary>
+	/// !!!! HoweStandardUtil 专用代码 !!!! 不能直接拷贝到 HoweUtil 项目中
+	///
+    /// V 1.0.3 - 2021-04-05 16:39:09
+    /// 根据 Cyber 的读取SQLDataReader方式, 改写了 GetList T 方法, 
+    /// 优点: 能够直接读取List T, 无需再从 DataSet 中转换成为所想要的结果
+    /// 缺点: 若存储过程含有多个结果集, 目前只能获取第一个结果集
+	///
     /// V 1.0.2 - 2020-12-30 15:04:36
     /// 增加参数 TimeSpan? cmdTimeoutSeconds = null 控制超时时长, 默认空值。
     /// cmdTimeoutSeconds 为 null 时 CommandTimeout 默认值为 30 秒
@@ -215,6 +222,184 @@ namespace Util
 
             return r;
         }
+
+        #region GetList -- DBDataReader 直接读取 JArray, 最后转为 List<T>, 其缺点是只能获取一个结果集
+
+        public static List<T> GetList<T>
+        (
+            DbProviderFactory factory,
+            string connectionString,
+            string commandText,
+            List<object> paramsList,
+            bool isBeginTransaction = false,
+            bool isRollbackForTest = false,
+            CommandType argCommandType = CommandType.StoredProcedure,
+            TimeSpan? cmdTimeoutSeconds = null
+        )
+        {
+            List<T> r = null;
+            using (DbConnection conn = factory.CreateConnection())
+            {
+                conn.ConnectionString = connectionString;
+                conn.Open();
+
+                DbCommand cmd = null;
+                DbTransaction tran = null;
+
+                try
+                {
+                    if (isRollbackForTest == true || isBeginTransaction == true) // 开启测试回滚 或 开启事务
+                    {
+                        tran = conn.BeginTransaction();
+                        cmd = tran.Connection.CreateCommand();
+                        cmd.Transaction = tran;
+                    }
+                    else // 普通执行模式
+                    {
+                        cmd = conn.CreateCommand();
+                    }
+
+                    if (cmdTimeoutSeconds.HasValue)
+                    {
+                        cmd.CommandTimeout = (int)cmdTimeoutSeconds.Value.TotalSeconds;
+                    }
+
+                    cmd.CommandType = argCommandType;
+                    cmd.CommandText = commandText;
+
+                    if (paramsList != null && paramsList.Count > 0)
+                    {
+                        cmd.Parameters.AddRange(paramsList.ToArray());
+                    }
+
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        r = GetList<T>(reader);
+                    }
+
+                    if (tran != null)
+                    {
+                        if (isRollbackForTest == false)
+                        {
+                            tran.Commit();
+                        }
+                        else // 实现测试回滚
+                        {
+                            tran.Rollback();
+                        }
+
+                        tran.Dispose();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (tran != null)
+                    {
+                        tran.Rollback();
+                    }
+
+                    throw ex;
+                }
+            }
+
+            return r;
+        }
+
+        public static List<T> GetList<T>
+        (
+            DbTransaction tran,
+            string commandText,
+            List<object> paramsList,
+            CommandType argCommandType = CommandType.StoredProcedure,
+            TimeSpan? cmdTimeoutSeconds = null
+        )
+        {
+            DbCommand cmd = tran.Connection.CreateCommand();
+            cmd.Transaction = tran;
+
+            cmd.CommandType = argCommandType;
+            cmd.CommandText = commandText;
+
+            if (paramsList != null && paramsList.Count > 0)
+            {
+                cmd.Parameters.AddRange(paramsList.ToArray());
+            }
+
+            // Stopwatch sw = new Stopwatch();
+            // sw.Start();
+            // var f = DbProviderFactories.GetFactory(tran.Connection);
+            // sw.Stop();
+            // 经测试 System.Diagnostics.Stopwatch.Elapsed = 00:00:00.0000004	
+
+            // 由于 4.0 没有 DbProviderFactories.GetFactory(DbConnection) 的重载
+            DbProviderFactory factory = null;
+            if (tran.Connection is System.Data.SqlClient.SqlConnection)
+            {
+                factory = GetDbProviderFactory(DbProvider.SQLServer);
+            }
+            else
+            {
+                var typeName = tran.Connection.GetType().Name;
+                if (typeName.Contains("Lite"))
+                {
+                    factory = GetDbProviderFactory(DbProvider.SQLite);
+                }
+                else if (typeName.Contains("Oracle"))
+                {
+                    factory = GetDbProviderFactory(DbProvider.Oracle);
+                }
+                else if (typeName.Contains("MySQL"))
+                {
+                    factory = GetDbProviderFactory(DbProvider.MySQL);
+                }
+            }
+
+            if (cmdTimeoutSeconds.HasValue)
+            {
+                cmd.CommandTimeout = (int)cmdTimeoutSeconds.Value.TotalSeconds;
+            }
+
+            using (DbDataReader reader = cmd.ExecuteReader())
+            {
+                return GetList<T>(reader);
+            }
+        }
+
+        public static List<T> GetList<T>(DbDataReader dataReader)
+        {
+            // 列名
+            var cols = new List<string>();
+            for (int index = 0; index < dataReader.FieldCount; index++)
+            {
+                cols.Add(dataReader.GetName(index));
+            }
+
+            // 赋值
+            Newtonsoft.Json.Linq.JArray jArray = new Newtonsoft.Json.Linq.JArray();
+            while (dataReader.Read() == true)
+            {
+                var toAdd_JObject = new Newtonsoft.Json.Linq.JObject();
+
+                foreach (string col in cols)
+                {
+                    if (dataReader[col] != DBNull.Value)
+                    {
+                        toAdd_JObject.Add(col, dataReader[col].ToString());
+                    }
+                    else
+                    {
+                        toAdd_JObject.Add(col, null);
+                    }
+                }
+
+                jArray.Add(toAdd_JObject);
+            }
+
+            return jArray.ToObject<List<T>>();
+        }
+
+        #endregion
+
 
         #region SQL Server 连接字符串
 
