@@ -10,7 +10,7 @@ using Xamarin.Forms;
 /// </summary>
 namespace Util.XamariN.Converters
 {
-    public class BooleanConvert : IValueConverter
+    public class BooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

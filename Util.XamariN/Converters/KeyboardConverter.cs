@@ -8,7 +8,7 @@ using Xamarin.Forms;
 /// </summary>
 namespace Util.XamariN.Converters
 {
-    public class KeyboardConvert : IValueConverter
+    public class KeyboardConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
