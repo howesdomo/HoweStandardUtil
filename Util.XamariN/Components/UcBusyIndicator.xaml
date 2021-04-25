@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Util.XamariN.Components.UcBusyIndicator"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:view="clr-namespace:Util.XamariN.Components"
+    x:Name="thisUserControl"
+    InputTransparent="True">
+    <ContentView.Content>
+        <Grid
+            x:Name="gWait"
+            IsVisible="false">
+
+            <Grid
+                Background="Black"
+                Opacity="0.4">
+                <!--  此 Grid 用于整个版面半透明  -->
+            </Grid>
+            <Grid
+                x:Name="gMain"
+                Background="Black"
+                ColumnDefinitions="*,Auto,*"
+                ColumnSpacing="0"
+                Opacity="0.4"
+                RowDefinitions="*,Auto,*"
+                RowSpacing="0">
+
+                <view:BusyIndicator
+                    x:Name="busyIndicator"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HeightRequest="40"
+                    HorizontalOptions="Center"
+                    PathData="{Binding Source={x:Reference thisUserControl}, Path=BusyIndicatorPathData}"
+                    PathFill="{Binding Source={x:Reference thisUserControl}, Path=BusyIndicatorFill}"
+                    PathScale="{Binding Source={x:Reference thisUserControl}, Path=BusyIndicatorScale}"
+                    PathStroke="{Binding Source={x:Reference thisUserControl}, Path=BusyIndicatorStroke}"
+                    VerticalOptions="Center"
+                    WidthRequest="40" />
+                <Label
+                    x:Name="txtMsg"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    FontSize="26"
+                    LineBreakMode="CharacterWrap"
+                    TextColor="Yellow" />
+
+                <!--  测试 上下左右 4个样式  -->
+                <!--
+                <Label
+                    x:Name="txtMsgLeft"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Background="Orange"
+                    FontSize="26"
+                    HorizontalTextAlignment="End"
+                    Opacity="1"
+                    TextColor="Yellow"
+                    VerticalTextAlignment="Center" />
+
+                <Label
+                    x:Name="txtMsgTop"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Background="Orange"
+                    FontSize="26"
+                    HorizontalTextAlignment="Center"
+                    Opacity="1"
+                    TextColor="Yellow"
+                    VerticalTextAlignment="End" />
+
+                <Label
+                    x:Name="txtMsgRight"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Background="Orange"
+                    FontSize="26"
+                    HorizontalTextAlignment="Start"
+                    Opacity="1"
+                    TextColor="Yellow"
+                    VerticalTextAlignment="Center" />
+
+                <Label
+                    x:Name="txtMsg"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Background="Orange"
+                    FontSize="26"
+                    HorizontalTextAlignment="Center"
+                    Opacity="1"
+                    TextColor="Yellow"
+                    VerticalTextAlignment="Start" />
+                -->
+            </Grid>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
